@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Bus extends StatefulWidget {
   const Bus({super.key});
@@ -8,55 +9,91 @@ class Bus extends StatefulWidget {
 }
 
 class _BusState extends State<Bus> {
-  String dropdownvalue = 'A';
+  //final Completer<GoogleMapController> _controller = Completer();
+
+  static const LatLng destinationLocation = LatLng(27.6073, 85.5483);
+  static const LatLng busALocation = LatLng(27.6073, 85.5483);
+
+  // LocationData? currentLocation;
+
+  // void getCurrentLocation() {
+  //   Location location = Location();
+
+  //   location.getLocation().then(
+  //     (location) {
+  //       currentLocation = location;
+  //     },
+  //   );
+  // }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   getCurrentLocation();
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-      children: [
-        Center(
-          child: Container(
-            padding: const EdgeInsets.only(top: 10),
-            height: 425,
-            color: Colors.grey,
-            child: const Center(child: Text('Map')),
-          ),
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        Row(
-          children: [
-            const Padding(padding: EdgeInsets.symmetric(horizontal: 50)),
-            const Text('Select your bus:'),
-            const SizedBox(
-              width: 35,
-            ),
-            DropdownButton(
-                value: 'A',
-                items: const [
-                  DropdownMenuItem(value: 'A', child: Text('A')),
-                  DropdownMenuItem(value: 'B', child: Text('B')),
-                  DropdownMenuItem(value: 'C', child: Text('C')),
-                  DropdownMenuItem(value: 'D', child: Text('D')),
-                  DropdownMenuItem(value: 'E', child: Text('E')),
-                ],
-                onChanged: (String? newValue) {
-                  setState(() {
-                    dropdownvalue = newValue!;
-                  });
-                }),
-          ],
-        ),
-        const SizedBox(
-          height: 50,
-        ),
-        TextButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.location_on),
-            label: const Text('Track'))
-      ],
-    ));
+      body: //currentLocation == null
+          // ? const Center(
+          //     child: Icon(Icons.location_on_outlined),
+          //   ),
+          GoogleMap(
+        initialCameraPosition:
+            const CameraPosition(target: destinationLocation, zoom: 17),
+        zoomControlsEnabled: false,
+        compassEnabled: true,
+        markers: {
+          const Marker(
+              markerId: MarkerId("source"), position: destinationLocation)
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+          backgroundColor: const Color.fromRGBO(131, 151, 136, 1),
+          child: const Icon(Icons.track_changes),
+          onPressed: () {
+            showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return ListView(
+                    children: [
+                      const SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: Divider(
+                          thickness: 5,
+                        ),
+                      ),
+                      busButton('Bus A'),
+                      busButton('Bus B'),
+                      busButton('Bus C'),
+                      busButton('Bus D'),
+                    ],
+                  );
+                });
+          }),
+    );
   }
+}
+
+Widget busButton(String type) {
+  return TextButton.icon(
+      onPressed: () {
+        {
+          const Marker(
+              markerId: MarkerId('origin'), position: _BusState.busALocation);
+          const Marker(
+              markerId: MarkerId('destination'),
+              position: _BusState.destinationLocation);
+        }
+      },
+      icon: const Icon(
+        Icons.directions_bus_filled_outlined,
+        color: Colors.black87,
+      ),
+      label: Text(
+        type,
+        style: const TextStyle(color: Colors.black87),
+      ));
 }
