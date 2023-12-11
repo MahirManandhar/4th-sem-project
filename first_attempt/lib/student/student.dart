@@ -139,7 +139,7 @@ void _showLogoutConfirmationDialog(BuildContext context) {
             onPressed: () {
               _logoutAndNavigateToLogin(context);
             },
-            child: Text("Yes"),
+            child:  Text("Yes"),
           ),
         ],
       );
