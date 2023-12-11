@@ -14,13 +14,11 @@ class Login extends StatelessWidget {
         child: Stack(
           children: [
             Container(
-              padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.27, left: 35),
-              child: const Text(
-                'WELCOME!',
-                style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
-              ),
-            ),
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.18,
+                    left: 27,
+                    right: 35),
+                child: Image(image: AssetImage('assets/images/logo.png'))),
             Container(
               padding: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * 0.4,
@@ -33,13 +31,18 @@ class Login extends StatelessWidget {
                         fillColor: const Color.fromRGBO(255, 255, 255, 1),
                         filled: true,
                         hintText: 'Email',
+                        hintStyle: TextStyle(
+                          fontFamily: 'Quicksand',
+                          fontSize: 20,
+                        ),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10))),
                   ),
                   const SizedBox(
-                    height: 30,
+                    height: 10,
                   ),
                   TextField(
+                    style: TextStyle(fontFamily: 'Quicksand', fontSize: 20),
                     obscureText: true,
                     decoration: InputDecoration(
                         fillColor: const Color.fromRGBO(255, 255, 255, 1.0),
@@ -49,44 +52,89 @@ class Login extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10))),
                   ),
                   const SizedBox(
-                    height: 30,
+                    height: 50,
                   ),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Student()));
-                      },
-                      child: const Text(
-                        'Log In',
-                        style: TextStyle(
-                            color: Color.fromRGBO(0, 0, 0, 1), fontSize: 25),
-                      )),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Teacher()));
-                      },
-                      child: const Text(
-                        'Teacher',
-                        style: TextStyle(
-                            color: Color.fromRGBO(0, 0, 0, 1), fontSize: 25),
-                      )),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Admin()));
-                      },
-                      child: const Text(
-                        'Admin',
-                        style: TextStyle(
-                            color: Color.fromRGBO(0, 0, 0, 1), fontSize: 25),
-                      ))
+                  Center(
+                    child: ConstrainedBox(
+                      constraints:
+                          BoxConstraints.tightFor(width: 160, height: 40),
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Color.fromRGBO(94, 110, 100, 100),
+                              onPrimary: Color.fromRGBO(255, 255, 255, 0.612),
+                              elevation: 10, // Button elevation
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              )),
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Student()));
+                          },
+                          child: const Text(
+                            'Log In',
+                            style:
+                                TextStyle(fontFamily: 'FiraSans', fontSize: 25),
+                          )),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Center(
+                    child: ConstrainedBox(
+                      constraints:
+                          BoxConstraints.tightFor(width: 160, height: 40),
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Color.fromRGBO(94, 110, 100, 100),
+                              onPrimary: Color.fromRGBO(255, 255, 255, 0.612),
+                              elevation: 10, // Button elevation
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              )),
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Teacher()));
+                          },
+                          child: const Text(
+                            'Teacher',
+                            style:
+                                TextStyle(fontFamily: 'FiraSans', fontSize: 25),
+                          )),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Center(
+                    child: ConstrainedBox(
+                      constraints:
+                          BoxConstraints.tightFor(width: 160, height: 40),
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Color.fromRGBO(94, 110, 100, 100),
+                              onPrimary: Color.fromRGBO(255, 255, 255, 0.612),
+                              elevation: 10, // Button elevation
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              )),
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Admin()));
+                          },
+                          child: const Text(
+                            'Admin',
+                            style:
+                                TextStyle(fontFamily: 'FiraSans', fontSize: 25),
+                          )),
+                    ),
+                  )
                 ],
               ),
             )

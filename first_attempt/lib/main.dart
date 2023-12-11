@@ -2,6 +2,8 @@ import 'package:first_attempt/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:first_attempt/login.dart';
+import 'package:first_attempt/aboutUs.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,6 +43,10 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const SplashScreen(),
+      routes: {
+        '/login': (context) => Login(),
+        '/aboutus': (context) => AboutUs(),
+      },
     );
   }
 }

@@ -7,12 +7,20 @@ class LogOut extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(131, 151, 136, 1),
-      appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(131, 151, 136, 1),
-        title: const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 65),
-          child: Text('PATHSHALA'),
+      backgroundColor: Color.fromRGBO(131, 151, 136, 1),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(100.0),
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 20),
+          child: AppBar(
+              backgroundColor: const Color.fromRGBO(131, 151, 136, 1),
+              title: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 50),
+                child: ConstrainedBox(
+                    constraints:
+                        BoxConstraints.tightFor(width: 150, height: 70),
+                    child: Image(image: AssetImage('assets/images/logo.png'))),
+              )),
         ),
       ),
       body: Stack(
@@ -22,29 +30,65 @@ class LogOut extends StatelessWidget {
             child: Center(
               child: Column(
                 children: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Login()));
-                      },
-                      child: const Text('Log Out',
-                          style: TextStyle(color: Colors.black, fontSize: 23))),
+                  ConstrainedBox(
+                    constraints:
+                        BoxConstraints.tightFor(width: 160, height: 40),
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            primary: Color.fromRGBO(94, 110, 100, 100),
+                            onPrimary: Color.fromRGBO(255, 255, 255, 0.612),
+                            elevation: 10, // Button elevation
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            )),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Login()));
+                        },
+                        child: const Text('Log Out',
+                            style: TextStyle(
+                                fontFamily: 'FiraSans', fontSize: 25))),
+                  ),
                   const SizedBox(
                     height: 30,
                   ),
-                  TextButton(
-                      onPressed: () {},
-                      child: const Text('About Us',
-                          style: TextStyle(color: Colors.black, fontSize: 23))),
+                  ConstrainedBox(
+                    constraints:
+                        BoxConstraints.tightFor(width: 160, height: 40),
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            primary: Color.fromRGBO(94, 110, 100, 100),
+                            onPrimary: Color.fromRGBO(255, 255, 255, 0.612),
+                            elevation: 10, // Button elevation
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            )),
+                        onPressed: () {},
+                        child: const Text('About Us',
+                            style: TextStyle(
+                                fontFamily: 'FiraSans', fontSize: 25))),
+                  ),
                   const SizedBox(
                     height: 30,
                   ),
-                  TextButton(
-                      onPressed: () {},
-                      child: const Text('Help',
-                          style: TextStyle(color: Colors.black, fontSize: 23)))
+                  ConstrainedBox(
+                    constraints:
+                        BoxConstraints.tightFor(width: 160, height: 40),
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            primary: Color.fromRGBO(94, 110, 100, 100),
+                            onPrimary: Color.fromRGBO(255, 255, 255, 0.612),
+                            elevation: 10, // Button elevation
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            )),
+                        onPressed: () {},
+                        child: const Text('Help',
+                            style: TextStyle(
+                                fontFamily: 'FiraSans', fontSize: 25))),
+                  )
                 ],
               ),
             ),
