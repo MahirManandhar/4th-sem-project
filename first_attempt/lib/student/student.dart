@@ -82,10 +82,7 @@ class _StudentState extends State<Student> {
             ListTile(
               leading: Icon(Icons.logout),
               title: Text("LOGOUT"),
-              onTap: () => {
-                Navigator.pop(context),
-                Navigator.pushNamed(context, '/login'),
-              },
+              onTap: () => _showLogoutConfirmationDialog(context),
             ),
           ]),
         ),
@@ -122,3 +119,45 @@ class _StudentState extends State<Student> {
         ));
   }
 }
+
+void _showLogoutConfirmationDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("Are you sure you want to logout?"),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context); // Close the dialog
+            },
+            child: Text("No"),
+          ),
+          TextButton(
+            onPressed: () {
+              _logoutAndNavigateToLogin(context);
+            },
+            child: Text("Yes"),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void _logoutAndNavigateToLogin(BuildContext context) async {
+  try {
+    // Navigate to the login screen
+    Navigator.pop(context); // Close the confirmation dialog
+    Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+  } catch (e) {
+    // Handle any errors that may occur during logout
+    print("Error during logout: $e");
+  }
+}
+
+// Future<void> _deleteUserTokens() async {
+
+  // SharedPreferences prefs = await SharedPreferences.getInstance();
+  // prefs.remove('user_token');
+// }
