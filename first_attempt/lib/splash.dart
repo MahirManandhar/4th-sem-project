@@ -24,12 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return const Scaffold(
       backgroundColor: Color.fromRGBO(131, 151, 136, 1.0),
-      body: Center(
-        child: Text(
-          'PATHSHALA',
-          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-        ),
-      ),
+      body: Center(child: Image(image: AssetImage('assets/images/logo.png'))),
     );
   }
 }

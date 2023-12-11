@@ -20,27 +20,74 @@ class _StudentState extends State<Student> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color.fromRGBO(131, 151, 136, 1),
-          leading: IconButton(
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const Calendar()));
-            },
-            icon: const Icon(Icons.calendar_month_outlined),
-            selectedIcon: const Icon(Icons.calendar_month),
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(95.0),
+          child: Container(
+            color: const Color.fromRGBO(131, 151, 136, 1),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 25.0),
+              child: AppBar(
+                backgroundColor: const Color.fromRGBO(131, 151, 136, 1),
+                leading: IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Calendar()));
+                  },
+                  icon: const Icon(Icons.calendar_month_outlined),
+                  selectedIcon: const Icon(Icons.calendar_month),
+                ),
+                title: Center(
+                    child: ConstrainedBox(
+                        constraints:
+                            BoxConstraints.tightFor(width: 150, height: 70),
+                        child: Image(
+                            image: AssetImage('assets/images/logo.png')))),
+                // actions: [
+                //   IconButton(
+                //     onPressed: () {
+                //       Navigator.push(
+                //           context,
+                //           MaterialPageRoute(
+                //               builder: (context) => const LogOut()));
+                //     },
+                //     icon: const Icon(Icons.more_vert_outlined),
+                //     selectedIcon: const Icon(Icons.more_vert),
+                //   )
+                // ],
+              ),
+            ),
           ),
-          title: const Center(child: Text('PATHSHALA')),
-          actions: [
-            IconButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const LogOut()));
+        ),
+        endDrawer: Drawer(
+          child: Column(children: [
+            DrawerHeader(
+                child: ConstrainedBox(
+                    constraints:
+                        BoxConstraints.tightFor(width: 150, height: 70),
+                    child: Image(image: AssetImage('assets/images/logo.png')))),
+            ListTile(
+              leading: Icon(Icons.info),
+              title: Text("ABOUT US"),
+              onTap: () => {
+                Navigator.pop(context),
+                Navigator.pushNamed(context, '/aboutus'),
               },
-              icon: const Icon(Icons.more_vert_outlined),
-              selectedIcon: const Icon(Icons.more_vert),
-            )
-          ],
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text("SETTINGS"),
+            ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text("LOGOUT"),
+              onTap: () => {
+                Navigator.pop(context),
+                Navigator.pushNamed(context, '/login'),
+              },
+            ),
+          ]),
         ),
         body: screen[index],
         bottomNavigationBar: NavigationBarTheme(
