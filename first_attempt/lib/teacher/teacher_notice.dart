@@ -5,9 +5,17 @@ class TeacherNotice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text('Pubhish'),
+        child: Column(
+          children: [
+            TextFormField(
+              maxLines: 50,
+              keyboardType: TextInputType.multiline,
+              
+            )
+          ],
+        ),
       ),
     );
   }

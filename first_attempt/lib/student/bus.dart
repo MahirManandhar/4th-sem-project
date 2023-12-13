@@ -59,10 +59,11 @@ class _BusState extends State<Bus> {
                   return ListView(
                     children: [
                       const SizedBox(
-                        height: 50,
-                        width: 50,
+                        height: 35,
                         child: Divider(
                           thickness: 5,
+                          indent: 100,
+                          endIndent: 100,
                         ),
                       ),
                       busButton('Bus A'),

@@ -18,7 +18,7 @@ class Login extends StatelessWidget {
                     top: MediaQuery.of(context).size.height * 0.18,
                     left: 27,
                     right: 35),
-                child: Image(image: AssetImage('assets/images/logo.png'))),
+                child: const Image(image: AssetImage('assets/images/logo.png'))),
             Container(
               padding: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * 0.4,
@@ -31,7 +31,7 @@ class Login extends StatelessWidget {
                         fillColor: const Color.fromRGBO(255, 255, 255, 1),
                         filled: true,
                         hintText: 'Email',
-                        hintStyle: TextStyle(
+                        hintStyle: const TextStyle(
                           fontFamily: 'Quicksand',
                           fontSize: 20,
                         ),
@@ -42,7 +42,7 @@ class Login extends StatelessWidget {
                     height: 10,
                   ),
                   TextField(
-                    style: TextStyle(fontFamily: 'Quicksand', fontSize: 20),
+                    style: const TextStyle(fontFamily: 'Quicksand', fontSize: 20),
                     obscureText: true,
                     decoration: InputDecoration(
                         fillColor: const Color.fromRGBO(255, 255, 255, 1.0),
@@ -57,11 +57,11 @@ class Login extends StatelessWidget {
                   Center(
                     child: ConstrainedBox(
                       constraints:
-                          BoxConstraints.tightFor(width: 160, height: 40),
+                          const BoxConstraints.tightFor(width: 160, height: 40),
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              primary: Color.fromRGBO(94, 110, 100, 100),
-                              onPrimary: Color.fromRGBO(255, 255, 255, 0.612),
+                              primary: const Color.fromRGBO(94, 110, 100, 100),
+                              onPrimary: const Color.fromRGBO(255, 255, 255, 0.612),
                               elevation: 10, // Button elevation
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5),
@@ -85,11 +85,11 @@ class Login extends StatelessWidget {
                   Center(
                     child: ConstrainedBox(
                       constraints:
-                          BoxConstraints.tightFor(width: 160, height: 40),
+                          const BoxConstraints.tightFor(width: 160, height: 40),
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              primary: Color.fromRGBO(94, 110, 100, 100),
-                              onPrimary: Color.fromRGBO(255, 255, 255, 0.612),
+                              primary: const  Color.fromRGBO(94, 110, 100, 100),
+                              onPrimary: const Color.fromRGBO(255, 255, 255, 0.612),
                               elevation: 10, // Button elevation
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5),
@@ -113,11 +113,11 @@ class Login extends StatelessWidget {
                   Center(
                     child: ConstrainedBox(
                       constraints:
-                          BoxConstraints.tightFor(width: 160, height: 40),
+                          const BoxConstraints.tightFor(width: 160, height: 40),
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              primary: Color.fromRGBO(94, 110, 100, 100),
-                              onPrimary: Color.fromRGBO(255, 255, 255, 0.612),
+                              primary: const Color.fromRGBO(94, 110, 100, 100),
+                              onPrimary: const  Color.fromRGBO(255, 255, 255, 0.612),
                               elevation: 10, // Button elevation
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5),
