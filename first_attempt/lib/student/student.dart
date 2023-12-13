@@ -5,6 +5,7 @@ import 'package:first_attempt/student/fee.dart';
 import 'package:first_attempt/student/notice.dart';
 import 'package:first_attempt/student/profile.dart';
 import 'package:flutter/material.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
 
 class Student extends StatefulWidget {
   const Student({super.key});
@@ -40,8 +41,8 @@ class _StudentState extends State<Student> {
                 ),
                 title: Center(
                     child: ConstrainedBox(
-                        constraints:
-                            const BoxConstraints.tightFor(width: 150, height: 70),
+                        constraints: const BoxConstraints.tightFor(
+                            width: 150, height: 70),
                         child: const Image(
                             image: AssetImage('assets/images/logo.png')))),
                 // actions: [
@@ -66,7 +67,8 @@ class _StudentState extends State<Student> {
                 child: ConstrainedBox(
                     constraints:
                         const BoxConstraints.tightFor(width: 150, height: 70),
-                    child: const Image(image: AssetImage('assets/images/logo.png')))),
+                    child: const Image(
+                        image: AssetImage('assets/images/logo.png')))),
             ListTile(
               leading: const Icon(Icons.info),
               title: const Text("ABOUT US"),
@@ -80,12 +82,9 @@ class _StudentState extends State<Student> {
               title: Text("SETTINGS"),
             ),
             ListTile(
-              leading:const Icon(Icons.logout),
-              title: const Text("LOGOUT"),
-              onTap: () => {
-                Navigator.pop(context),
-                Navigator.pushNamed(context, '/login'),
-              },
+              leading: Icon(Icons.logout),
+              title: Text("LOGOUT"),
+              onTap: () => _showLogoutConfirmationDialog(context),
             ),
           ]),
         ),
@@ -122,3 +121,75 @@ class _StudentState extends State<Student> {
         ));
   }
 }
+
+void _showLogoutConfirmationDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text("Are you sure you want to logout?"),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context); // Close the dialog
+            },
+            child: const Text("No"),
+          ),
+          TextButton(
+            onPressed: () {
+              _logoutAndNavigateToLogin(context);
+            },
+            child: const Text("Yes"),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void _logoutAndNavigateToLogin(BuildContext context) async {
+  try {
+    // Navigate to the login screen
+    Navigator.pop(context); // Close the confirmation dialog
+    Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+  } catch (e) {
+    // Handle any errors that may occur during logout
+    print("Error during logout: $e");
+  }
+}
+
+
+  // Future<void> _logoutAndNavigateToLogin(BuildContext context) async {
+  //   try {
+  //     // Perform logout actions (e.g., delete tokens, clear session)
+  //     // await _clearSession();
+
+  //     // Navigate to the login screen
+  //     Navigator.pop(context); // Close the confirmation dialog
+  //     Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+  //   } catch (e) {
+  //     // Handle any errors that may occur during logout
+  //     print("Error during logout: $e");
+  //     // Optionally show an error message or take appropriate action
+  //   }
+  // }
+
+
+  // Future<void> _clearSession() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  //   // Clear user-related information from shared preferences
+  //   prefs.remove('user_id');
+  //   prefs.remove('user_email');
+  //   // Remove other stored session information
+
+  //   // Example: Clear the flag indicating that the user is logged in
+  //   prefs.remove('is_logged_in');
+  // }
+
+
+// Future<void> _deleteUserTokens() async {
+
+  // SharedPreferences prefs = await SharedPreferences.getInstance();
+  // prefs.remove('user_token');
+// }
