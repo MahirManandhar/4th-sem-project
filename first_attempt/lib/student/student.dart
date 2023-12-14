@@ -1,12 +1,11 @@
 import 'package:first_attempt/calendar.dart';
-import 'package:first_attempt/logout.dart';
+//import 'package:first_attempt/logout.dart';
 import 'package:first_attempt/student/bus.dart';
 import 'package:first_attempt/student/fee.dart';
 import 'package:first_attempt/student/notice.dart';
 import 'package:first_attempt/student/profile.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
+//import 'package:shared_preferences/shared_preferences.dart';
 
 class Student extends StatefulWidget {
   const Student({super.key});
@@ -23,7 +22,7 @@ class _StudentState extends State<Student> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(95.0),
+          preferredSize: const Size.fromHeight(95.0),
           child: Container(
             color: const Color.fromRGBO(131, 151, 136, 1),
             child: Padding(
@@ -42,9 +41,9 @@ class _StudentState extends State<Student> {
                 ),
                 title: Center(
                     child: ConstrainedBox(
-                        constraints:
-                            BoxConstraints.tightFor(width: 150, height: 70),
-                        child: Image(
+                        constraints: const BoxConstraints.tightFor(
+                            width: 150, height: 70),
+                        child: const Image(
                             image: AssetImage('assets/images/logo.png')))),
                 // actions: [
                 //   IconButton(
@@ -67,17 +66,18 @@ class _StudentState extends State<Student> {
             DrawerHeader(
                 child: ConstrainedBox(
                     constraints:
-                        BoxConstraints.tightFor(width: 150, height: 70),
-                    child: Image(image: AssetImage('assets/images/logo.png')))),
+                        const BoxConstraints.tightFor(width: 150, height: 70),
+                    child: const Image(
+                        image: AssetImage('assets/images/logo.png')))),
             ListTile(
-              leading: Icon(Icons.info),
-              title: Text("ABOUT US"),
+              leading: const Icon(Icons.info),
+              title: const Text("ABOUT US"),
               onTap: () => {
                 Navigator.pop(context),
                 Navigator.pushNamed(context, '/aboutus'),
               },
             ),
-            ListTile(
+            const ListTile(
               leading: Icon(Icons.settings),
               title: Text("SETTINGS"),
             ),
@@ -127,19 +127,19 @@ void _showLogoutConfirmationDialog(BuildContext context) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text("Are you sure you want to logout?"),
+        title: const Text("Are you sure you want to logout?"),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.pop(context); // Close the dialog
             },
-            child: Text("No"),
+            child: const Text("No"),
           ),
           TextButton(
             onPressed: () {
               _logoutAndNavigateToLogin(context);
             },
-            child:  Text("Yes"),
+            child: const Text("Yes"),
           ),
         ],
       );

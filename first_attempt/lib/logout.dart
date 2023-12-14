@@ -7,19 +7,19 @@ class LogOut extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(131, 151, 136, 1),
+      backgroundColor: const Color.fromRGBO(131, 151, 136, 1),
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(100.0),
+        preferredSize: const Size.fromHeight(100.0),
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 20),
+          padding: const EdgeInsets.symmetric(vertical: 20),
           child: AppBar(
               backgroundColor: const Color.fromRGBO(131, 151, 136, 1),
               title: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 50),
+                padding: const EdgeInsets.symmetric(horizontal: 50),
                 child: ConstrainedBox(
                     constraints:
-                        BoxConstraints.tightFor(width: 150, height: 70),
-                    child: Image(image: AssetImage('assets/images/logo.png'))),
+                        const BoxConstraints.tightFor(width: 150, height: 70),
+                    child: const Image(image: AssetImage('assets/images/logo.png'))),
               )),
         ),
       ),
@@ -32,11 +32,11 @@ class LogOut extends StatelessWidget {
                 children: [
                   ConstrainedBox(
                     constraints:
-                        BoxConstraints.tightFor(width: 160, height: 40),
+                        const BoxConstraints.tightFor(width: 160, height: 40),
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            primary: Color.fromRGBO(94, 110, 100, 100),
-                            onPrimary: Color.fromRGBO(255, 255, 255, 0.612),
+                            primary:const Color.fromRGBO(94, 110, 100, 100),
+                            onPrimary:const Color.fromRGBO(255, 255, 255, 0.612),
                             elevation: 10, // Button elevation
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
@@ -56,11 +56,11 @@ class LogOut extends StatelessWidget {
                   ),
                   ConstrainedBox(
                     constraints:
-                        BoxConstraints.tightFor(width: 160, height: 40),
+                        const BoxConstraints.tightFor(width: 160, height: 40),
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            primary: Color.fromRGBO(94, 110, 100, 100),
-                            onPrimary: Color.fromRGBO(255, 255, 255, 0.612),
+                            primary:const Color.fromRGBO(94, 110, 100, 100),
+                            onPrimary:const Color.fromRGBO(255, 255, 255, 0.612),
                             elevation: 10, // Button elevation
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
@@ -75,11 +75,11 @@ class LogOut extends StatelessWidget {
                   ),
                   ConstrainedBox(
                     constraints:
-                        BoxConstraints.tightFor(width: 160, height: 40),
+                        const BoxConstraints.tightFor(width: 160, height: 40),
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            primary: Color.fromRGBO(94, 110, 100, 100),
-                            onPrimary: Color.fromRGBO(255, 255, 255, 0.612),
+                            primary:const Color.fromRGBO(94, 110, 100, 100),
+                            onPrimary:const Color.fromRGBO(255, 255, 255, 0.612),
                             elevation: 10, // Button elevation
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
