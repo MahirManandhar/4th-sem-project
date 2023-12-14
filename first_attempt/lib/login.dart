@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_attempt/admin/admin.dart';
 import 'package:first_attempt/student/student.dart';
@@ -132,6 +131,11 @@ class _LoginState extends State<Login> {
                 children: [
                   TextField(
                     controller: _emailController,
+                    style: TextStyle(
+                      fontFamily: 'FiraSans',
+                      color: Color.fromRGBO(6, 10, 8, 0.612),
+                      fontSize: 20,
+                    ),
                     decoration: InputDecoration(
                       fillColor: const Color.fromRGBO(255, 255, 255, 1),
                       filled: true,
@@ -150,7 +154,11 @@ class _LoginState extends State<Login> {
                   ),
                   TextField(
                     controller: _passwordController,
-                    style: TextStyle(fontFamily: 'Quicksand', fontSize: 20),
+                    style: TextStyle(
+                      fontFamily: 'FiraSans',
+                      color: Color.fromRGBO(6, 10, 8, 0.612),
+                      fontSize: 20,
+                    ),
                     obscureText: true,
                     decoration: InputDecoration(
                       fillColor: const Color.fromRGBO(255, 255, 255, 1.0),

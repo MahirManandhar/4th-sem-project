@@ -1,5 +1,4 @@
 import 'package:first_attempt/calendar.dart';
-import 'package:first_attempt/logout.dart';
 import 'package:first_attempt/student/bus.dart';
 import 'package:first_attempt/student/notice.dart';
 import 'package:first_attempt/teacher/teacher_notice.dart';
