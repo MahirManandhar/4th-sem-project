@@ -8,7 +8,11 @@ import 'package:first_attempt/logout.dart';
 import 'package:flutter/material.dart';
 
 class Admin extends StatefulWidget {
-  const Admin({super.key});
+  final String userId;  
+  final String email;
+  const Admin({Key? key, required this.userId, required this.email}) : super(key: key);
+  
+  // const Admin({super.key});
 
   @override
   State<Admin> createState() => _StudentState();
@@ -28,7 +32,7 @@ class _StudentState extends State<Admin> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(95.0),
+          preferredSize:const Size.fromHeight(95.0),
           child: Container(
             color: const Color.fromRGBO(131, 151, 136, 1),
             child: Padding(
@@ -48,8 +52,8 @@ class _StudentState extends State<Admin> {
                 title: Center(
                     child: ConstrainedBox(
                         constraints:
-                            BoxConstraints.tightFor(width: 150, height: 70),
-                        child: Image(
+                           const BoxConstraints.tightFor(width: 150, height: 70),
+                        child: const Image(
                             image: AssetImage('assets/images/logo.png')))),
                 // actions: [
                 //   IconButton(
@@ -72,19 +76,23 @@ class _StudentState extends State<Admin> {
             DrawerHeader(
                 child: ConstrainedBox(
                     constraints:
-                        BoxConstraints.tightFor(width: 150, height: 70),
-                    child: Image(image: AssetImage('assets/images/logo.png')))),
-            ListTile(
+                        const BoxConstraints.tightFor(width: 150, height: 70),
+                    child: const Image(image: AssetImage('assets/images/logo.png')))),
+            const ListTile(
               leading: Icon(Icons.info),
               title: Text("ABOUT US"),
             ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text("SETTINGS"),
+           ListTile(
+              leading: const Icon(Icons.settings),
+              title:const Text("SETTINGS"),
+              onTap: () => {
+                Navigator.pop(context),
+                Navigator.pushNamed(context, '/settings'),
+              },
             ),
             ListTile(
-              leading: Icon(Icons.logout),
-              title: Text("LOGOUT"),
+              leading: const Icon(Icons.logout),
+              title: const Text("LOGOUT"),
               onTap: () => {
                 Navigator.pop(context),
                 Navigator.pushNamed(context, '/login'),

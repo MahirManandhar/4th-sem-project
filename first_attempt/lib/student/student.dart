@@ -1,5 +1,5 @@
 import 'package:first_attempt/calendar.dart';
-import 'package:first_attempt/logout.dart';
+import 'package:first_attempt/settings.dart';
 import 'package:first_attempt/student/bus.dart';
 import 'package:first_attempt/student/fee.dart';
 import 'package:first_attempt/student/notice.dart';
@@ -7,9 +7,12 @@ import 'package:first_attempt/student/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class Student extends StatefulWidget {
-  const Student({super.key});
+  final String userId;
+  final String email;
+  const Student({Key? key, required this.userId, required this.email})
+      : super(key: key);
+  // const Student({super.key});
 
   @override
   State<Student> createState() => _StudentState();
@@ -17,13 +20,25 @@ class Student extends StatefulWidget {
 
 class _StudentState extends State<Student> {
   int index = 0;
-  final screen = [const Notice(), const Fee(), const Bus(), const Profile()];
+  late List<Widget> screen;
+
+  @override
+  void initState() {
+    super.initState();
+    // auth = FirebaseAuth.instance;
+    screen = [
+      const Notice(),
+      Fee(userId: widget.userId, email: widget.email),
+      const Bus(),
+      const Profile(),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(95.0),
+          preferredSize: const Size.fromHeight(95.0),
           child: Container(
             color: const Color.fromRGBO(131, 151, 136, 1),
             child: Padding(
@@ -42,9 +57,9 @@ class _StudentState extends State<Student> {
                 ),
                 title: Center(
                     child: ConstrainedBox(
-                        constraints:
-                            BoxConstraints.tightFor(width: 150, height: 70),
-                        child: Image(
+                        constraints: const BoxConstraints.tightFor(
+                            width: 150, height: 70),
+                        child: const Image(
                             image: AssetImage('assets/images/logo.png')))),
                 // actions: [
                 //   IconButton(
@@ -67,23 +82,33 @@ class _StudentState extends State<Student> {
             DrawerHeader(
                 child: ConstrainedBox(
                     constraints:
-                        BoxConstraints.tightFor(width: 150, height: 70),
-                    child: Image(image: AssetImage('assets/images/logo.png')))),
+                        const BoxConstraints.tightFor(width: 150, height: 70),
+                    child: const Image(
+                        image: AssetImage('assets/images/logo.png')))),
             ListTile(
-              leading: Icon(Icons.info),
-              title: Text("ABOUT US"),
+              leading: const Icon(Icons.info),
+              title: const Text("ABOUT US"),
               onTap: () => {
                 Navigator.pop(context),
                 Navigator.pushNamed(context, '/aboutus'),
               },
             ),
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text("SETTINGS"),
+              leading: const Icon(Icons.settings),
+              title: const Text("SETTINGS"),
+              onTap: () => {
+                Navigator.pop(context),
+                // Navigator.pushNamed(context, '/settings', arguments: {'userId': userId, 'email': email})
+                Navigator.pushNamed(
+                  context,
+                  '/settings',
+                  arguments: {'userId': widget.userId, 'email': widget.email},
+                )
+              },
             ),
             ListTile(
-              leading: Icon(Icons.logout),
-              title: Text("LOGOUT"),
+              leading: const Icon(Icons.logout),
+              title: const Text("LOGOUT"),
               onTap: () => _showLogoutConfirmationDialog(context),
             ),
           ]),
@@ -127,19 +152,19 @@ void _showLogoutConfirmationDialog(BuildContext context) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text("Are you sure you want to logout?"),
+        title: const Text("Are you sure you want to logout?"),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.pop(context); // Close the dialog
             },
-            child: Text("No"),
+            child: const Text("No"),
           ),
           TextButton(
             onPressed: () {
               _logoutAndNavigateToLogin(context);
             },
-            child:  Text("Yes"),
+            child: const Text("Yes"),
           ),
         ],
       );
