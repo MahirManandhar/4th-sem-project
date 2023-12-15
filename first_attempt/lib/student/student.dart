@@ -1,5 +1,6 @@
 import 'package:first_attempt/calendar.dart';
 import 'package:first_attempt/settings.dart';
+//import 'package:first_attempt/logout.dart';
 import 'package:first_attempt/student/bus.dart';
 import 'package:first_attempt/student/fee.dart';
 import 'package:first_attempt/student/notice.dart';
@@ -153,6 +154,7 @@ void _showLogoutConfirmationDialog(BuildContext context) {
     builder: (BuildContext context) {
       return AlertDialog(
         title: const Text("Are you sure you want to logout?"),
+        // title: const Text("Are you sure you want to logout?"),
         actions: [
           TextButton(
             onPressed: () {
@@ -165,6 +167,7 @@ void _showLogoutConfirmationDialog(BuildContext context) {
               _logoutAndNavigateToLogin(context);
             },
             child: const Text("Yes"),
+            // child: const Text("Yes"),
           ),
         ],
       );

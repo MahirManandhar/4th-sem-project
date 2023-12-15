@@ -1,7 +1,28 @@
+import 'package:first_attempt/admin/update_details/update_details.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+final collRef = FirebaseFirestore.instance;
+
+Future createStudent(StudentModel std) async {
+  await collRef
+      .collection('Students')
+      .add(std.toJson())
+      .whenComplete(() => const Text('Added successfully'));
+}
 
 class AddStudent extends StatelessWidget {
-  const AddStudent({super.key});
+  AddStudent({super.key});
+
+  final stdidcontroller = TextEditingController();
+  final fncontroller = TextEditingController();
+  final mncontroller = TextEditingController();
+  final lncontroller = TextEditingController();
+  final rncontroller = TextEditingController();
+  final gcontroller = TextEditingController();
+  final acontroller = TextEditingController();
+  final econtroller = TextEditingController();
+  final pncontroller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -9,183 +30,65 @@ class AddStudent extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(131, 151, 136, 1),
         title: const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 65),
-          child: Text('PATHSHALA'),
+          padding: EdgeInsets.symmetric(horizontal: 50),
+          child: Text('ADD STUDENT'),
         ),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(top: 25),
+          padding: const EdgeInsets.only(top: 20),
           child: Stack(
             children: [
-              const Center(
-                child: Text(
-                  '+ ADD STUDENT',
-                  style: TextStyle(color: Colors.black54, fontSize: 30),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 50),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const CircleAvatar(
-                      backgroundColor: Colors.grey,
-                      radius: 70,
-                    ),
-                    Positioned(
-                      child: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.add_a_photo)),
-                    )
-                  ],
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const CircleAvatar(
+                    backgroundColor: Colors.grey,
+                    radius: 70,
+                  ),
+                  Positioned(
+                    child: IconButton(
+                        onPressed: () {}, icon: const Icon(Icons.add_a_photo)),
+                  )
+                ],
               ),
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 220, horizontal: 15),
+                    const EdgeInsets.symmetric(vertical: 175, horizontal: 15),
                 child: Column(
                   children: [
-                    TextFormField(
-                      validator: (msg) {
-                        if (msg!.isEmpty) {
-                          return "Please enter your UserId";
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                          labelText: 'UserId',
-                          hintText: 'Enter your UserId',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          )),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      validator: (msg) {
-                        if (msg!.isEmpty) {
-                          return "Please enter your first name";
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                          labelText: 'First Name',
-                          hintText: 'Enter your first name',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          )),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      validator: (msg) {
-                        if (msg!.isEmpty) {
-                          return "Please enter your middle name";
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                          labelText: 'Middle Name',
-                          hintText: 'Enter your middle name',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          )),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      validator: (msg) {
-                        if (msg!.isEmpty) {
-                          return "Please enter your last name";
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                          labelText: 'Last Name',
-                          hintText: 'Enter your last name',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          )),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      validator: (msg) {
-                        if (msg!.isEmpty) {
-                          return "Please enter your class";
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                          labelText: 'Class',
-                          hintText: 'Enter your Class',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          )),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      validator: (msg) {
-                        if (msg!.isEmpty) {
-                          return "Please enter your roll no.";
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                          labelText: 'Roll no.',
-                          hintText: 'Enter your roll no.',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          )),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      validator: (msg) {
-                        if (msg!.isEmpty) {
-                          return "Please enter your email";
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                          labelText: 'Email',
-                          hintText: 'Enter your email',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          )),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      validator: (msg) {
-                        if (msg!.isEmpty) {
-                          return "Please enter your phone no.";
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                          labelText: 'Phone no.',
-                          hintText: 'Enter your phone no.',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          )),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextButton.icon(
-                        onPressed: () {},
-                        icon: const Icon(Icons.person_add_alt_rounded),
-                        label: const Text('ADD'))
+                    inputField('Student Id', stdidcontroller),
+                    inputField('First name', fncontroller),
+                    inputField('Middle name', mncontroller),
+                    inputField('Last name', lncontroller),
+                    inputField('Roll no', rncontroller),
+                    inputField('Guardian', gcontroller),
+                    inputField('Address', acontroller),
+                    inputField('Email', econtroller),
+                    inputField('Phone no', pncontroller),
+                    ElevatedButton.icon(
+                        onPressed: () {
+                          final std = StudentModel(
+                              stdid: stdidcontroller.text.trim(),
+                              fn: fncontroller.text.trim(),
+                              mn: mncontroller.text.trim(),
+                              ln: lncontroller.text.trim(),
+                              rollno: rncontroller.text.trim(),
+                              address: acontroller.text.trim(),
+                              guardian: gcontroller.text.trim(),
+                              email: econtroller.text.trim(),
+                              phoneno: pncontroller.text.trim());
+
+                          createStudent(std);
+                        },
+                        icon: const Icon(
+                          Icons.person_add_alt_rounded,
+                          color: Colors.black54,
+                        ),
+                        label: const Text(
+                          'ADD',
+                          style: TextStyle(color: Colors.black54),
+                        ))
                   ],
                 ),
               )
@@ -195,4 +98,21 @@ class AddStudent extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget inputField(String attribute, final ctlr) {
+  return Column(children: [
+    TextFormField(
+      controller: ctlr,
+      decoration: InputDecoration(
+          labelText: attribute,
+          hintText: 'Enter your $attribute',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+          )),
+    ),
+    const SizedBox(
+      height: 15,
+    )
+  ]);
 }

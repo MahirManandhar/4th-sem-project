@@ -4,7 +4,7 @@ import 'package:first_attempt/admin/admin_notice.dart';
 import 'package:first_attempt/admin/update_details/update_details.dart';
 import 'package:first_attempt/admin/update_notice.dart';
 import 'package:first_attempt/calendar.dart';
-import 'package:first_attempt/logout.dart';
+
 import 'package:flutter/material.dart';
 
 class Admin extends StatefulWidget {
