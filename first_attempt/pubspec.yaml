@@ -55,8 +55,6 @@ dependencies:
   
   popover: ^0.2.9
 
-  shared_preferences: ^2.0.10
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
