@@ -1,5 +1,7 @@
 import 'package:first_attempt/admin/admin_bus.dart';
+
 import 'package:first_attempt/admin/update_fee.dart';
+import 'package:first_attempt/admin/admin_fee.dart';
 import 'package:first_attempt/admin/admin_notice.dart';
 import 'package:first_attempt/admin/update_details/update_details.dart';
 import 'package:first_attempt/admin/update_notice.dart';
@@ -25,7 +27,8 @@ class _StudentState extends State<Admin> {
     const UpdateNotice(),
     const UpdateDetails(),
     const AdminBus(),
-    const UpdateFee()
+    const AdminFee(),
+    const UpdateFee(),
   ];
 
   @override
