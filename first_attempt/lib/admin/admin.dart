@@ -1,14 +1,20 @@
 import 'package:first_attempt/admin/admin_bus.dart';
+
 import 'package:first_attempt/admin/update_fee.dart';
+import 'package:first_attempt/admin/admin_fee.dart';
 import 'package:first_attempt/admin/admin_notice.dart';
 import 'package:first_attempt/admin/update_details/update_details.dart';
 import 'package:first_attempt/admin/update_notice.dart';
 import 'package:first_attempt/calendar.dart';
-//import 'package:first_attempt/logout.dart';
+
 import 'package:flutter/material.dart';
 
 class Admin extends StatefulWidget {
-  const Admin({super.key});
+  final String userId;  
+  final String email;
+  const Admin({Key? key, required this.userId, required this.email}) : super(key: key);
+  
+  // const Admin({super.key});
 
   @override
   State<Admin> createState() => _StudentState();
@@ -21,14 +27,15 @@ class _StudentState extends State<Admin> {
     const UpdateNotice(),
     const UpdateDetails(),
     const AdminBus(),
-    const UpdateFee()
+    const AdminFee(),
+    const UpdateFee(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(95.0),
+          preferredSize:const Size.fromHeight(95.0),
           child: Container(
             color: const Color.fromRGBO(131, 151, 136, 1),
             child: Padding(
@@ -48,7 +55,7 @@ class _StudentState extends State<Admin> {
                 title: Center(
                     child: ConstrainedBox(
                         constraints:
-                            const BoxConstraints.tightFor(width: 150, height: 70),
+                           const BoxConstraints.tightFor(width: 150, height: 70),
                         child: const Image(
                             image: AssetImage('assets/images/logo.png')))),
                 // actions: [
@@ -78,9 +85,13 @@ class _StudentState extends State<Admin> {
               leading: Icon(Icons.info),
               title: Text("ABOUT US"),
             ),
-            const ListTile(
-              leading: Icon(Icons.settings),
-              title: Text("SETTINGS"),
+           ListTile(
+              leading: const Icon(Icons.settings),
+              title:const Text("SETTINGS"),
+              onTap: () => {
+                Navigator.pop(context),
+                Navigator.pushNamed(context, '/settings'),
+              },
             ),
             ListTile(
               leading: const Icon(Icons.logout),

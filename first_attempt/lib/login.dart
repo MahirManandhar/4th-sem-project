@@ -52,20 +52,22 @@ class _LoginState extends State<Login> {
 
   void _redirectToRole(User user) {
     String email = user.email ?? '';
+    String userId = user.uid ?? '';
+
     if (email.endsWith('@student.ps.edu.np')) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const Student()),
+        MaterialPageRoute(builder: (context) =>  Student(userId: userId, email: email)),
       );
     } else if (email.endsWith('@teacher.ps.edu.np')) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const Teacher()),
+        MaterialPageRoute(builder: (context) =>  Teacher(userId: userId, email: email)),
       );
     } else if (email.endsWith('@admin.ps.edu.np')) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const Admin()),
+        MaterialPageRoute(builder: (context) =>  Admin(userId: userId, email: email)),
       );
     }
   }
@@ -131,6 +133,11 @@ class _LoginState extends State<Login> {
                 children: [
                   TextField(
                     controller: _emailController,
+                    style: TextStyle(
+                      fontFamily: 'FiraSans',
+                      color: Color.fromRGBO(6, 10, 8, 0.612),
+                      fontSize: 20,
+                    ),
                     decoration: InputDecoration(
                       fillColor: const Color.fromRGBO(255, 255, 255, 1),
                       filled: true,
@@ -149,8 +156,11 @@ class _LoginState extends State<Login> {
                   ),
                   TextField(
                     controller: _passwordController,
-                    style:
-                        const TextStyle(fontFamily: 'Quicksand', fontSize: 20),
+                    style: TextStyle(
+                      fontFamily: 'FiraSans',
+                      color: Color.fromRGBO(6, 10, 8, 0.612),
+                      fontSize: 20,
+                    ),
                     obscureText: true,
                     decoration: InputDecoration(
                       fillColor: const Color.fromRGBO(255, 255, 255, 1.0),

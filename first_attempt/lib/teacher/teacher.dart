@@ -1,5 +1,4 @@
 import 'package:first_attempt/calendar.dart';
-//import 'package:first_attempt/logout.dart';
 import 'package:first_attempt/student/bus.dart';
 import 'package:first_attempt/student/notice.dart';
 import 'package:first_attempt/teacher/teacher_notice.dart';
@@ -7,7 +6,10 @@ import 'package:first_attempt/teacher/teacher_profile.dart';
 import 'package:flutter/material.dart';
 
 class Teacher extends StatefulWidget {
-  const Teacher({super.key});
+  final String userId;  
+  final String email;
+  const Teacher({Key? key, required this.userId, required this.email}) : super(key: key);
+  // const Teacher({super.key});
 
   @override
   State<Teacher> createState() => _StudentState();
@@ -70,20 +72,30 @@ class _StudentState extends State<Teacher> {
             DrawerHeader(
                 child: ConstrainedBox(
                     constraints:
-                        const BoxConstraints.tightFor(width: 150, height: 70),
-                    child: const Image(image: AssetImage('assets/images/logo.png')))),
+                        BoxConstraints.tightFor(width: 150, height: 70),
+                    child: Image(image: AssetImage('assets/images/logo.png')))),
             ListTile(
-              leading: const Icon(Icons.info),
-              title: const Text("ABOUT US"),
+              leading: Icon(Icons.info),
+              title: Text("ABOUT US"),
               onTap: () => {
                 Navigator.pop(context),
                 Navigator.pushNamed(context, '/aboutus'),
               },
             ),
-            const ListTile(
-              leading: Icon(Icons.settings),
-              title: Text("SETTINGS"),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title:const Text("SETTINGS"),
+              onTap: () => {
+                Navigator.pop(context),
+                // Navigator.pushNamed(context, '/settings'),
+                 Navigator.pushNamed(
+                  context,
+                  '/settings',
+                  arguments: {'userId': widget.userId, 'email': widget.email},
+                )
+              },
             ),
+
             ListTile(
               leading: const Icon(Icons.logout),
               title: const Text("LOGOUT"),
