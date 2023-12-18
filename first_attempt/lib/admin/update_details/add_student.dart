@@ -4,17 +4,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 final collRef = FirebaseFirestore.instance;
 
-Future createStudent(StudentModel std) async {
+Future createStudent(StudentModel std, cls, email) async {
   await collRef
-      .collection('Students')
-      .add(std.toJson())
+      .collection("Class")
+      .doc(cls)
+      .collection("Students")
+      .doc(email)
+      .set(std.toJson())
       .whenComplete(() => const Text('Added successfully'));
 }
 
 class AddStudent extends StatelessWidget {
   AddStudent({super.key});
 
-  final stdidcontroller = TextEditingController();
+  final clscontroller = TextEditingController();
   final fncontroller = TextEditingController();
   final mncontroller = TextEditingController();
   final lncontroller = TextEditingController();
@@ -57,7 +60,7 @@ class AddStudent extends StatelessWidget {
                     const EdgeInsets.symmetric(vertical: 175, horizontal: 15),
                 child: Column(
                   children: [
-                    inputField('Student Id', stdidcontroller),
+                    inputField('Class', clscontroller),
                     inputField('First name', fncontroller),
                     inputField('Middle name', mncontroller),
                     inputField('Last name', lncontroller),
@@ -69,7 +72,7 @@ class AddStudent extends StatelessWidget {
                     ElevatedButton.icon(
                         onPressed: () {
                           final std = StudentModel(
-                              stdid: stdidcontroller.text.trim(),
+                              cls: clscontroller.text.trim(),
                               fn: fncontroller.text.trim(),
                               mn: mncontroller.text.trim(),
                               ln: lncontroller.text.trim(),
@@ -79,7 +82,7 @@ class AddStudent extends StatelessWidget {
                               email: econtroller.text.trim(),
                               phoneno: pncontroller.text.trim());
 
-                          createStudent(std);
+                          createStudent(std, std.cls, std.email);
                         },
                         icon: const Icon(
                           Icons.person_add_alt_rounded,

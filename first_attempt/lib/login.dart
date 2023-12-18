@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_attempt/admin/admin.dart';
 import 'package:first_attempt/student/student.dart';
@@ -7,7 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+  const Login({super.key});
 
   @override
   _LoginState createState() => _LoginState();
@@ -120,7 +119,7 @@ class _LoginState extends State<Login> {
                 left: 27,
                 right: 35,
               ),
-              child: Image(image: AssetImage('assets/images/logo.png')),
+              child: const Image(image: AssetImage('assets/images/logo.png')),
             ),
             Container(
               padding: EdgeInsets.only(
@@ -136,7 +135,7 @@ class _LoginState extends State<Login> {
                       fillColor: const Color.fromRGBO(255, 255, 255, 1),
                       filled: true,
                       hintText: 'Email',
-                      hintStyle: TextStyle(
+                      hintStyle: const TextStyle(
                         fontFamily: 'Quicksand',
                         fontSize: 20,
                       ),
@@ -150,7 +149,8 @@ class _LoginState extends State<Login> {
                   ),
                   TextField(
                     controller: _passwordController,
-                    style: TextStyle(fontFamily: 'Quicksand', fontSize: 20),
+                    style:
+                        const TextStyle(fontFamily: 'Quicksand', fontSize: 20),
                     obscureText: true,
                     decoration: InputDecoration(
                       fillColor: const Color.fromRGBO(255, 255, 255, 1.0),
@@ -170,8 +170,8 @@ class _LoginState extends State<Login> {
                           const BoxConstraints.tightFor(width: 160, height: 40),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Color.fromRGBO(94, 110, 100, 100),
-                          onPrimary: Color.fromRGBO(255, 255, 255, 0.612),
+                          primary: const Color.fromRGBO(94, 110, 100, 100),
+                          onPrimary: const Color.fromRGBO(255, 255, 255, 0.612),
                           elevation: 10,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),

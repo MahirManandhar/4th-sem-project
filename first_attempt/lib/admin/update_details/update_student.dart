@@ -1,40 +1,55 @@
-import 'dart:async';
+//import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:first_attempt/admin/update_details/update_details.dart';
 import 'package:flutter/material.dart';
 
 final collRef = FirebaseFirestore.instance;
-
-Future<StudentModel> getStudentDetails(String email) async {
-  final snapshot = await collRef
-      .collection('Students')
-      .where("Email", isEqualTo: email)
-      .get();
-  final studentData =
-      snapshot.docs.map((e) => StudentModel.fromSnapshot(e)).single;
-  return studentData;
+Future updateStudent(StudentModel std, cls, email) async {
+  await collRef
+      .collection("Class")
+      .doc(cls)
+      .collection("Students")
+      .doc(email)
+      .update(std.toJson())
+      .whenComplete(() => const Text('Updated successfully'));
 }
 
-class UpdateStudent extends StatelessWidget {
-  UpdateStudent({super.key});
+class UpdateStudent extends StatefulWidget {
+  const UpdateStudent({super.key});
 
-  final stdidcontroller =
-      TextEditingController(text: StudentModel.studentData.stdid);
-  final fncontroller = TextEditingController(text: StudentModel.studentData.fn);
-  final mncontroller = TextEditingController(text: StudentModel.studentData.mn);
-  final lncontroller = TextEditingController(text: StudentModel.studentData.ln);
-  final rncontroller =
-      TextEditingController(text: StudentModel.studentData.rollno);
-  final gcontroller =
-      TextEditingController(text: StudentModel.studentData.guardian);
-  final acontroller =
-      TextEditingController(text: StudentModel.studentData.address);
-  final econtroller =
-      TextEditingController(text: StudentModel.studentData.email);
-  final pncontroller =
-      TextEditingController(text: StudentModel.studentData.phoneno);
+  @override
+  State<UpdateStudent> createState() => _UpdateStudentState();
+}
 
-  final searchemail = TextEditingController();
+class _UpdateStudentState extends State<UpdateStudent> {
+  final clscontroller = TextEditingController();
+  final econtroller = TextEditingController();
+
+  late DocumentSnapshot studentData;
+  Future search(cls, email) async {
+    await collRef
+        .collection('Class')
+        .doc(cls)
+        .collection('Students')
+        .doc(email)
+        .get()
+        .then((value) {
+      studentData = value;
+    });
+    return studentData;
+  }
+
+  late final fncontroller =
+      TextEditingController(text: studentData['Name.First']);
+  late final mncontroller =
+      TextEditingController(text: studentData['Name.Middle']);
+  late final lncontroller =
+      TextEditingController(text: studentData['Name.Last']);
+  late final rncontroller = TextEditingController(text: studentData['Roll no']);
+  late final gcontroller = TextEditingController(text: studentData['Guardian']);
+  late final acontroller = TextEditingController(text: studentData['Address']);
+  late final pncontroller =
+      TextEditingController(text: studentData['Phone no']);
 
   @override
   Widget build(BuildContext context) {
@@ -46,119 +61,62 @@ class UpdateStudent extends StatelessWidget {
             child: Text('UPDATE STUDENT'),
           ),
         ),
-        body: SingleChildScrollView(
-            child: Padding(
-          padding: const EdgeInsets.only(top: 20),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
           child: Stack(children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: TextFormField(
-                controller: searchemail,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  hintText: 'Enter email',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
+            Column(
+              children: [
+                TextFormField(
+                  controller: clscontroller,
+                  decoration: InputDecoration(
+                    labelText: 'Class',
+                    hintText: 'Enter Class',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                   ),
                 ),
-              ),
+                const SizedBox(
+                  height: 15,
+                ),
+                TextFormField(
+                  controller: econtroller,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    hintText: 'Enter Email',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                ElevatedButton.icon(
+                    onPressed: () {
+                      search(clscontroller, econtroller);
+                    },
+                    icon: const Icon(Icons.search),
+                    label: const Text('Search')),
+                const Divider(
+                  thickness: 3,
+                  indent: 10,
+                  endIndent: 10,
+                ),
+                // TextFormField(
+                //   initialValue: rollno,
+                // )
+              ],
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 75),
-              child: Divider(
-                thickness: 3,
-                indent: 25,
-                endIndent: 25,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 100),
-              child: FutureBuilder(
-                  future: getStudentDetails(searchemail as String),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.hasData) {
-                        return Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 50),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const CircleAvatar(
-                                    backgroundColor: Colors.grey,
-                                    radius: 70,
-                                  ),
-                                  Positioned(
-                                    child: IconButton(
-                                        onPressed: () {},
-                                        icon: const Icon(Icons.add_a_photo)),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 220, horizontal: 15),
-                              child: Column(
-                                children: [
-                                  inputField('StudentId', stdidcontroller),
-                                  inputField('First name', fncontroller),
-                                  inputField('Middle name', mncontroller),
-                                  inputField('Last name', lncontroller),
-                                  inputField('Roll no', rncontroller),
-                                  inputField('Guardian', gcontroller),
-                                  inputField('Address', acontroller),
-                                  inputField('Email', econtroller),
-                                  inputField('Phone no', pncontroller),
-                                  ElevatedButton.icon(
-                                      onPressed: () {
-                                        // final std = StudentModel(
-                                        //     stdid: stdidcontroller.text.trim(),
-                                        //     fn: fncontroller.text.trim(),
-                                        //     mn: mncontroller.text.trim(),
-                                        //     ln: lncontroller.text.trim(),
-                                        //     rollno: rncontroller.text.trim(),
-                                        //     address: acontroller.text.trim(),
-                                        //     guardian: gcontroller.text.trim(),
-                                        //     email: econtroller.text.trim(),
-                                        //     phoneno: pncontroller.text.trim());
-
-                                        // createStudent(std);
-                                      },
-                                      icon: const Icon(
-                                        Icons.person_add_alt_rounded,
-                                        color: Colors.black54,
-                                      ),
-                                      label: const Text(
-                                        'ADD',
-                                        style: TextStyle(color: Colors.black54),
-                                      ))
-                                ],
-                              ),
-                            )
-                          ],
-                        );
-                      } else if (snapshot.hasError) {
-                        return Center(
-                          child: Text(snapshot.error.toString()),
-                        );
-                      } else {
-                        return const Center(
-                          child: Text('Something went wrong'),
-                        );
-                      }
-                    } else {
-                      return const Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.grey,
-                        ),
-                      );
-                    }
-                  }),
-            )
+            inputField("First name", fncontroller),
+            inputField("Middle name", mncontroller),
+            inputField("Last name", lncontroller),
+            inputField("Roll no", rncontroller),
+            inputField("Guardian", gcontroller),
+            inputField("Address", acontroller),
+            inputField("Phone no", pncontroller)
           ]),
-        )));
+        ));
   }
 }
 

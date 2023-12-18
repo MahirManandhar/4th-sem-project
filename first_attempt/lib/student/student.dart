@@ -82,8 +82,8 @@ class _StudentState extends State<Student> {
               title: Text("SETTINGS"),
             ),
             ListTile(
-              leading: Icon(Icons.logout),
-              title: Text("LOGOUT"),
+              leading: const Icon(Icons.logout),
+              title: const Text("LOGOUT"),
               onTap: () => _showLogoutConfirmationDialog(context),
             ),
           ]),

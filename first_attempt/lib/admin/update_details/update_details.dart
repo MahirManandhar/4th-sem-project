@@ -6,8 +6,7 @@ import 'package:first_attempt/admin/update_details/update_teacher.dart';
 import 'package:flutter/material.dart';
 
 class StudentModel {
-  final String? id;
-  final String stdid;
+  final String cls;
   final String fn;
   final String mn;
   final String ln;
@@ -17,11 +16,8 @@ class StudentModel {
   final String email;
   final String phoneno;
 
-  static var studentData;
-
   const StudentModel({
-    this.id,
-    required this.stdid,
+    required this.cls,
     required this.fn,
     required this.mn,
     required this.ln,
@@ -34,7 +30,7 @@ class StudentModel {
 
   toJson() {
     return {
-      "Student Id": stdid,
+      "Class": cls,
       "Name.First": fn,
       "Name.Middle": mn,
       "Name.Last": ln,
@@ -50,8 +46,8 @@ class StudentModel {
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
     return StudentModel(
-        stdid: data["Student Id"],
-        fn: data["Name.first"],
+        cls: data["Class"],
+        fn: data["Name.First"],
         mn: data["Name.Middle"],
         ln: data["Name.Last"],
         rollno: data["Roll no"],
@@ -159,8 +155,10 @@ class UpdateDetails extends StatelessWidget {
             ),
             ElevatedButton.icon(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => UpdateStudent()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const UpdateStudent()));
                 },
                 icon: const Icon(
                   Icons.person,
@@ -175,10 +173,8 @@ class UpdateDetails extends StatelessWidget {
             ),
             ElevatedButton.icon(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => UpdateTeacher()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => UpdateTeacher()));
                 },
                 icon: const Icon(
                   Icons.person,

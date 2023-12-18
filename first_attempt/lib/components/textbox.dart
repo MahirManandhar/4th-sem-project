@@ -5,16 +5,16 @@ class MytextBox extends StatelessWidget {
   final String sectionName;
 
   const MytextBox({
-    Key? key,
+    super.key,
     required this.text,
     required this.sectionName,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 200, 202, 201),
+        color: const Color.fromARGB(255, 200, 202, 201),
         borderRadius: BorderRadius.circular(8),
       ),
       padding: const EdgeInsets.all(15),
@@ -25,7 +25,7 @@ class MytextBox extends StatelessWidget {
           // Section name
           Text(
             sectionName,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 18,
               color: Colors.black,
@@ -33,12 +33,12 @@ class MytextBox extends StatelessWidget {
           ),
 
           // Spacer for better separation
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
 
           // Text content
           Text(
             text,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16,
               color: Colors.black87,
             ),
