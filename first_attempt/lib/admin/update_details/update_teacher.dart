@@ -3,35 +3,70 @@ import 'package:first_attempt/admin/update_details/update_details.dart';
 import 'package:flutter/material.dart';
 
 final collRef = FirebaseFirestore.instance;
-
-Future<TeacherModel> getTeacherDetails(String email) async {
-  final snapshot = await collRef
+Future updateTeacher(TeacherModel tch, email) async {
+  await collRef
       .collection('Teachers')
-      .where("Email", isEqualTo: email)
-      .get();
-  final teacherData =
-      snapshot.docs.map((e) => TeacherModel.fromSnapshot(e)).single;
-  return teacherData;
+      .doc(email)
+      .update(tch.toJson())
+      .whenComplete(() => const Text('Updated Successfully'));
 }
 
-class UpdateTeacher extends StatelessWidget {
-  UpdateTeacher({super.key});
+class UpdateTeacher extends StatefulWidget {
+  const UpdateTeacher({super.key});
 
-  final tchidcontroller =
-      TextEditingController(text: TeacherModel.teacherData.tchid);
-  final fncontroller = TextEditingController(text: TeacherModel.teacherData.fn);
-  final mncontroller = TextEditingController(text: TeacherModel.teacherData.mn);
-  final lncontroller = TextEditingController(text: TeacherModel.teacherData.ln);
-  final sjbtcontroller =
-      TextEditingController(text: TeacherModel.teacherData.subject);
-  final acontroller =
-      TextEditingController(text: TeacherModel.teacherData.address);
-  final econtroller =
-      TextEditingController(text: TeacherModel.teacherData.email);
-  final pncontroller =
-      TextEditingController(text: TeacherModel.teacherData.phoneno);
+  @override
+  State<UpdateTeacher> createState() => _UpdateTeacherState();
+}
 
-  final searchemail = TextEditingController();
+class _UpdateTeacherState extends State<UpdateTeacher> {
+  TextEditingController esearch = TextEditingController();
+
+  TextEditingController fncontroller = TextEditingController();
+  TextEditingController mncontroller = TextEditingController();
+  TextEditingController lncontroller = TextEditingController();
+  TextEditingController sbjtcontroller = TextEditingController();
+  TextEditingController acontroller = TextEditingController();
+  TextEditingController pncontroller = TextEditingController();
+  TextEditingController econtroller = TextEditingController();
+  TextEditingController pwcontroller = TextEditingController();
+  TextEditingController cpwcontroller = TextEditingController();
+
+  String? email;
+
+  void _loadTeacherData() async {
+    if (email != null) {
+      DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+          .collection("Teachers")
+          .doc(email)
+          .get();
+
+      if (documentSnapshot.exists) {
+        setState(() {
+          fncontroller.text = documentSnapshot['Name.First'].toString();
+          mncontroller.text = documentSnapshot['Name.Middle'].toString();
+          lncontroller.text = documentSnapshot['Name.Last'].toString();
+          sbjtcontroller.text = documentSnapshot['Subject'].toString();
+          acontroller.text = documentSnapshot['Address'].toString();
+          pncontroller.text = documentSnapshot['Phone no'].toString();
+          econtroller.text = documentSnapshot['Email'].toString();
+          pwcontroller.text = documentSnapshot['Password'].toString();
+        });
+      } else {
+        setState(() {
+          fncontroller.text = 'Error';
+          mncontroller.text = 'Error';
+          lncontroller.text = 'Error';
+          sbjtcontroller.text = 'Error';
+          acontroller.text = 'Error';
+          pncontroller.text = 'Error';
+          econtroller.text = 'Error';
+          pwcontroller.text = 'Error';
+        });
+      }
+    } else {
+      print(const Text('Error'));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,128 +75,243 @@ class UpdateTeacher extends StatelessWidget {
           backgroundColor: const Color.fromRGBO(131, 151, 136, 1),
           title: const Padding(
             padding: EdgeInsets.symmetric(horizontal: 45),
-            child: Text('UPDATE TEACHER'),
+            child: Text(
+              'UPDATE TEACHER',
+              style: TextStyle(
+                fontFamily: 'FiraSans',
+                fontSize: 25,
+              ),
+            ),
           ),
         ),
         body: SingleChildScrollView(
             child: Padding(
-          padding: const EdgeInsets.only(top: 20),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
           child: Stack(children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: TextFormField(
-                controller: searchemail,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  hintText: 'Enter email',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
+            Column(
+              children: [
+                TextFormField(
+                  controller: esearch,
+                  style: const TextStyle(
+                    fontFamily: 'FiraSans',
+                    fontSize: 25,
+                  ),
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    hintText: 'Enter email',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                   ),
                 ),
-              ),
+                const SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromRGBO(94, 110, 100, 100),
+                      foregroundColor:
+                          const Color.fromRGBO(255, 255, 255, 0.612),
+                      elevation: 10,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    onPressed: () async {
+                      setState(() {
+                        email = esearch.toString();
+                        _loadTeacherData();
+                      });
+                    },
+                    icon: const Icon(Icons.search),
+                    label: const Text(
+                      'Search',
+                      style: TextStyle(
+                        fontFamily: 'FiraSans',
+                        fontSize: 25,
+                      ),
+                    )),
+                const Divider(
+                  thickness: 3,
+                  indent: 10,
+                  endIndent: 10,
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                nameField("First name", fncontroller),
+                nameField("Middle name", mncontroller),
+                nameField("Last name", lncontroller),
+                nameField("Subject", sbjtcontroller),
+                nameField("Address", acontroller),
+                phoneField("Phone no", pncontroller),
+                emailField("Email", econtroller),
+                pwField("Password", pwcontroller),
+                cpwField("Confirm password", cpwcontroller, pwcontroller),
+                const SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromRGBO(94, 110, 100, 100),
+                      foregroundColor:
+                          const Color.fromRGBO(255, 255, 255, 0.612),
+                      elevation: 10,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    onPressed: () {},
+                    icon: const Icon(Icons.upgrade),
+                    label: const Text(
+                      'Update',
+                      style: TextStyle(
+                        fontFamily: 'FiraSans',
+                        fontSize: 25,
+                      ),
+                    ))
+              ],
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 75),
-              child: Divider(
-                thickness: 3,
-                indent: 25,
-                endIndent: 25,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 100),
-              child: FutureBuilder(
-                  future: getTeacherDetails(searchemail as String),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.hasData) {
-                        return Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 50),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const CircleAvatar(
-                                    backgroundColor: Colors.grey,
-                                    radius: 70,
-                                  ),
-                                  Positioned(
-                                    child: IconButton(
-                                        onPressed: () {},
-                                        icon: const Icon(Icons.add_a_photo)),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 220, horizontal: 15),
-                              child: Column(
-                                children: [
-                                  inputField('TeacherId', tchidcontroller),
-                                  inputField('First name', fncontroller),
-                                  inputField('Middle name', mncontroller),
-                                  inputField('Last name', lncontroller),
-                                  inputField('Subject', sjbtcontroller),
-                                  inputField('Address', acontroller),
-                                  inputField('Email', econtroller),
-                                  inputField('Phone no', pncontroller),
-                                  ElevatedButton.icon(
-                                      onPressed: () {
-                                        // final std = StudentModel(
-                                        //     stdid: stdidcontroller.text.trim(),
-                                        //     fn: fncontroller.text.trim(),
-                                        //     mn: mncontroller.text.trim(),
-                                        //     ln: lncontroller.text.trim(),
-                                        //     rollno: rncontroller.text.trim(),
-                                        //     address: acontroller.text.trim(),
-                                        //     guardian: gcontroller.text.trim(),
-                                        //     email: econtroller.text.trim(),
-                                        //     phoneno: pncontroller.text.trim());
-
-                                        // createStudent(std);
-                                      },
-                                      icon: const Icon(
-                                        Icons.person_add_alt_rounded,
-                                        color: Colors.black54,
-                                      ),
-                                      label: const Text(
-                                        'ADD',
-                                        style: TextStyle(color: Colors.black54),
-                                      ))
-                                ],
-                              ),
-                            )
-                          ],
-                        );
-                      } else if (snapshot.hasError) {
-                        return Center(
-                          child: Text(snapshot.error.toString()),
-                        );
-                      } else {
-                        return const Center(
-                          child: Text('Something went wrong'),
-                        );
-                      }
-                    } else {
-                      return const Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.grey,
-                        ),
-                      );
-                    }
-                  }),
-            )
           ]),
         )));
   }
 }
 
-Widget inputField(String attribute, final ctlr) {
+Widget nameField(String attribute, final ctlr) {
   return Column(children: [
     TextFormField(
       controller: ctlr,
+      validator: (value) {
+        if (value!.isEmpty || !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
+          return "Please enter correct name";
+        } else {
+          return null;
+        }
+      },
+      keyboardType: TextInputType.name,
+      style: const TextStyle(
+        fontFamily: 'FiraSans',
+        fontSize: 25,
+      ),
+      decoration: InputDecoration(
+          labelText: attribute,
+          hintText: 'Enter your $attribute',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+          )),
+    ),
+    const SizedBox(
+      height: 15,
+    )
+  ]);
+}
+
+Widget emailField(String attribute, final ctlr) {
+  return Column(children: [
+    TextFormField(
+      controller: ctlr,
+      validator: (value) {
+        if (value!.isEmpty ||
+            !RegExp(r'^[\w-\.]+@student.ps.edu.np').hasMatch(value)) {
+          return "Please enter correct email";
+        } else {
+          return null;
+        }
+      },
+      style: const TextStyle(
+        fontFamily: 'FiraSans',
+        fontSize: 25,
+      ),
+      keyboardType: TextInputType.emailAddress,
+      decoration: InputDecoration(
+          labelText: attribute,
+          hintText: 'Enter your $attribute',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+          )),
+    ),
+    const SizedBox(
+      height: 15,
+    )
+  ]);
+}
+
+Widget phoneField(String attribute, final ctlr) {
+  return Column(children: [
+    TextFormField(
+      controller: ctlr,
+      validator: (value) {
+        if (value!.isEmpty || !RegExp(r'^[-\s\./0-9]+$').hasMatch(value)) {
+          return "Please enter correct phone no";
+        } else {
+          return null;
+        }
+      },
+      style: const TextStyle(
+        fontFamily: 'FiraSans',
+        fontSize: 25,
+      ),
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+          labelText: attribute,
+          hintText: 'Enter your $attribute',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+          )),
+    ),
+    const SizedBox(
+      height: 15,
+    )
+  ]);
+}
+
+Widget pwField(String attribute, final ctlr) {
+  return Column(children: [
+    TextFormField(
+      controller: ctlr,
+      validator: (value) {
+        if (value!.isEmpty || !RegExp(r'^[a-z A-Z]+[0-9]+$').hasMatch(value)) {
+          return "Please enter password";
+        } else {
+          return null;
+        }
+      },
+      obscureText: true,
+      keyboardType: TextInputType.name,
+      style: const TextStyle(
+        fontFamily: 'FiraSans',
+        fontSize: 25,
+      ),
+      decoration: InputDecoration(
+          labelText: attribute,
+          hintText: 'Enter your $attribute',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+          )),
+    ),
+    const SizedBox(
+      height: 15,
+    )
+  ]);
+}
+
+Widget cpwField(String attribute, final ctlr, final pw) {
+  return Column(children: [
+    TextFormField(
+      controller: ctlr,
+      validator: (value) {
+        if (ctlr != pw) {
+          return "Password do not match";
+        } else {
+          return null;
+        }
+      },
+      obscureText: true,
+      keyboardType: TextInputType.name,
+      style: const TextStyle(
+        fontFamily: 'FiraSans',
+        fontSize: 25,
+      ),
       decoration: InputDecoration(
           labelText: attribute,
           hintText: 'Enter your $attribute',

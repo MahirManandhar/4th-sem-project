@@ -1,22 +1,37 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_attempt/admin/update_details/update_details.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+FirebaseAuth _auth = FirebaseAuth.instance;
 final collRef = FirebaseFirestore.instance;
+Future createStudent(StudentModel std, cls, email, password) async {
+  try {
+    UserCredential credential = await _auth.createUserWithEmailAndPassword(
+        email: email, password: password);
 
-Future createStudent(StudentModel std, cls, email) async {
-  await collRef
-      .collection("Class")
-      .doc(cls)
-      .collection("Students")
-      .doc(email)
-      .set(std.toJson())
-      .whenComplete(() => const Text('Added successfully'));
+    await collRef
+        .collection("Class")
+        .doc(cls)
+        .collection("Students")
+        .doc(email)
+        .set(std.toJson())
+        .whenComplete(() => const Text('Added successfully'));
+
+    return credential.user;
+  } catch (e) {
+    print("Some error occured");
+  }
 }
 
-class AddStudent extends StatelessWidget {
-  AddStudent({super.key});
+class AddStudent extends StatefulWidget {
+  const AddStudent({super.key});
 
+  @override
+  State<AddStudent> createState() => _AddStudentState();
+}
+
+class _AddStudentState extends State<AddStudent> {
   final clscontroller = TextEditingController();
   final fncontroller = TextEditingController();
   final mncontroller = TextEditingController();
@@ -24,8 +39,21 @@ class AddStudent extends StatelessWidget {
   final rncontroller = TextEditingController();
   final gcontroller = TextEditingController();
   final acontroller = TextEditingController();
-  final econtroller = TextEditingController();
   final pncontroller = TextEditingController();
+  final econtroller = TextEditingController();
+  final pwcontroller = TextEditingController();
+  final cpwcontroller = TextEditingController();
+
+  @override
+  void dispose() {
+    econtroller.dispose();
+    pwcontroller.dispose();
+    cpwcontroller.dispose();
+    pncontroller.dispose();
+    super.dispose();
+  }
+
+  final GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +62,13 @@ class AddStudent extends StatelessWidget {
         backgroundColor: const Color.fromRGBO(131, 151, 136, 1),
         title: const Padding(
           padding: EdgeInsets.symmetric(horizontal: 50),
-          child: Text('ADD STUDENT'),
+          child: Text(
+            'ADD STUDENT',
+            style: TextStyle(
+              fontFamily: 'FiraSans',
+              fontSize: 25,
+            ),
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -58,42 +92,61 @@ class AddStudent extends StatelessWidget {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 175, horizontal: 15),
-                child: Column(
-                  children: [
-                    inputField('Class', clscontroller),
-                    inputField('First name', fncontroller),
-                    inputField('Middle name', mncontroller),
-                    inputField('Last name', lncontroller),
-                    inputField('Roll no', rncontroller),
-                    inputField('Guardian', gcontroller),
-                    inputField('Address', acontroller),
-                    inputField('Email', econtroller),
-                    inputField('Phone no', pncontroller),
-                    ElevatedButton.icon(
-                        onPressed: () {
-                          final std = StudentModel(
-                              cls: clscontroller.text.trim(),
-                              fn: fncontroller.text.trim(),
-                              mn: mncontroller.text.trim(),
-                              ln: lncontroller.text.trim(),
-                              rollno: rncontroller.text.trim(),
-                              address: acontroller.text.trim(),
-                              guardian: gcontroller.text.trim(),
-                              email: econtroller.text.trim(),
-                              phoneno: pncontroller.text.trim());
+                child: Form(
+                    key: formkey,
+                    child: Column(
+                      children: [
+                        numField('Class', clscontroller),
+                        nameField('First name', fncontroller),
+                        nameField('Middle name', mncontroller),
+                        nameField('Last name', lncontroller),
+                        numField('Roll no', rncontroller),
+                        nameField('Guardian', gcontroller),
+                        nameField('Address', acontroller),
+                        phoneField('Phone no', pncontroller),
+                        emailField('Email', econtroller),
+                        pwField('Password', pwcontroller),
+                        cpwField(
+                            'Confirm password', cpwcontroller, pwcontroller),
+                        ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  const Color.fromRGBO(94, 110, 100, 100),
+                              foregroundColor:
+                                  const Color.fromRGBO(255, 255, 255, 0.612),
+                              elevation: 10,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            onPressed: () {
+                              final std = StudentModel(
+                                  cls: clscontroller.text.trim(),
+                                  fn: fncontroller.text.trim(),
+                                  mn: mncontroller.text.trim(),
+                                  ln: lncontroller.text.trim(),
+                                  rollno: rncontroller.text.trim(),
+                                  address: acontroller.text.trim(),
+                                  guardian: gcontroller.text.trim(),
+                                  phoneno: pncontroller.text.trim(),
+                                  email: econtroller.text.trim(),
+                                  password: pwcontroller.text.trim());
 
-                          createStudent(std, std.cls, std.email);
-                        },
-                        icon: const Icon(
-                          Icons.person_add_alt_rounded,
-                          color: Colors.black54,
-                        ),
-                        label: const Text(
-                          'ADD',
-                          style: TextStyle(color: Colors.black54),
-                        ))
-                  ],
-                ),
+                              createStudent(
+                                  std, std.cls, std.email, std.password);
+                            },
+                            icon: const Icon(
+                              Icons.person_add_alt_rounded,
+                            ),
+                            label: const Text(
+                              'ADD',
+                              style: TextStyle(
+                                fontFamily: 'FiraSans',
+                                fontSize: 25,
+                              ),
+                            ))
+                      ],
+                    )),
               )
             ],
           ),
@@ -103,10 +156,170 @@ class AddStudent extends StatelessWidget {
   }
 }
 
-Widget inputField(String attribute, final ctlr) {
+Widget nameField(String attribute, final ctlr) {
   return Column(children: [
     TextFormField(
       controller: ctlr,
+      validator: (value) {
+        if (value!.isEmpty || !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
+          return "Please enter correct name";
+        } else {
+          return null;
+        }
+      },
+      keyboardType: TextInputType.name,
+      style: const TextStyle(
+        fontFamily: 'FiraSans',
+        fontSize: 25,
+      ),
+      decoration: InputDecoration(
+          labelText: attribute,
+          hintText: 'Enter your $attribute',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+          )),
+    ),
+    const SizedBox(
+      height: 15,
+    )
+  ]);
+}
+
+Widget numField(String attribute, final ctlr) {
+  return Column(children: [
+    TextFormField(
+      controller: ctlr,
+      validator: (value) {
+        if (value!.isEmpty || !RegExp(r'^[A-Z]+[0-9]{1,2}').hasMatch(value)) {
+          return "Please enter correct number";
+        } else {
+          return null;
+        }
+      },
+      style: const TextStyle(
+        fontFamily: 'FiraSans',
+        fontSize: 25,
+      ),
+      keyboardType: TextInputType.text,
+      decoration: InputDecoration(
+          labelText: attribute,
+          hintText: 'Enter your $attribute',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+          )),
+    ),
+    const SizedBox(
+      height: 15,
+    )
+  ]);
+}
+
+Widget emailField(String attribute, final ctlr) {
+  return Column(children: [
+    TextFormField(
+      controller: ctlr,
+      validator: (value) {
+        if (value!.isEmpty ||
+            !RegExp(r'^[\w-\.]+@student.ps.edu.np').hasMatch(value)) {
+          return "Please enter correct email";
+        } else {
+          return null;
+        }
+      },
+      style: const TextStyle(
+        fontFamily: 'FiraSans',
+        fontSize: 25,
+      ),
+      keyboardType: TextInputType.emailAddress,
+      decoration: InputDecoration(
+          labelText: attribute,
+          hintText: 'Enter your $attribute',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+          )),
+    ),
+    const SizedBox(
+      height: 15,
+    )
+  ]);
+}
+
+Widget phoneField(String attribute, final ctlr) {
+  return Column(children: [
+    TextFormField(
+      controller: ctlr,
+      validator: (value) {
+        if (value!.isEmpty || !RegExp(r'^[-\s\./0-9]+$').hasMatch(value)) {
+          return "Please enter correct phone no";
+        } else {
+          return null;
+        }
+      },
+      style: const TextStyle(
+        fontFamily: 'FiraSans',
+        fontSize: 25,
+      ),
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+          labelText: attribute,
+          hintText: 'Enter your $attribute',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+          )),
+    ),
+    const SizedBox(
+      height: 15,
+    )
+  ]);
+}
+
+Widget pwField(String attribute, final ctlr) {
+  return Column(children: [
+    TextFormField(
+      controller: ctlr,
+      validator: (value) {
+        if (value!.isEmpty || !RegExp(r'^[a-z A-Z]+[0-9]+$').hasMatch(value)) {
+          return "Please enter password";
+        } else {
+          return null;
+        }
+      },
+      obscureText: true,
+      keyboardType: TextInputType.name,
+      style: const TextStyle(
+        fontFamily: 'FiraSans',
+        fontSize: 25,
+      ),
+      decoration: InputDecoration(
+          labelText: attribute,
+          hintText: 'Enter your $attribute',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+          )),
+    ),
+    const SizedBox(
+      height: 15,
+    )
+  ]);
+}
+
+Widget cpwField(String attribute, final ctlr, final pw) {
+  return Column(children: [
+    TextFormField(
+      controller: ctlr,
+      validator: (value) {
+        if (ctlr.toString() != pw.toString()) {
+          return "Password do not match";
+        } else {
+          return null;
+        }
+      },
+      obscureText: true,
+      keyboardType: TextInputType.name,
+      style: const TextStyle(
+        fontFamily: 'FiraSans',
+        fontSize: 25,
+      ),
       decoration: InputDecoration(
           labelText: attribute,
           hintText: 'Enter your $attribute',

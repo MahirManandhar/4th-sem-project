@@ -40,7 +40,8 @@ class MyApp extends StatelessWidget {
         '/login': (context) => Login(),
         '/aboutus': (context) => AboutUs(),
         '/settings': (context) => Settings(userId: userId, email: email),
-        '/settings/changepassword': (context) => ChangePassword(userId: userId, email: email),
+        '/settings/changepassword': (context) =>
+            ChangePassword(userId: userId, email: email),
       },
     );
   }
