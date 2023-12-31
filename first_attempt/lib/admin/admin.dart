@@ -10,10 +10,11 @@ import 'package:first_attempt/calendar.dart';
 import 'package:flutter/material.dart';
 
 class Admin extends StatefulWidget {
-  final String userId;  
+  final String userId;
   final String email;
-  const Admin({Key? key, required this.userId, required this.email}) : super(key: key);
-  
+  const Admin({Key? key, required this.userId, required this.email})
+      : super(key: key);
+
   // const Admin({super.key});
 
   @override
@@ -23,7 +24,7 @@ class Admin extends StatefulWidget {
 class _StudentState extends State<Admin> {
   int index = 0;
   final screen = [
-    const AdminNotice(),
+    const AdmNotice(),
     const UpdateNotice(),
     const UpdateDetails(),
     const AdminBus(),
@@ -35,7 +36,7 @@ class _StudentState extends State<Admin> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: PreferredSize(
-          preferredSize:const Size.fromHeight(95.0),
+          preferredSize: const Size.fromHeight(95.0),
           child: Container(
             color: const Color.fromRGBO(131, 151, 136, 1),
             child: Padding(
@@ -54,8 +55,8 @@ class _StudentState extends State<Admin> {
                 ),
                 title: Center(
                     child: ConstrainedBox(
-                        constraints:
-                           const BoxConstraints.tightFor(width: 150, height: 70),
+                        constraints: const BoxConstraints.tightFor(
+                            width: 150, height: 70),
                         child: const Image(
                             image: AssetImage('assets/images/logo.png')))),
                 // actions: [
@@ -80,14 +81,15 @@ class _StudentState extends State<Admin> {
                 child: ConstrainedBox(
                     constraints:
                         const BoxConstraints.tightFor(width: 150, height: 70),
-                    child: const Image(image: AssetImage('assets/images/logo.png')))),
+                    child: const Image(
+                        image: AssetImage('assets/images/logo.png')))),
             const ListTile(
               leading: Icon(Icons.info),
               title: Text("ABOUT US"),
             ),
-           ListTile(
+            ListTile(
               leading: const Icon(Icons.settings),
-              title:const Text("SETTINGS"),
+              title: const Text("SETTINGS"),
               onTap: () => {
                 Navigator.pop(context),
                 Navigator.pushNamed(context, '/settings'),

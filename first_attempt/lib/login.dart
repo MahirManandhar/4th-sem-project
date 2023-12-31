@@ -57,17 +57,20 @@ class _LoginState extends State<Login> {
     if (email.endsWith('@student.ps.edu.np')) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) =>  Student(userId: userId, email: email)),
+        MaterialPageRoute(
+            builder: (context) => Student(userId: userId, email: email)),
       );
     } else if (email.endsWith('@teacher.ps.edu.np')) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) =>  Teacher(userId: userId, email: email)),
+        MaterialPageRoute(
+            builder: (context) => Teacher(userId: userId, email: email)),
       );
     } else if (email.endsWith('@admin.ps.edu.np')) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) =>  Admin(userId: userId, email: email)),
+        MaterialPageRoute(
+            builder: (context) => Admin(userId: userId, email: email)),
       );
     }
   }
@@ -166,6 +169,10 @@ class _LoginState extends State<Login> {
                       fillColor: const Color.fromRGBO(255, 255, 255, 1.0),
                       filled: true,
                       hintText: 'Password',
+                      hintStyle: const TextStyle(
+                        fontFamily: 'Quicksand',
+                        fontSize: 20,
+                      ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),

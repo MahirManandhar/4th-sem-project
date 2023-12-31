@@ -1,14 +1,15 @@
 import 'package:first_attempt/calendar.dart';
 import 'package:first_attempt/student/bus.dart';
-import 'package:first_attempt/student/notice.dart';
+import 'package:first_attempt/teacher/teacher_view_notice.dart';
 import 'package:first_attempt/teacher/teacher_notice.dart';
 import 'package:first_attempt/teacher/teacher_profile.dart';
 import 'package:flutter/material.dart';
 
 class Teacher extends StatefulWidget {
-  final String userId;  
+  final String userId;
   final String email;
-  const Teacher({Key? key, required this.userId, required this.email}) : super(key: key);
+  const Teacher({Key? key, required this.userId, required this.email})
+      : super(key: key);
   // const Teacher({super.key});
 
   @override
@@ -18,7 +19,7 @@ class Teacher extends StatefulWidget {
 class _StudentState extends State<Teacher> {
   int index = 0;
   final screen = [
-    const Notice(),
+    const TechNotice(),
     const TeacherNotice(),
     const Bus(),
     const TeacherProfile()
@@ -47,8 +48,8 @@ class _StudentState extends State<Teacher> {
                 ),
                 title: Center(
                     child: ConstrainedBox(
-                        constraints:
-                            const BoxConstraints.tightFor(width: 150, height: 70),
+                        constraints: const BoxConstraints.tightFor(
+                            width: 150, height: 70),
                         child: const Image(
                             image: AssetImage('assets/images/logo.png')))),
                 // actions: [
@@ -84,18 +85,17 @@ class _StudentState extends State<Teacher> {
             ),
             ListTile(
               leading: const Icon(Icons.settings),
-              title:const Text("SETTINGS"),
+              title: const Text("SETTINGS"),
               onTap: () => {
                 Navigator.pop(context),
                 // Navigator.pushNamed(context, '/settings'),
-                 Navigator.pushNamed(
+                Navigator.pushNamed(
                   context,
                   '/settings',
                   arguments: {'userId': widget.userId, 'email': widget.email},
                 )
               },
             ),
-
             ListTile(
               leading: const Icon(Icons.logout),
               title: const Text("LOGOUT"),

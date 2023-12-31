@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 String? dropdownValue;
 
@@ -103,9 +104,9 @@ class _TeacherNoticeState extends State<TeacherNotice> {
   Future<void> addNotices(String notice, String Class) async {
     await FirebaseFirestore.instance.collection('Notices').add({
       'Notice': notice,
-      'Date': DateTime.now(),
+      'Date': DateFormat('yyyy-MM-dd').format(DateTime.now()),
       'Class': Class,
-      'Name': 'ADMIN',
+      'Name': 'TEACHER',
     });
   }
 

@@ -3,14 +3,14 @@ import 'package:first_attempt/read%20data/get_notice.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class AdmNotice extends StatefulWidget {
-  const AdmNotice({super.key});
+class TechNotice extends StatefulWidget {
+  const TechNotice({super.key});
 
   @override
-  State<AdmNotice> createState() => _AdmNoticeState();
+  State<TechNotice> createState() => _TechNoticeState();
 }
 
-class _AdmNoticeState extends State<AdmNotice> {
+class _TechNoticeState extends State<TechNotice> {
   final user = FirebaseAuth.instance.currentUser;
 
   List<String> docIDs = [];
@@ -18,6 +18,15 @@ class _AdmNoticeState extends State<AdmNotice> {
   Future getDocId() async {
     await FirebaseFirestore.instance
         .collection('Notices')
+        .where('Name', isEqualTo: 'TEACHER')
+        .get()
+        .then((snapshot) => snapshot.docs.forEach((document) {
+              print(document.reference);
+              docIDs.add(document.reference.id);
+            }));
+    await FirebaseFirestore.instance
+        .collection('Notices')
+        .where('Class', whereIn: ['All', 'Teacher'])
         .get()
         .then((snapshot) => snapshot.docs.forEach((document) {
               print(document.reference);
