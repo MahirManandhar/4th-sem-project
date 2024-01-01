@@ -46,8 +46,7 @@ class _TeacherProfileState extends State<TeacherProfile> {
                         ListTile(
                           leading: const Icon(Icons.person_4_outlined),
                           title: Text(
-                            "First Name: " +
-                                snapshot.data!.docs[index]["Address"],
+                            "First Name: ${snapshot.data!.docs[index]["Name First"]}",
                             style: const TextStyle(
                               fontFamily: 'FiraSans',
                               fontSize: 20,
@@ -62,8 +61,7 @@ class _TeacherProfileState extends State<TeacherProfile> {
                         ListTile(
                           leading: const Icon(Icons.person_4_outlined),
                           title: Text(
-                            "Middle Name: " +
-                                snapshot.data!.docs[index]["Address"],
+                            "Middle Name: ${snapshot.data!.docs[index]["Name Middle"]}",
                             style: const TextStyle(
                               fontFamily: 'FiraSans',
                               fontSize: 20,
@@ -78,8 +76,7 @@ class _TeacherProfileState extends State<TeacherProfile> {
                         ListTile(
                           leading: const Icon(Icons.person_4_outlined),
                           title: Text(
-                            "Last Name: " +
-                                snapshot.data!.docs[index]["Address"],
+                            "Last Name: ${snapshot.data!.docs[index]["Name Last"]}",
                             style: const TextStyle(
                               fontFamily: 'FiraSans',
                               fontSize: 20,
@@ -94,7 +91,7 @@ class _TeacherProfileState extends State<TeacherProfile> {
                         ListTile(
                           leading: const Icon(Icons.menu_book_outlined),
                           title: Text(
-                            "Subject: " + snapshot.data!.docs[index]["Subject"],
+                            "Subject: ${snapshot.data!.docs[index]["Subject"]}",
                             style: const TextStyle(
                               fontFamily: 'FiraSans',
                               fontSize: 20,
@@ -109,7 +106,7 @@ class _TeacherProfileState extends State<TeacherProfile> {
                         ListTile(
                           leading: const Icon(Icons.location_on_outlined),
                           title: Text(
-                            "Address: " + snapshot.data!.docs[index]["Address"],
+                            "Address: ${snapshot.data!.docs[index]["Address"]}",
                             style: const TextStyle(
                               fontFamily: 'FiraSans',
                               fontSize: 20,
@@ -124,8 +121,7 @@ class _TeacherProfileState extends State<TeacherProfile> {
                         ListTile(
                           leading: const Icon(Icons.phone_android_outlined),
                           title: Text(
-                            "Phone no: " +
-                                snapshot.data!.docs[index]["Phone no"],
+                            "Phone no: ${snapshot.data!.docs[index]["Phone no"]}",
                             style: const TextStyle(
                               fontFamily: 'FiraSans',
                               fontSize: 20,
@@ -140,7 +136,7 @@ class _TeacherProfileState extends State<TeacherProfile> {
                         ListTile(
                           leading: const Icon(Icons.email_outlined),
                           title: Text(
-                            "Email: " + snapshot.data!.docs[index]["Email"],
+                            "Email: ${snapshot.data!.docs[index]["Email"]}",
                             style: const TextStyle(
                               fontFamily: 'FiraSans',
                               fontSize: 19,

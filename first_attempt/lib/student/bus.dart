@@ -11,8 +11,8 @@ class Bus extends StatefulWidget {
 class _BusState extends State<Bus> {
   //final Completer<GoogleMapController> _controller = Completer();
 
-  static const LatLng destinationLocation = LatLng(27.6073, 85.5483);
-  static const LatLng busALocation = LatLng(27.6073, 85.5483);
+  static const LatLng destinationLocation = LatLng(27.6194, 85.5388);
+  static const LatLng busALocation = LatLng(27.6194, 85.5388);
 
   // LocationData? currentLocation;
 
@@ -65,6 +65,14 @@ class _BusState extends State<Bus> {
                           indent: 100,
                           endIndent: 100,
                         ),
+                      ),
+                      ListTile(
+                        title: const Text("Bus A"),
+                        onTap: () {
+                          const Marker(
+                              markerId: MarkerId("source"),
+                              position: destinationLocation);
+                        },
                       ),
                       busButton('Bus A'),
                       busButton('Bus B'),

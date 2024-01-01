@@ -76,22 +76,21 @@ class _AddStudentState extends State<AddStudent> {
           padding: const EdgeInsets.only(top: 20),
           child: Stack(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const CircleAvatar(
+              Center(
+                child: CircleAvatar(
                     backgroundColor: Colors.grey,
                     radius: 70,
-                  ),
-                  Positioned(
                     child: IconButton(
-                        onPressed: () {}, icon: const Icon(Icons.add_a_photo)),
-                  )
-                ],
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.add_a_photo,
+                          color: Colors.white,
+                          size: 35,
+                        ))),
               ),
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 175, horizontal: 15),
+                    const EdgeInsets.symmetric(vertical: 170, horizontal: 15),
                 child: Form(
                     key: formkey,
                     child: Column(

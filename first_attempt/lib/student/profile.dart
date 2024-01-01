@@ -40,7 +40,11 @@ class _ProfileState extends State<Profile> {
                         child: CircleAvatar(
                           radius: 75,
                           backgroundColor: Colors.black38,
-                          backgroundImage: AssetImage('assets/images/logo.png'),
+                          child: Icon(
+                            Icons.person,
+                            color: Colors.white,
+                            size: 75,
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -49,8 +53,7 @@ class _ProfileState extends State<Profile> {
                       ListTile(
                         leading: const Icon(Icons.person_4_outlined),
                         title: Text(
-                          "First Name: " +
-                              snapshot.data!.docs[index]["Address"],
+                          "First Name: ${snapshot.data!.docs[index]["Name First"]}",
                           style: const TextStyle(
                             fontFamily: 'FiraSans',
                             fontSize: 20,
@@ -65,8 +68,7 @@ class _ProfileState extends State<Profile> {
                       ListTile(
                         leading: const Icon(Icons.person_4_outlined),
                         title: Text(
-                          "Middle Name: " +
-                              snapshot.data!.docs[index]["Address"],
+                          "Middle Name: ${snapshot.data!.docs[index]["Name Middle"]}",
                           style: const TextStyle(
                             fontFamily: 'FiraSans',
                             fontSize: 20,
@@ -81,7 +83,7 @@ class _ProfileState extends State<Profile> {
                       ListTile(
                         leading: const Icon(Icons.person_4_outlined),
                         title: Text(
-                          "Last Name: " + snapshot.data!.docs[index]["Address"],
+                          "Last Name: ${snapshot.data!.docs[index]["Name Last"]}",
                           style: const TextStyle(
                             fontFamily: 'FiraSans',
                             fontSize: 20,
@@ -96,7 +98,7 @@ class _ProfileState extends State<Profile> {
                       ListTile(
                         leading: const Icon(Icons.menu_book_outlined),
                         title: Text(
-                          "Class: " + snapshot.data!.docs[index]["Class"],
+                          "Class: ${snapshot.data!.docs[index]["Class"]}",
                           style: const TextStyle(
                             fontFamily: 'FiraSans',
                             fontSize: 20,
@@ -111,7 +113,7 @@ class _ProfileState extends State<Profile> {
                       ListTile(
                         leading: const Icon(Icons.menu_book_outlined),
                         title: Text(
-                          "Roll no: " + snapshot.data!.docs[index]["Roll no"],
+                          "Roll no: ${snapshot.data!.docs[index]["Roll no"]}",
                           style: const TextStyle(
                             fontFamily: 'FiraSans',
                             fontSize: 20,
@@ -126,7 +128,7 @@ class _ProfileState extends State<Profile> {
                       ListTile(
                         leading: const Icon(Icons.location_on_outlined),
                         title: Text(
-                          "Address: " + snapshot.data!.docs[index]["Address"],
+                          "Address: ${snapshot.data!.docs[index]["Address"]}",
                           style: const TextStyle(
                             fontFamily: 'FiraSans',
                             fontSize: 20,
@@ -141,7 +143,7 @@ class _ProfileState extends State<Profile> {
                       ListTile(
                         leading: const Icon(Icons.person_4_outlined),
                         title: Text(
-                          "Guardian: " + snapshot.data!.docs[index]["Guardian"],
+                          "Guardian: ${snapshot.data!.docs[index]["Guardian"]}",
                           style: const TextStyle(
                             fontFamily: 'FiraSans',
                             fontSize: 20,
@@ -156,7 +158,7 @@ class _ProfileState extends State<Profile> {
                       ListTile(
                         leading: const Icon(Icons.phone_android_outlined),
                         title: Text(
-                          "Phone no: " + snapshot.data!.docs[index]["Phone no"],
+                          "Phone no: ${snapshot.data!.docs[index]["Phone no"]}",
                           style: const TextStyle(
                             fontFamily: 'FiraSans',
                             fontSize: 20,
@@ -171,7 +173,7 @@ class _ProfileState extends State<Profile> {
                       ListTile(
                         leading: const Icon(Icons.email_outlined),
                         title: Text(
-                          "Email: " + snapshot.data!.docs[index]["Email"],
+                          "Email: ${snapshot.data!.docs[index]["Email"]}",
                           style: const TextStyle(
                             fontFamily: 'FiraSans',
                             fontSize: 19,

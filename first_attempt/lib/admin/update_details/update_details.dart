@@ -32,9 +32,9 @@ class StudentModel {
   toJson() {
     return {
       "Class": cls,
-      "Name.First": fn,
-      "Name.Middle": mn,
-      "Name.Last": ln,
+      "Name First": fn,
+      "Name Middle": mn,
+      "Name Last": ln,
       "Roll no": rollno,
       "Address": address,
       "Guardian": guardian,
@@ -68,9 +68,9 @@ class TeacherModel {
 
   toJson() {
     return {
-      "Name.First": fn,
-      "Name.Middle": mn,
-      "Name.Last": ln,
+      "Name First": fn,
+      "Name Middle": mn,
+      "Name Last": ln,
       "Subject": subject,
       "Address": address,
       "Phone no": phoneno,
