@@ -14,7 +14,7 @@ class _ProfileState extends State<Profile> {
   //final currentUser = FirebaseAuth.instance.currentUser!;
   final collRef = FirebaseFirestore.instance
       .collection("Class")
-      .doc()
+      .doc('3')
       .collection('Students');
   final _auth = FirebaseAuth.instance;
 

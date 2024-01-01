@@ -18,8 +18,8 @@ class _TechNoticeState extends State<TechNotice> {
   Future getDocId() async {
     await FirebaseFirestore.instance
         .collection('Notices')
-        .where('Class', whereIn: ['All', 'Teacher'])
-        .orderBy('Timestamp', descending: true)
+        .where('Class', whereIn: ['All', 'Teacher', '1'])
+        // .orderBy('Timestamp', descending: true)
         .get()
         .then((snapshot) => snapshot.docs.forEach((document) {
               print(document.reference);
@@ -42,7 +42,7 @@ class _TechNoticeState extends State<TechNotice> {
       body: Center(
         child: Column(
           children: [
-            Text('NOTICES',
+            const Text('NOTICES',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: Color.fromRGBO(94, 110, 100, 100),
@@ -60,7 +60,7 @@ class _TechNoticeState extends State<TechNotice> {
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(16.0),
-                                color: Color.fromRGBO(217, 217, 217, 100),
+                                color: const Color.fromRGBO(217, 217, 217, 100),
                               ),
                               child: ListTile(
                                 title: GetNotice(documentId: docIDs[index]),

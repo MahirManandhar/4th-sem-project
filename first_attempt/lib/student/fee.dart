@@ -189,8 +189,7 @@ class Fee extends StatefulWidget {
   final String email;
   final String userId;
 
-  const Fee({Key? key, required this.email, required this.userId})
-      : super(key: key);
+  const Fee({super.key, required this.email, required this.userId});
 
   @override
   _FeeState createState() => _FeeState();
@@ -223,7 +222,7 @@ class _FeeState extends State<Fee> {
       future: searchEmailInStudents(widget.email),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: const CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -238,7 +237,7 @@ class _FeeState extends State<Fee> {
         }
 
         String studentName = studentData['fn'];
-        print('$studentName');
+        print(studentName);
 
         if (!studentData.containsKey('class')) {
           print('Class information not found for the user: ${widget.email}');
@@ -246,7 +245,7 @@ class _FeeState extends State<Fee> {
         }
 
         String studentClass = studentData['class'];
-        print('$studentClass');
+        print(studentClass);
 
         return FutureBuilder<DocumentSnapshot>(
           future: FirebaseFirestore.instance
@@ -265,8 +264,7 @@ class _FeeState extends State<Fee> {
             }
 
             var feesData = snapshot.data!.data() as Map<String, dynamic>;
-            if (feesData == null ||
-                !feesData.containsKey('exam fees') ||
+            if (!feesData.containsKey('exam fees') ||
                 !feesData.containsKey('tuition fees') ||
                 !feesData.containsKey('total eca fees') ||
                 !feesData.containsKey('deadline')) {
@@ -406,8 +404,8 @@ class _FeeState extends State<Fee> {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                title: Text('Request Admin Confirmation'),
-                                content: Text(
+                                title: const Text('Request Admin Confirmation'),
+                                content: const Text(
                                   'Request the admin to confirm the payment?',
                                 ),
                                 actions: [
@@ -415,7 +413,7 @@ class _FeeState extends State<Fee> {
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
-                                    child: Text('Cancel'),
+                                    child: const Text('Cancel'),
                                   ),
                                   TextButton(
                                     onPressed: () {
@@ -431,7 +429,7 @@ class _FeeState extends State<Fee> {
                                         setState(() {}); //ui update
                                       });
                                     },
-                                    child: Text('Request'),
+                                    child: const Text('Request'),
                                   ),
                                 ],
                               );
@@ -440,8 +438,8 @@ class _FeeState extends State<Fee> {
                         },
                   child: Text(
                     paymentStatus,
-                    style: TextStyle(
-                      color: const Color.fromARGB(255, 18, 18, 18),
+                    style: const TextStyle(
+                      color: Color.fromARGB(255, 18, 18, 18),
                     ),
                   ),
                 ),

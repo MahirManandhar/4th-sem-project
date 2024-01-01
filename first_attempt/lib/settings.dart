@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:first_attempt/change_password.dart';
 
 class ThemeNotifier extends ChangeNotifier {
   ThemeData _themeData;
@@ -18,8 +17,7 @@ class ThemeNotifier extends ChangeNotifier {
 class Settings extends StatefulWidget {
   final String userId;
   final String email;
-  const Settings({Key? key, required this.userId, required this.email})
-      : super(key: key);
+  const Settings({super.key, required this.userId, required this.email});
 
   // const Settings({Key? key}) : super(key: key);
 

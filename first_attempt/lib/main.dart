@@ -17,7 +17,7 @@ Future main() async {
   runApp(
     ChangeNotifierProvider(
       create: (context) => ThemeNotifier(ThemeData.light()), // Initial theme
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
   final String userId = 'yourUserId';
   final String email = 'yourEmail';
 
-  MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +37,8 @@ class MyApp extends StatelessWidget {
       theme: Provider.of<ThemeNotifier>(context).getTheme(),
       home: const SplashScreen(),
       routes: {
-        '/login': (context) => Login(),
-        '/aboutus': (context) => AboutUs(),
+        '/login': (context) => const Login(),
+        '/aboutus': (context) => const AboutUs(),
         '/settings': (context) => Settings(userId: userId, email: email),
         '/settings/changepassword': (context) =>
             ChangePassword(userId: userId, email: email),

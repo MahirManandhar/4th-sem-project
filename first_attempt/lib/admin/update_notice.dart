@@ -23,8 +23,8 @@ class _UpdateNoticeState extends State<UpdateNotice> {
         builder: (context) {
           return Container(
             child: AlertDialog(
-                title: Text("Please write a notice and select a class."),
-                titleTextStyle: TextStyle(
+                title: const Text("Please write a notice and select a class."),
+                titleTextStyle: const TextStyle(
                   fontFamily: 'FiraSans',
                   color: Color.fromRGBO(53, 79, 63, 100),
                   fontSize: 25,
@@ -32,8 +32,7 @@ class _UpdateNoticeState extends State<UpdateNotice> {
                 actions: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Color.fromRGBO(94, 110, 100, 100),
-                      onPrimary: Color.fromRGBO(255, 255, 255, 0.612),
+                      foregroundColor: const Color.fromRGBO(255, 255, 255, 0.612), backgroundColor: const Color.fromRGBO(94, 110, 100, 100),
                       elevation: 10,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
@@ -42,7 +41,7 @@ class _UpdateNoticeState extends State<UpdateNotice> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text(
+                    child: const Text(
                       'OK',
                       style: TextStyle(
                         fontFamily: 'FiraSans',
@@ -64,8 +63,8 @@ class _UpdateNoticeState extends State<UpdateNotice> {
         builder: (context) {
           return Container(
             child: AlertDialog(
-                title: Text("Notice Sent!!!"),
-                titleTextStyle: TextStyle(
+                title: const Text("Notice Sent!!!"),
+                titleTextStyle: const TextStyle(
                   fontFamily: 'FiraSans',
                   color: Color.fromRGBO(53, 79, 63, 100),
                   fontSize: 25,
@@ -73,8 +72,7 @@ class _UpdateNoticeState extends State<UpdateNotice> {
                 actions: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Color.fromRGBO(94, 110, 100, 100),
-                      onPrimary: Color.fromRGBO(255, 255, 255, 0.612),
+                      foregroundColor: const Color.fromRGBO(255, 255, 255, 0.612), backgroundColor: const Color.fromRGBO(94, 110, 100, 100),
                       elevation: 10,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
@@ -83,7 +81,7 @@ class _UpdateNoticeState extends State<UpdateNotice> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text(
+                    child: const Text(
                       'Done',
                       style: TextStyle(
                         fontFamily: 'FiraSans',
@@ -96,7 +94,6 @@ class _UpdateNoticeState extends State<UpdateNotice> {
         },
       );
     }
-    ;
 
     _noticeController.clear();
   }
@@ -114,22 +111,22 @@ class _UpdateNoticeState extends State<UpdateNotice> {
   Widget _noticeBox() {
     return TextField(
       controller: _noticeController,
-      style: TextStyle(
+      style: const TextStyle(
         fontFamily: 'FiraSans',
         color: Color.fromRGBO(6, 10, 8, 0.612),
         fontSize: 18,
       ),
       decoration: InputDecoration(
           filled: true,
-          fillColor: Color.fromRGBO(217, 217, 217, 100),
+          fillColor: const Color.fromRGBO(217, 217, 217, 100),
           labelText: 'Notice Box',
           hintText: 'Type Notice Here',
-          labelStyle: TextStyle(
+          labelStyle: const TextStyle(
             fontFamily: 'Arima',
             fontSize: 40,
             color: Color.fromRGBO(53, 79, 63, 100),
           ),
-          hintStyle: TextStyle(
+          hintStyle: const TextStyle(
             fontFamily: 'Quicksand',
             fontSize: 20,
             color: Color.fromRGBO(53, 79, 63, 100),
@@ -148,7 +145,7 @@ class _UpdateNoticeState extends State<UpdateNotice> {
         children: [
           Container(
             child: ListView(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               children: <Widget>[
                 const ListTile(
                   title: Text('+ADD NOTICES',
@@ -164,7 +161,7 @@ class _UpdateNoticeState extends State<UpdateNotice> {
                 ),
                 Row(
                   children: [
-                    Expanded(
+                    const Expanded(
                       child: ListTile(
                         title: Text(
                           'SEND TO:-',
@@ -183,7 +180,7 @@ class _UpdateNoticeState extends State<UpdateNotice> {
                           color: Color.fromRGBO(94, 110, 100, 100)),
                       decoration: InputDecoration(
                         filled: true,
-                        fillColor: Color.fromRGBO(217, 217, 217, 100),
+                        fillColor: const Color.fromRGBO(217, 217, 217, 100),
                         hintText: 'Select a Class',
                         hintStyle: const TextStyle(
                           fontFamily: 'Quicksand',
@@ -224,15 +221,14 @@ class _UpdateNoticeState extends State<UpdateNotice> {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(top: 450),
+            padding: const EdgeInsets.only(top: 450),
             child: Center(
               child: ConstrainedBox(
                 constraints:
                     const BoxConstraints.tightFor(width: 160, height: 40),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Color.fromRGBO(94, 110, 100, 100),
-                    onPrimary: Color.fromRGBO(255, 255, 255, 0.612),
+                    foregroundColor: const Color.fromRGBO(255, 255, 255, 0.612), backgroundColor: const Color.fromRGBO(94, 110, 100, 100),
                     elevation: 10,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),

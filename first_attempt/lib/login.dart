@@ -4,6 +4,7 @@ import 'package:first_attempt/student/student.dart';
 import 'package:first_attempt/teacher/teacher.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -28,9 +29,15 @@ class _LoginState extends State<Login> {
 
   Future<void> _initializeFirebase() async {
     _firebaseApp = Firebase.initializeApp();
+
+    await _firebaseApp;
+
+    if (FirebaseAuth.instance.currentUser != null) {
+      _redirectToRole(FirebaseAuth.instance.currentUser!);
+    }
   }
 
-  static Future<User?> loginUsingEmailPassword({
+  Future<User?> loginUsingEmailPassword({
     required String email,
     required String password,
     required BuildContext context,
@@ -38,12 +45,6 @@ class _LoginState extends State<Login> {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
     try {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return Center(child: CircularProgressIndicator());
-        },
-      );
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
           email: email, password: password);
       user = userCredential.user;
@@ -57,9 +58,8 @@ class _LoginState extends State<Login> {
   }
 
   void _redirectToRole(User user) {
-    Navigator.of(context).pop();
     String email = user.email ?? '';
-    String userId = user.uid ?? '';
+    String userId = user.uid;
 
     if (email.endsWith('@student.ps.edu.np')) {
       Navigator.pushReplacement(
@@ -144,7 +144,7 @@ class _LoginState extends State<Login> {
                 children: [
                   TextField(
                     controller: _emailController,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontFamily: 'FiraSans',
                       color: Color.fromRGBO(6, 10, 8, 0.612),
                       fontSize: 20,
@@ -167,7 +167,7 @@ class _LoginState extends State<Login> {
                   ),
                   TextField(
                     controller: _passwordController,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontFamily: 'FiraSans',
                       color: Color.fromRGBO(6, 10, 8, 0.612),
                       fontSize: 20,
@@ -195,8 +195,7 @@ class _LoginState extends State<Login> {
                           const BoxConstraints.tightFor(width: 160, height: 40),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: const Color.fromRGBO(94, 110, 100, 100),
-                          onPrimary: const Color.fromRGBO(255, 255, 255, 0.612),
+                          foregroundColor: const Color.fromRGBO(255, 255, 255, 0.612), backgroundColor: const Color.fromRGBO(94, 110, 100, 100),
                           elevation: 10,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),

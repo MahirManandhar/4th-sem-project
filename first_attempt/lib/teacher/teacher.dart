@@ -8,8 +8,7 @@ import 'package:flutter/material.dart';
 class Teacher extends StatefulWidget {
   final String userId;
   final String email;
-  const Teacher({Key? key, required this.userId, required this.email})
-      : super(key: key);
+  const Teacher({super.key, required this.userId, required this.email});
   // const Teacher({super.key});
 
   @override
@@ -18,12 +17,23 @@ class Teacher extends StatefulWidget {
 
 class _StudentState extends State<Teacher> {
   int index = 0;
-  final screen = [
-    const TechNotice(),
-    const TeacherNotice(),
+  late List<Widget> screen;
+
+
+   @override
+  void initState() {
+    super.initState();
+    // auth = FirebaseAuth.instance;
+    screen = [
+      const TechNotice(),
+     TeacherNotice(userId: widget.userId, email: widget.email),
     const Bus(),
     const TeacherProfile()
-  ];
+    ];
+  }
+
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -73,11 +83,11 @@ class _StudentState extends State<Teacher> {
             DrawerHeader(
                 child: ConstrainedBox(
                     constraints:
-                        BoxConstraints.tightFor(width: 150, height: 70),
-                    child: Image(image: AssetImage('assets/images/logo.png')))),
+                        const BoxConstraints.tightFor(width: 150, height: 70),
+                    child: const Image(image: AssetImage('assets/images/logo.png')))),
             ListTile(
-              leading: Icon(Icons.info),
-              title: Text("ABOUT US"),
+              leading: const Icon(Icons.info),
+              title: const Text("ABOUT US"),
               onTap: () => {
                 Navigator.pop(context),
                 Navigator.pushNamed(context, '/aboutus'),

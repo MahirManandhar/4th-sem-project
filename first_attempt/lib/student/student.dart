@@ -1,18 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_attempt/calendar.dart';
-import 'package:first_attempt/settings.dart';
 //import 'package:first_attempt/logout.dart';
 import 'package:first_attempt/student/bus.dart';
 import 'package:first_attempt/student/fee.dart';
 import 'package:first_attempt/student/notice.dart';
 import 'package:first_attempt/student/profile.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Student extends StatefulWidget {
   final String userId;
   final String email;
-  const Student({Key? key, required this.userId, required this.email})
-      : super(key: key);
+  const Student({super.key, required this.userId, required this.email});
   // const Student({super.key});
 
   @override
@@ -178,6 +176,7 @@ void _showLogoutConfirmationDialog(BuildContext context) {
 void _logoutAndNavigateToLogin(BuildContext context) async {
   try {
     // Navigate to the login screen
+   await FirebaseAuth.instance.signOut();
     Navigator.pop(context); // Close the confirmation dialog
     Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
   } catch (e) {

@@ -35,8 +35,7 @@ class LogOut extends StatelessWidget {
                         const BoxConstraints.tightFor(width: 160, height: 40),
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            primary:const Color.fromRGBO(94, 110, 100, 100),
-                            onPrimary:const Color.fromRGBO(255, 255, 255, 0.612),
+                            foregroundColor: const Color.fromRGBO(255, 255, 255, 0.612), backgroundColor: const Color.fromRGBO(94, 110, 100, 100),
                             elevation: 10, // Button elevation
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
@@ -59,8 +58,7 @@ class LogOut extends StatelessWidget {
                         const BoxConstraints.tightFor(width: 160, height: 40),
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            primary:const Color.fromRGBO(94, 110, 100, 100),
-                            onPrimary:const Color.fromRGBO(255, 255, 255, 0.612),
+                            foregroundColor: const Color.fromRGBO(255, 255, 255, 0.612), backgroundColor: const Color.fromRGBO(94, 110, 100, 100),
                             elevation: 10, // Button elevation
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
@@ -78,8 +76,7 @@ class LogOut extends StatelessWidget {
                         const BoxConstraints.tightFor(width: 160, height: 40),
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            primary:const Color.fromRGBO(94, 110, 100, 100),
-                            onPrimary:const Color.fromRGBO(255, 255, 255, 0.612),
+                            foregroundColor: const Color.fromRGBO(255, 255, 255, 0.612), backgroundColor: const Color.fromRGBO(94, 110, 100, 100),
                             elevation: 10, // Button elevation
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),

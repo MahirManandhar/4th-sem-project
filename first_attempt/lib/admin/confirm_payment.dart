@@ -20,12 +20,14 @@ class ConfirmPaymentState extends State<ConfirmPayment> {
           ),
         ),
       ),
-      body: ClassList(),
+      body: const ClassList(),
     );
   }
 }
 
 class ClassList extends StatelessWidget {
+  const ClassList({super.key});
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -156,7 +158,7 @@ class _StudentTileState extends State<StudentTile> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  icon: Icon(Icons.check),
+                  icon: const Icon(Icons.check),
                   onPressed: () {
                     // confiem or not
                     setState(() {
@@ -175,7 +177,7 @@ class _StudentTileState extends State<StudentTile> {
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.close),
+                  icon: const Icon(Icons.close),
                   onPressed: () {
                     // close
                     setState(() {

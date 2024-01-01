@@ -119,20 +119,22 @@ class _AddStudentState extends State<AddStudent> {
                               ),
                             ),
                             onPressed: () {
-                              final std = StudentModel(
-                                  cls: clscontroller.text.trim(),
-                                  fn: fncontroller.text.trim(),
-                                  mn: mncontroller.text.trim(),
-                                  ln: lncontroller.text.trim(),
-                                  rollno: rncontroller.text.trim(),
-                                  address: acontroller.text.trim(),
-                                  guardian: gcontroller.text.trim(),
-                                  phoneno: pncontroller.text.trim(),
-                                  email: econtroller.text.trim(),
-                                  password: pwcontroller.text.trim());
+                              if (formkey.currentState!.validate()) {
+                                final std = StudentModel(
+                                    cls: clscontroller.text.trim(),
+                                    fn: fncontroller.text.trim(),
+                                    mn: mncontroller.text.trim(),
+                                    ln: lncontroller.text.trim(),
+                                    rollno: rncontroller.text.trim(),
+                                    address: acontroller.text.trim(),
+                                    guardian: gcontroller.text.trim(),
+                                    phoneno: pncontroller.text.trim(),
+                                    email: econtroller.text.trim(),
+                                    password: pwcontroller.text.trim());
 
-                              createStudent(
-                                  std, std.cls, std.email, std.password);
+                                createStudent(
+                                    std, std.cls, std.email, std.password);
+                              }
                             },
                             icon: const Icon(
                               Icons.person_add_alt_rounded,

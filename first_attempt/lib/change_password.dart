@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:first_attempt/settings.dart';
 
 class ChangePassword extends StatefulWidget {
   final String userId;
   final String email;
 
-  const ChangePassword({Key? key, required this.userId, required this.email})
-      : super(key: key);
+  const ChangePassword({super.key, required this.userId, required this.email});
 
   @override
   _ChangePasswordState createState() => _ChangePasswordState();

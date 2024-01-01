@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_attempt/admin/admin_bus.dart';
 
 import 'package:first_attempt/admin/update_fee.dart';
@@ -12,8 +13,7 @@ import 'package:flutter/material.dart';
 class Admin extends StatefulWidget {
   final String userId;
   final String email;
-  const Admin({Key? key, required this.userId, required this.email})
-      : super(key: key);
+  const Admin({super.key, required this.userId, required this.email});
 
   // const Admin({super.key});
 
@@ -98,9 +98,10 @@ class _StudentState extends State<Admin> {
             ListTile(
               leading: const Icon(Icons.logout),
               title: const Text("LOGOUT"),
-              onTap: () => {
-                Navigator.pop(context),
-                Navigator.pushNamed(context, '/login'),
+              onTap: () async {
+                await FirebaseAuth.instance.signOut();
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/login');
               },
             ),
           ]),

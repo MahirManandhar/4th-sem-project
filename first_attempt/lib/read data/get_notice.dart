@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class GetNotice extends StatelessWidget {
   final String documentId;
 
-  GetNotice({required this.documentId});
+  const GetNotice({super.key, required this.documentId});
 
   @override
   Widget build(BuildContext context) {
@@ -25,24 +25,24 @@ class GetNotice extends StatelessWidget {
                 child: Text(
                     'FROM: ${data['Name']}                                            ',
                     textAlign: TextAlign.left,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontFamily: 'FiraSans',
                         fontSize: 20,
                         color: Color.fromRGBO(41, 72, 53, 0.612))),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(' ${data['Notice']}',
                   textAlign: TextAlign.justify,
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontFamily: 'Quicksand',
                       fontSize: 18,
                       color: Color.fromRGBO(6, 20, 11, 0.612))),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Align(
                 alignment: Alignment.centerRight,
                 child: Text('DATE: ${data['Date']}',
                     textAlign: TextAlign.right,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontFamily: 'FiraSans',
                         fontSize: 20,
                         color: Color.fromRGBO(41, 72, 53, 0.612))),
@@ -50,7 +50,7 @@ class GetNotice extends StatelessWidget {
             ],
           ));
         }
-        return Text('Loading...',
+        return const Text('Loading...',
             style: TextStyle(
                 fontFamily: 'FiraSans',
                 fontSize: 20,
