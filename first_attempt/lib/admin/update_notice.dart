@@ -107,6 +107,7 @@ class _UpdateNoticeState extends State<UpdateNotice> {
       'Date': DateFormat('yyyy-MM-dd').format(DateTime.now()),
       'Class': Class,
       'Name': 'ADMIN',
+      'Timestamp': DateTime.now(),
     });
   }
 

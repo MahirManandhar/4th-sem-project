@@ -18,20 +18,22 @@ class _TechNoticeState extends State<TechNotice> {
   Future getDocId() async {
     await FirebaseFirestore.instance
         .collection('Notices')
-        .where('Name', isEqualTo: 'TEACHER')
-        .get()
-        .then((snapshot) => snapshot.docs.forEach((document) {
-              print(document.reference);
-              docIDs.add(document.reference.id);
-            }));
-    await FirebaseFirestore.instance
-        .collection('Notices')
         .where('Class', whereIn: ['All', 'Teacher'])
+        .orderBy('Timestamp', descending: true)
         .get()
         .then((snapshot) => snapshot.docs.forEach((document) {
               print(document.reference);
               docIDs.add(document.reference.id);
             }));
+    //         await FirebaseFirestore.instance
+    // .collection('Notices')
+    // .where('Name', isEqualTo: 'TEACHER')
+    // .orderBy('Timestamp', descending: true)
+    // .get()
+    // .then((snapshot) => snapshot.docs.forEach((document) {
+    //       print(document.reference);
+    //       docIDs.add(document.reference.id);
+    //     }));
   }
 
   @override

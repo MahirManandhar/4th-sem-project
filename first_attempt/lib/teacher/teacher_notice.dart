@@ -107,6 +107,7 @@ class _TeacherNoticeState extends State<TeacherNotice> {
       'Date': DateFormat('yyyy-MM-dd').format(DateTime.now()),
       'Class': Class,
       'Name': 'TEACHER',
+      'Timestamp': DateTime.now(),
     });
   }
 
