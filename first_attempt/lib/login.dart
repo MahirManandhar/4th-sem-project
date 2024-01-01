@@ -38,6 +38,12 @@ class _LoginState extends State<Login> {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
     try {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return Center(child: CircularProgressIndicator());
+        },
+      );
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
           email: email, password: password);
       user = userCredential.user;
@@ -51,6 +57,7 @@ class _LoginState extends State<Login> {
   }
 
   void _redirectToRole(User user) {
+    Navigator.of(context).pop();
     String email = user.email ?? '';
     String userId = user.uid ?? '';
 
@@ -76,6 +83,7 @@ class _LoginState extends State<Login> {
   }
 
   void _showErrorDialog(String message) {
+    Navigator.of(context).pop();
     showDialog(
       context: context,
       builder: (context) {
