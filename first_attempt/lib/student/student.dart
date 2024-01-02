@@ -37,9 +37,8 @@ class _StudentState extends State<Student> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(95.0),
-          child: Container(
-            color: const Color.fromRGBO(131, 151, 136, 1),
+          preferredSize: const Size.fromHeight(125.0),
+         
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 25.0),
               child: AppBar(
@@ -74,7 +73,7 @@ class _StudentState extends State<Student> {
                 // ],
               ),
             ),
-          ),
+          
         ),
         endDrawer: Drawer(
           child: Column(children: [
