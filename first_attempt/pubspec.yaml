@@ -57,6 +57,8 @@ dependencies:
 
   flutter_slidable: ^3.0.1
 
+  google_nav_bar: ^5.0.6
+
   liquid_pull_to_refresh: ^3.0.1
 
 dev_dependencies:

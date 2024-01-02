@@ -1,19 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:first_attempt/read%20data/get_notice.dart';
-import 'package:first_attempt/services/firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:first_attempt/services/firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
-class AdmNotice extends StatefulWidget {
-  const AdmNotice({super.key});
+class SendNotice extends StatefulWidget {
+  final String email;
+  final String userId;
+
+  const SendNotice({super.key, required this.email, required this.userId});
 
   @override
-  State<AdmNotice> createState() => _AdmNoticeState();
+  State<SendNotice> createState() => _SendNoticeState();
 }
 
-class _AdmNoticeState extends State<AdmNotice> {
+class _SendNoticeState extends State<SendNotice> {
   Future<void> _handleRefresh() async {
     return await Future.delayed(const Duration(seconds: 2));
   }
@@ -23,9 +26,28 @@ class _AdmNoticeState extends State<AdmNotice> {
 
   List<String> docIDs = [];
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getDocId() {
-    return FirebaseFirestore.instance
+  Future<String> getName(String email) async {
+    DocumentSnapshot<Map<String, dynamic>> doc = await FirebaseFirestore
+        .instance
+        .collection('Teachers')
+        .doc(email)
+        .get();
+
+    if (doc.exists) {
+      String firstName = doc.data()!['Name.First']; //['First'];
+      String lastName = doc.data()!['Name.Last'];
+      String name = '$firstName $lastName';
+      return name;
+    } else {
+      return '';
+    }
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getDocId() async* {
+    String name2 = await getName(widget.email);
+    yield* FirebaseFirestore.instance
         .collection('Notices')
+        .where('Name', isEqualTo: name2)
         .orderBy('Timestamp', descending: true)
         .snapshots();
   }
@@ -53,15 +75,28 @@ class _AdmNoticeState extends State<AdmNotice> {
                 child: StreamBuilder(
                     stream: getDocId(),
                     builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return const CircularProgressIndicator();
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+
+                      if (snapshot.data!.docs.isEmpty) {
+                        return Center(
+                          child: Text(
+                            'No notices sent yet.',
+                            style: const TextStyle(
+                              fontFamily: 'Arima',
+                              fontSize: 40,
+                              color: Color.fromRGBO(53, 79, 63, 100),
+                            ),
+                          ),
+                        );
                       }
                       return ListView.builder(
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: (context, index) {
                             return Padding(
                               padding:
-                                  const EdgeInsets.only(top: 8.0, bottom: 8),
+                                  const EdgeInsets.only(top: 8.0, bottom: 8.0),
                               child: Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(16.0),

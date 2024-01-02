@@ -59,42 +59,7 @@ class _TeacherNoticeState extends State<TeacherNotice> {
     } else {
       addNotices(_noticeController.text.trim(), _classController.text.trim(),
           widget.email);
-      // showDialog(
-      //   context: context,
-      //   builder: (context) {
-      //     return Container(
-      //       child: AlertDialog(
-      //           title: Text("Notice Sent!!!"),
-      //           titleTextStyle: TextStyle(
-      //             fontFamily: 'FiraSans',
-      //             color: Color.fromRGBO(53, 79, 63, 100),
-      //             fontSize: 25,
-      //           ),
-      //           actions: [
-      //             ElevatedButton(
-      //               style: ElevatedButton.styleFrom(
-      //                 primary: Color.fromRGBO(94, 110, 100, 100),
-      //                 onPrimary: Color.fromRGBO(255, 255, 255, 0.612),
-      //                 elevation: 10,
-      //                 shape: RoundedRectangleBorder(
-      //                   borderRadius: BorderRadius.circular(5),
-      //                 ),
-      //               ),
-      //               onPressed: () {
-      //                 Navigator.pop(context);
-      //               },
-      //               child: Text(
-      //                 'Done',
-      //                 style: TextStyle(
-      //                   fontFamily: 'FiraSans',
-      //                   fontSize: 25,
-      //                 ),
-      //               ),
-      //             ),
-      //           ]),
-      //     );
-      //   },
-      // );
+
     }
 
     _noticeController.clear();
@@ -118,30 +83,18 @@ class _TeacherNoticeState extends State<TeacherNotice> {
           .collection('Teachers')
           .doc(email)
           .get();
-      print(email);
+
 
       if (doc.exists) {
-        print('jhjhj');
-
-//  String teacherName = QuerySnapshot.docs
-//         .map((doc) => {
-//           'name': '${doc['First.Name']} ${doc['Last.Name']}'
-//         }
-//       });.toList();
-
-// List<String> teacherNames = QuerySnapshot.docs
-//     .map((doc) => '${doc['First.Name']} ${doc['Last.Name']}')
-//     .toList();
 
         String firstName = doc.data()!['Name.First']; //['First'];
         String lastName = doc.data()!['Name.Last']; //['Last'];
-        // print(lastName);
+        
 
         // Assuming you have a 'Notices' collection to store notices
         await FirebaseFirestore.instance.collection('Notices').add({
           'Notice': notice,
           'Name': '$firstName $lastName',
-          // 'Name': 'Supriya',
           'Date': DateFormat('yyyy-MM-dd').format(DateTime.now()),
           'Class': Class,
           'Timestamp': FieldValue.serverTimestamp(),

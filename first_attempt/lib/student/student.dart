@@ -26,7 +26,7 @@ class _StudentState extends State<Student> {
     super.initState();
     // auth = FirebaseAuth.instance;
     screen = [
-      const Notice(),
+      Notice(userId: widget.userId, email: widget.email),
       Fee(userId: widget.userId, email: widget.email),
       const Bus(),
       const Profile(),
@@ -176,7 +176,7 @@ void _showLogoutConfirmationDialog(BuildContext context) {
 void _logoutAndNavigateToLogin(BuildContext context) async {
   try {
     // Navigate to the login screen
-   await FirebaseAuth.instance.signOut();
+    await FirebaseAuth.instance.signOut();
     Navigator.pop(context); // Close the confirmation dialog
     Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
   } catch (e) {
