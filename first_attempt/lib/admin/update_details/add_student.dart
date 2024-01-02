@@ -5,21 +5,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 FirebaseAuth _auth = FirebaseAuth.instance;
 final collRef = FirebaseFirestore.instance;
-Future createStudent(StudentModel std, email, password) async {
+Future createStudent(
+    StudentModel std, email, password, BuildContext context) async {
   try {
     UserCredential credential = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
 
     await collRef
-        // .collection("Class")
-        // .doc(cls)
         .collection("Students")
         .doc(email)
         .set(std.toJson())
-        .whenComplete(() => const SnackBar(
-              content: Text("Student added successfully"),
-              duration: Duration(seconds: 3),
-            ));
+        .whenComplete(() {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Student added successfully"),
+        duration: Duration(seconds: 3),
+      ));
+    });
 
     return credential.user;
   } catch (e) {
@@ -134,9 +135,8 @@ class _AddStudentState extends State<AddStudent> {
                                   phoneno: pncontroller.text.trim(),
                                   email: econtroller.text.trim(),
                                 );
-
                                 createStudent(
-                                    std, std.email, pwcontroller.toString());
+                                    std, std.email, pwcontroller.text, context);
                               }
                             },
                             icon: const Icon(
