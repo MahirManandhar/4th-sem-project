@@ -318,14 +318,16 @@ DocumentSnapshot<Map<String, dynamic>> doc = await FirebaseFirestore
       if (selectedClass != null) {
         QuerySnapshot querySnapshot = await FirebaseFirestore.instance
             .collection('Students')
-            .doc(selectedClass)
-            .collection('students')
+            // .doc(selectedClass)
+            // .collection('students')
+            .where('Class', isEqualTo: selectedClass)
             .get();
 
         setState(() {
           studentList = querySnapshot.docs
               .map((doc) => {
-                    'name': '${doc['fn']} ${doc['mn']} ${doc['ln']}',
+                    'name':
+                        '${doc['Name First']} ${doc['Name Middle']} ${doc['Name Last']}',
                     'email': doc.id, //email ni store garne
                   })
               .toList();
@@ -428,10 +430,7 @@ int tuitionFeesValue = tuitionFees ?? 0;
 
 num totalFees = examFeesValue + tuitionFeesValue + totalEcaFees;
 
-
-
-
-print('byeeeeeeeeeee');
+        print('byeeeeeeeeeee');
 
         // Update fees for each student
         await FirebaseFirestore.instance
