@@ -10,7 +10,7 @@ class TeacherProfile extends StatefulWidget {
 }
 
 class _TeacherProfileState extends State<TeacherProfile> {
-  final collRef = FirebaseFirestore.instance.collection("Teachers");
+  final collRef = FirebaseFirestore.instance.collection('Teachers');
   final _auth = FirebaseAuth.instance;
 
   @override

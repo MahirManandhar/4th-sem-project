@@ -14,7 +14,6 @@ class StudentModel {
   final String guardian;
   final String phoneno;
   final String email;
-  final String password;
 
   const StudentModel({
     required this.cls,
@@ -26,7 +25,6 @@ class StudentModel {
     required this.guardian,
     required this.phoneno,
     required this.email,
-    required this.password,
   });
 
   toJson() {
@@ -40,7 +38,6 @@ class StudentModel {
       "Guardian": guardian,
       "Phone no": phoneno,
       "Email": email,
-      "Password": password,
     };
   }
 }
@@ -53,7 +50,6 @@ class TeacherModel {
   final String address;
   final String phoneno;
   final String email;
-  final String password;
 
   const TeacherModel({
     required this.fn,
@@ -63,7 +59,6 @@ class TeacherModel {
     required this.address,
     required this.phoneno,
     required this.email,
-    required this.password,
   });
 
   toJson() {
@@ -75,7 +70,6 @@ class TeacherModel {
       "Address": address,
       "Phone no": phoneno,
       "Email": email,
-      "Password": password,
     };
   }
 }

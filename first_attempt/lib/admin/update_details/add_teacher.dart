@@ -14,11 +14,14 @@ Future createTeacher(TeacherModel tch, email, password) async {
         .collection('Teachers')
         .doc(email)
         .set(tch.toJson())
-        .whenComplete(() => const Text('Added successfully'));
+        .whenComplete(() => const SnackBar(
+              content: Text("Teacher added successfully"),
+              duration: Duration(seconds: 3),
+            ));
 
     return credential.user;
   } catch (e) {
-    print("Some error occured");
+    debugPrint("Some error occured");
   }
 }
 
@@ -72,18 +75,17 @@ class _AddTeacherState extends State<AddTeacher> {
           padding: const EdgeInsets.only(top: 20),
           child: Stack(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const CircleAvatar(
+              Center(
+                child: CircleAvatar(
                     backgroundColor: Colors.grey,
                     radius: 70,
-                  ),
-                  Positioned(
                     child: IconButton(
-                        onPressed: () {}, icon: const Icon(Icons.add_a_photo)),
-                  )
-                ],
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.add_a_photo,
+                          color: Colors.white,
+                          size: 35,
+                        ))),
               ),
               Padding(
                   padding:
@@ -93,7 +95,7 @@ class _AddTeacherState extends State<AddTeacher> {
                     child: Column(
                       children: [
                         nameField('First name', fncontroller),
-                        nameField('Middle name', mncontroller),
+                        mnameField('Middle name', mncontroller),
                         nameField('Last name', lncontroller),
                         nameField('Subject', sbjtcontroller),
                         nameField('Address', acontroller),
@@ -114,7 +116,8 @@ class _AddTeacherState extends State<AddTeacher> {
                               ),
                             ),
                             onPressed: () {
-                              final tch = TeacherModel(
+                              if (formkey.currentState!.validate()) {
+                                final tch = TeacherModel(
                                   fn: fncontroller.text.trim(),
                                   mn: mncontroller.text.trim(),
                                   ln: lncontroller.text.trim(),
@@ -122,9 +125,11 @@ class _AddTeacherState extends State<AddTeacher> {
                                   address: acontroller.text.trim(),
                                   phoneno: pncontroller.text.trim(),
                                   email: econtroller.text.trim(),
-                                  password: pwcontroller.text.trim());
+                                );
 
-                              createTeacher(tch, tch.email, tch.password);
+                                createTeacher(
+                                    tch, tch.email, pwcontroller.toString());
+                              }
                             },
                             icon: const Icon(
                               Icons.person_add_alt_rounded,
@@ -176,13 +181,35 @@ Widget nameField(String attribute, final ctlr) {
   ]);
 }
 
+Widget mnameField(String attribute, final ctlr) {
+  return Column(children: [
+    TextFormField(
+      controller: ctlr,
+      keyboardType: TextInputType.name,
+      style: const TextStyle(
+        fontFamily: 'FiraSans',
+        fontSize: 25,
+      ),
+      decoration: InputDecoration(
+          labelText: attribute,
+          hintText: 'Enter your $attribute',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+          )),
+    ),
+    const SizedBox(
+      height: 15,
+    )
+  ]);
+}
+
 Widget emailField(String attribute, final ctlr) {
   return Column(children: [
     TextFormField(
       controller: ctlr,
       validator: (value) {
         if (value!.isEmpty ||
-            !RegExp(r'^[\w-\.]+@student.ps.edu.np').hasMatch(value)) {
+            !RegExp(r'^[\w-\.]+@teacher.ps.edu.np').hasMatch(value)) {
           return "Please enter correct email";
         } else {
           return null;
@@ -270,7 +297,7 @@ Widget cpwField(String attribute, final ctlr, final pw) {
     TextFormField(
       controller: ctlr,
       validator: (value) {
-        if (ctlr != pw) {
+        if (ctlr.text != pw.text) {
           return "Password do not match";
         } else {
           return null;

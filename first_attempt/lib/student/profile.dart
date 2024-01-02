@@ -11,12 +11,25 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  //final currentUser = FirebaseAuth.instance.currentUser!;
-  final collRef = FirebaseFirestore.instance
-      .collection("Class")
-      .doc('3')
-      .collection('Students');
   final _auth = FirebaseAuth.instance;
+  final collRef = FirebaseFirestore.instance.collection('Students');
+  // Future searchEmailInClass() async {
+  //   QuerySnapshot snapshot =
+  //       await FirebaseFirestore.instance.collection('Class').get();
+
+  //   for (var document in snapshot.docs) {
+  //     QuerySnapshot studentsCollection = await document.reference
+  //         .collection('Students')
+  //         .where('Email', isEqualTo: _auth.currentUser!.email)
+  //         .get();
+
+  //     if (studentsCollection.docs.isNotEmpty) {
+  //       return studentsCollection;
+  //     }
+  //   }
+
+  //   return {};
+  // }
 
   @override
   Widget build(BuildContext context) {
