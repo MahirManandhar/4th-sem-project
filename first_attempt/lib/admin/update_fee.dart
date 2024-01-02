@@ -260,52 +260,34 @@ class UpdateFeeState extends State<UpdateFee> {
   if (selectedClass != null) {
     try {
       // Assuming your ECAs are stored in a subcollection 'ECAs' under the selectedClass
-      DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('Fees')
           .doc(selectedClass)
           .collection('ECAs')
-          .doc('activities') // Assuming 'activities' is the document ID
           .get();
 
-      if (documentSnapshot.exists) {
-        Map<String, dynamic> ecaData =
-            documentSnapshot.data() as Map<String, dynamic>;
 
-        if (ecaData.containsKey('activities')) {
-          List<dynamic> ecaList = ecaData['activities'] ?? [];
+DocumentSnapshot<Map<String, dynamic>> doc = await FirebaseFirestore
+          .instance
+          .collection('Fees')
+          .doc(selectedClass)
+          .get();
 
-          setState(() {
-            ecaOptions = ecaList.map((eca) => eca as String).toList();
 
-            // Navigate to the nested 'fees' field
-            Map<String, dynamic>? nestedFees =
-                ecaData['fees'] as Map<String, dynamic>?;
-
-            // Check for nested 'fees' field existence
-            if (nestedFees != null) {
-              ecaFees = Map.fromEntries(
-                nestedFees.entries
-                    .map((entry) => MapEntry(entry.key, entry.value as int)),
-              );
-            } else {
-              // Handle the case where 'fees' is null or not available
-              ecaFees = {};
-            }
-          });
-        } else {
-          setState(() {
-            ecaOptions = [];
-            ecaFees = {};
-          });
-        }
-      } else {
-        setState(() {
-          ecaOptions = [];
-          ecaFees = {};
-        });
-      }
+      setState(() {
+        ecaOptions =
+            querySnapshot.docs.map((doc) => ['activities'] as String).toList();
+        ecaFees = Map.fromEntries(
+          querySnapshot.docs
+              .map((doc) => MapEntry(doc['activities'] as String, doc['fees'] as int)),
+        );
+      });
+    } catch (e) {
+      print('Error loading ECA options: $e');
     }
   }
+}
+
 
   void _loadExamAndTuitionFees() async {
     if (selectedClass != null) {
@@ -319,7 +301,7 @@ class UpdateFeeState extends State<UpdateFee> {
           examFeesController.text = documentSnapshot['exam fees'].toString();
           tuitionFeesController.text =
               documentSnapshot['tuition fees'].toString();
-          deadlineController.text = documentSnapshot['deadline'].toString();
+              deadlineController.text = documentSnapshot['deadline'].toString();
         });
       } else {
         setState(() {
@@ -427,7 +409,7 @@ class UpdateFeeState extends State<UpdateFee> {
         'deadline': deadlineController.text.trim()
       });
 
-      print('hiiiiiiiiiiiiiiiiiiiiiiiiiii');
+print('hiiiiiiiiiiiiiiiiiiiiiiiiiii');
 
       // Update ECA fees for each student
       for (Map<String, dynamic> student in studentList) {
@@ -437,20 +419,15 @@ class UpdateFeeState extends State<UpdateFee> {
                 (previousValue, eca) => previousValue + (ecaFees[eca] ?? 0)) ??
             0;
 
-        int? examFees = int.tryParse(examFeesController.text);
-        int? tuitionFees = int.tryParse(tuitionFeesController.text);
 
-        int examFeesValue = examFees ?? 0;
-        int tuitionFeesValue = tuitionFees ?? 0;
+int? examFees = int.tryParse(examFeesController.text);
+int? tuitionFees = int.tryParse(tuitionFeesController.text);
 
-        num totalFees = examFeesValue + tuitionFeesValue + totalEcaFees;
+int examFeesValue = examFees ?? 0;
+int tuitionFeesValue = tuitionFees ?? 0;
 
-// int examFees = int.tryParse(examFeesController.text);
-// int tuitionFees =int.tryParse(tuitionFeesController.text);
-//             num totalFees = examFees + tuitionFees + totalEcaFees;
-        // totalFeesController.text = totalFees.toString();
+num totalFees = examFeesValue + tuitionFeesValue + totalEcaFees;
 
-        print('byeeeeeeeeeee');
 
 
 
@@ -469,11 +446,13 @@ print('byeeeeeeeeeee');
           'total eca fees': totalEcaFees,
           'activities': selectedEcasForStudents[student['name']] ?? [],
           'fees': ecaFees,
-          'total fees': totalFees,
+          'total fees' : totalFees,
         });
+
+        
       }
 
-      // eca and fee at class level
+      // eca and fee at class level 
       await FirebaseFirestore.instance
           .collection('Fees')
           .doc(selectedClass)
@@ -508,6 +487,3 @@ print('byeeeeeeeeeee');
     );
   }
 }
-
-
-
