@@ -15,7 +15,7 @@ class AdmNotice extends StatefulWidget {
 
 class _AdmNoticeState extends State<AdmNotice> {
   Future<void> _handleRefresh() async {
-    return await Future.delayed(const Duration(seconds: 0));
+    return await Future.delayed(const Duration(seconds: 2));
   }
 
   final FirestoreService firestoreService = FirestoreService();
@@ -65,7 +65,8 @@ class _AdmNoticeState extends State<AdmNotice> {
                               child: Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(16.0),
-                                  color: const Color.fromRGBO(217, 217, 217, 100),
+                                  color:
+                                      const Color.fromRGBO(217, 217, 217, 100),
                                 ),
                                 child: Slidable(
                                   key: ValueKey(snapshot.data!.docs[index].id),
@@ -74,10 +75,11 @@ class _AdmNoticeState extends State<AdmNotice> {
                                     children: [
                                       SlidableAction(
                                         onPressed: ((context) {
-                                          firestoreService
-                                              .deleteNotice(snapshot.data!.docs[index].id);
+                                          firestoreService.deleteNotice(
+                                              snapshot.data!.docs[index].id);
                                         }),
-                                        backgroundColor: const Color(0xFFFE4A49),
+                                        backgroundColor:
+                                            const Color(0xFFFE4A49),
                                         foregroundColor: Colors.white,
                                         icon: Icons.delete,
                                         label: 'Delete',
@@ -85,7 +87,9 @@ class _AdmNoticeState extends State<AdmNotice> {
                                     ],
                                   ),
                                   child: ListTile(
-                                    title: GetNotice(documentId: snapshot.data!.docs[index].id),
+                                    title: GetNotice(
+                                        documentId:
+                                            snapshot.data!.docs[index].id),
                                   ),
                                 ),
                               ),

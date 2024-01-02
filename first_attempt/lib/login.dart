@@ -82,7 +82,7 @@ class _LoginState extends State<Login> {
   }
 
   void _showErrorDialog(String message) {
-    Navigator.of(context).pop();
+    // Navigator.of(context).pop();
     showDialog(
       context: context,
       builder: (context) {
@@ -213,7 +213,7 @@ class _LoginState extends State<Login> {
                               password: _passwordController.text,
                               context: context,
                             );
-                            print(user);
+                            // print(user);
                             if (user != null) {
                               _redirectToRole(user);
                             } else {

@@ -11,6 +11,8 @@ Future createStudent(StudentModel std, email, password) async {
         email: email, password: password);
 
     await collRef
+        // .collection("Class")
+        // .doc(cls)
         .collection("Students")
         .doc(email)
         .set(std.toJson())

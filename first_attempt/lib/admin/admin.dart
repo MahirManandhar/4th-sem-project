@@ -9,6 +9,7 @@ import 'package:first_attempt/admin/update_notice.dart';
 import 'package:first_attempt/calendar.dart';
 
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 
 class Admin extends StatefulWidget {
   final String userId;
@@ -35,24 +36,37 @@ class _StudentState extends State<Admin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(95.0),
-          child: Container(
-            color: const Color.fromRGBO(131, 151, 136, 1),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 25.0),
-              child: AppBar(
-                backgroundColor: const Color.fromRGBO(131, 151, 136, 1),
-                leading: IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const Calendar()));
-                  },
-                  icon: const Icon(Icons.calendar_month_outlined),
-                  selectedIcon: const Icon(Icons.calendar_month),
-                ),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(95.0),
+        child: Container(
+          color: const Color.fromRGBO(131, 151, 136, 1),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 25.0),
+            child: AppBar(
+              backgroundColor: const Color.fromRGBO(131, 151, 136, 1),
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Calendar()));
+                },
+                icon: const Icon(Icons.calendar_month_outlined,
+                    color: Colors.white),
+                selectedIcon:
+                    const Icon(Icons.calendar_month, color: Colors.white),
+              ),
+              actions: [
+                Builder(
+                  builder: (context) => IconButton(
+                    icon: const Icon(Icons.more_vert_outlined,
+                        color: Colors.white),
+                    onPressed: () => Scaffold.of(context).openEndDrawer(),
+                    tooltip:
+                        MaterialLocalizations.of(context).openAppDrawerTooltip,
+                  ),
+            ),
+          ],
                 title: Center(
                     child: ConstrainedBox(
                         constraints: const BoxConstraints.tightFor(
@@ -76,6 +90,7 @@ class _StudentState extends State<Admin> {
           ),
         ),
         endDrawer: Drawer(
+          backgroundColor: Colors.white,
           child: Column(children: [
             DrawerHeader(
                 child: ConstrainedBox(
