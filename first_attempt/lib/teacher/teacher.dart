@@ -27,7 +27,7 @@ class _StudentState extends State<Teacher> {
     super.initState();
     // auth = FirebaseAuth.instance;
     screen = [
-      const TechNotice(),
+      TechNotice(userId: widget.userId, email: widget.email),
       SendNotice(userId: widget.userId, email: widget.email),
       TeacherNotice(userId: widget.userId, email: widget.email),
       const Bus(),
@@ -58,12 +58,23 @@ class _StudentState extends State<Teacher> {
                 selectedIcon:
                     const Icon(Icons.calendar_month, color: Colors.white),
               ),
+              actions: [
+                Builder(
+                  builder: (context) => IconButton(
+                    icon: const Icon(Icons.more_vert_outlined,
+                        color: Colors.white),
+                    onPressed: () => Scaffold.of(context).openEndDrawer(),
+                    tooltip:
+                        MaterialLocalizations.of(context).openAppDrawerTooltip,
+                  ),
+                ),
+              ],
               title: Center(
                   child: ConstrainedBox(
                       constraints:
                           const BoxConstraints.tightFor(width: 150, height: 70),
                       child: const Image(
-                          image: AssetImage('assets/images/logo.png')))),
+                          image: AssetImage('assets/images/logoWhite.png')))),
               // actions: [
               //   IconButton(
               //     onPressed: () {
@@ -81,7 +92,6 @@ class _StudentState extends State<Teacher> {
         ),
       ),
       endDrawer: Drawer(
-       
         backgroundColor: Colors.white,
         child: Column(children: [
           DrawerHeader(
@@ -140,7 +150,7 @@ class _StudentState extends State<Teacher> {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             duration: const Duration(milliseconds: 400),
             tabBackgroundColor: Colors.grey.shade300,
-            tabs: [
+            tabs: const [
               GButton(
                 icon: Icons.home_outlined,
                 text: 'HOME',

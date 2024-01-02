@@ -197,23 +197,23 @@ class Fee extends StatefulWidget {
 
 class _FeeState extends State<Fee> {
   Future<Map<String, dynamic>> searchEmailInStudents(String email) async {
-    QuerySnapshot<Map<String, dynamic>> snapshot =
-        await FirebaseFirestore.instance.collection('Students').get();
-
-    for (var document in snapshot.docs) {
-      QuerySnapshot<Map<String, dynamic>> studentsCollection = await document
-          .reference
-          .collection('students')
-          .where('email', isEqualTo: email)
-          .limit(1)
+    try {
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
+          .instance
+          .collection('Students')
+          .doc(email)
           .get();
 
-      if (studentsCollection.docs.isNotEmpty) {
-        return studentsCollection.docs.first.data() ?? {};
+      if (snapshot.exists) {
+        // print(email);
+        return snapshot.data() ?? {};
+      } else {
+        return {};
       }
+    } catch (e) {
+      print('Error searching for email in Students collection: $e');
+      return {};
     }
-
-    return {};
   }
 
   @override

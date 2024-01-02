@@ -33,13 +33,8 @@ class _NoticeState extends State<Notice> {
         .get();
 
     if (doc.exists) {
-      print('hiiiiiii');
-      // return doc.docs.first.data() ?? {};
-      // String firstName = doc.docs.data()!['Name.First']; //['First'];
-      // String lastName = doc.data()!['Name.Last'];
-      //  String className = doc.data()!['class'];
-      String className = doc.data()!['class'];
-      print('$className');
+      String className = doc.data()!['Class'];
+      print(className);
       return className;
     } else {
       return '';
@@ -87,10 +82,10 @@ class _NoticeState extends State<Notice> {
 //         }
 
                       if (snapshot.data!.docs.isEmpty) {
-                        return Center(
+                        return const Center(
                           child: Text(
                             'No notices received',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontFamily: 'Arima',
                               fontSize: 40,
                               color: Color.fromRGBO(53, 79, 63, 100),

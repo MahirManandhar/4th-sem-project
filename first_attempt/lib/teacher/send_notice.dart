@@ -34,9 +34,10 @@ class _SendNoticeState extends State<SendNotice> {
         .get();
 
     if (doc.exists) {
-      String firstName = doc.data()!['Name.First']; //['First'];
-      String lastName = doc.data()!['Name.Last'];
-      String name = '$firstName $lastName';
+      String firstName = doc.data()!['Name First']; //['First'];
+      String midName = doc.data()!['Name Middle'];
+      String lastName = doc.data()!['Name Last'];
+      String name = '$firstName $midName $lastName';
       return name;
     } else {
       return '';
@@ -80,10 +81,10 @@ class _SendNoticeState extends State<SendNotice> {
                       }
 
                       if (snapshot.data!.docs.isEmpty) {
-                        return Center(
+                        return const Center(
                           child: Text(
                             'No notices sent yet.',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontFamily: 'Arima',
                               fontSize: 40,
                               color: Color.fromRGBO(53, 79, 63, 100),

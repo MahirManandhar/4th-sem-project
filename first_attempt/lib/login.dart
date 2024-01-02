@@ -4,7 +4,6 @@ import 'package:first_attempt/student/student.dart';
 import 'package:first_attempt/teacher/teacher.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -83,7 +82,7 @@ class _LoginState extends State<Login> {
   }
 
   void _showErrorDialog(String message) {
-    Navigator.of(context).pop();
+    // Navigator.of(context).pop();
     showDialog(
       context: context,
       builder: (context) {
@@ -195,7 +194,10 @@ class _LoginState extends State<Login> {
                           const BoxConstraints.tightFor(width: 160, height: 40),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          foregroundColor: const Color.fromRGBO(255, 255, 255, 0.612), backgroundColor: const Color.fromRGBO(94, 110, 100, 100),
+                          foregroundColor:
+                              const Color.fromRGBO(255, 255, 255, 0.612),
+                          backgroundColor:
+                              const Color.fromRGBO(94, 110, 100, 100),
                           elevation: 10,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
@@ -211,7 +213,7 @@ class _LoginState extends State<Login> {
                               password: _passwordController.text,
                               context: context,
                             );
-                            print(user);
+                            // print(user);
                             if (user != null) {
                               _redirectToRole(user);
                             } else {

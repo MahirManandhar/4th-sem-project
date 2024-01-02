@@ -6,6 +6,7 @@ import 'package:first_attempt/student/fee.dart';
 import 'package:first_attempt/student/notice.dart';
 import 'package:first_attempt/student/profile.dart';
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 
 class Student extends StatefulWidget {
   final String userId;
@@ -36,113 +37,183 @@ class _StudentState extends State<Student> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(95.0),
-          child: Container(
-            color: const Color.fromRGBO(131, 151, 136, 1),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 25.0),
-              child: AppBar(
-                backgroundColor: const Color.fromRGBO(131, 151, 136, 1),
-                leading: IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const Calendar()));
-                  },
-                  icon: const Icon(Icons.calendar_month_outlined),
-                  selectedIcon: const Icon(Icons.calendar_month),
-                ),
-                title: Center(
-                    child: ConstrainedBox(
-                        constraints: const BoxConstraints.tightFor(
-                            width: 150, height: 70),
-                        child: const Image(
-                            image: AssetImage('assets/images/logo.png')))),
-                // actions: [
-                //   IconButton(
-                //     onPressed: () {
-                //       Navigator.push(
-                //           context,
-                //           MaterialPageRoute(
-                //               builder: (context) => const LogOut()));
-                //     },
-                //     icon: const Icon(Icons.more_vert_outlined),
-                //     selectedIcon: const Icon(Icons.more_vert),
-                //   )
-                // ],
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(95.0),
+        child: Container(
+          color: const Color.fromRGBO(131, 151, 136, 1),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 25.0),
+            child: AppBar(
+              backgroundColor: const Color.fromRGBO(131, 151, 136, 1),
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Calendar()));
+                },
+                icon: const Icon(Icons.calendar_month_outlined,
+                    color: Colors.white),
+                selectedIcon:
+                    const Icon(Icons.calendar_month, color: Colors.white),
               ),
+              actions: [
+                Builder(
+                  builder: (context) => IconButton(
+                    icon: const Icon(Icons.more_vert_outlined,
+                        color: Colors.white),
+                    onPressed: () => Scaffold.of(context).openEndDrawer(),
+                    tooltip:
+                        MaterialLocalizations.of(context).openAppDrawerTooltip,
+                  ),
+                ),
+              ],
+              title: Center(
+                  child: ConstrainedBox(
+                      constraints:
+                          const BoxConstraints.tightFor(width: 150, height: 70),
+                      child: const Image(
+                          image: AssetImage('assets/images/logoWhite.png')))),
+              // actions: [
+              //   IconButton(
+              //     onPressed: () {
+              //       Navigator.push(
+              //           context,
+              //           MaterialPageRoute(
+              //               builder: (context) => const LogOut()));
+              //     },
+              //     icon: const Icon(Icons.more_vert_outlined),
+              //     selectedIcon: const Icon(Icons.more_vert),
+              //   )
+              // ],
             ),
           ),
         ),
-        endDrawer: Drawer(
-          child: Column(children: [
-            DrawerHeader(
-                child: ConstrainedBox(
-                    constraints:
-                        const BoxConstraints.tightFor(width: 150, height: 70),
-                    child: const Image(
-                        image: AssetImage('assets/images/logo.png')))),
-            ListTile(
-              leading: const Icon(Icons.info),
-              title: const Text("ABOUT US"),
-              onTap: () => {
-                Navigator.pop(context),
-                Navigator.pushNamed(context, '/aboutus'),
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text("SETTINGS"),
-              onTap: () => {
-                Navigator.pop(context),
-                // Navigator.pushNamed(context, '/settings', arguments: {'userId': userId, 'email': email})
-                Navigator.pushNamed(
-                  context,
-                  '/settings',
-                  arguments: {'userId': widget.userId, 'email': widget.email},
-                )
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text("LOGOUT"),
-              onTap: () => _showLogoutConfirmationDialog(context),
-            ),
-          ]),
+      ),
+      endDrawer: Drawer(
+        child: Column(children: [
+          DrawerHeader(
+              child: ConstrainedBox(
+                  constraints:
+                      const BoxConstraints.tightFor(width: 150, height: 70),
+                  child: const Image(
+                      image: AssetImage('assets/images/logo.png')))),
+          ListTile(
+            leading: const Icon(Icons.info),
+            title: const Text("ABOUT US"),
+            onTap: () => {
+              Navigator.pop(context),
+              Navigator.pushNamed(context, '/aboutus'),
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.settings),
+            title: const Text("SETTINGS"),
+            onTap: () => {
+              Navigator.pop(context),
+              // Navigator.pushNamed(context, '/settings', arguments: {'userId': userId, 'email': email})
+              Navigator.pushNamed(
+                context,
+                '/settings',
+                arguments: {'userId': widget.userId, 'email': widget.email},
+              )
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: const Text("LOGOUT"),
+            onTap: () => _showLogoutConfirmationDialog(context),
+          ),
+        ]),
+      ),
+      body: screen[index],
+      // bottomNavigationBar: NavigationBarTheme(
+      //   data: const NavigationBarThemeData(
+      //       indicatorColor: Color.fromRGBO(131, 151, 136, 1)),
+      //   child: NavigationBar(
+      //       backgroundColor: const Color.fromRGBO(131, 151, 136, 1),
+      //       labelBehavior:
+      //           NavigationDestinationLabelBehavior.onlyShowSelected,
+      //       animationDuration: const Duration(seconds: 1),
+      //       selectedIndex: index,
+      //       onDestinationSelected: (index) =>
+      //           setState(() => this.index = index),
+      //       destinations: const [
+      //         NavigationDestination(
+      //             icon: Icon(Icons.home_outlined),
+      //             selectedIcon: Icon(Icons.home),
+      //             label: 'Home'),
+      //         NavigationDestination(
+      //             icon: Icon(Icons.attach_money_outlined),
+      //             selectedIcon: Icon(Icons.attach_money),
+      //             label: 'Fee'),
+      //         NavigationDestination(
+      //             icon: Icon(Icons.bus_alert_outlined),
+      //             selectedIcon: Icon(Icons.bus_alert),
+      //             label: 'Bus'),
+      //         NavigationDestination(
+      //             icon: Icon(Icons.person_outline_outlined),
+      //             selectedIcon: Icon(Icons.person),
+      //             label: 'Profile'),
+      //       ]),
+      // )
+      bottomNavigationBar: Container(
+        height: 90,
+        color: const Color.fromRGBO(131, 151, 136, 1),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: GNav(
+            color: Colors.white,
+            gap: 2,
+            activeColor: const Color.fromRGBO(131, 151, 136, 1),
+            iconSize: 23,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            duration: const Duration(milliseconds: 400),
+            tabBackgroundColor: Colors.grey.shade300,
+            tabs: const [
+              GButton(
+                icon: Icons.home_outlined,
+                text: 'HOME',
+                textStyle: TextStyle(
+                  fontSize: 10,
+                  fontFamily: 'Quicksand',
+                  color: Color.fromRGBO(131, 151, 136, 1),
+                ), // Change the label color
+              ),
+              GButton(
+                icon: Icons.attach_money_outlined,
+                text: 'FEE',
+                textStyle: TextStyle(
+                  fontSize: 10,
+                  fontFamily: 'Quicksand',
+                  color: Color.fromRGBO(131, 151, 136, 1),
+                ), // Change the label color
+              ),
+              GButton(
+                icon: Icons.bus_alert_outlined,
+                text: 'BUS',
+                textStyle: TextStyle(
+                  fontSize: 10,
+                  fontFamily: 'Quicksand',
+                  color: Color.fromRGBO(131, 151, 136, 1),
+                ), // Change the label color
+              ),
+              GButton(
+                icon: Icons.person_outline_outlined,
+                text: 'PROFILE',
+                textStyle: TextStyle(
+                  fontSize: 10,
+                  fontFamily: 'Quicksand',
+                  color: Color.fromRGBO(131, 151, 136, 1),
+                ), // Change the label color
+              ),
+            ],
+            selectedIndex: index,
+            onTabChange: (index) => setState(() => this.index = index),
+          ),
         ),
-        body: screen[index],
-        bottomNavigationBar: NavigationBarTheme(
-          data: const NavigationBarThemeData(
-              indicatorColor: Color.fromRGBO(131, 151, 136, 1)),
-          child: NavigationBar(
-              backgroundColor: const Color.fromRGBO(131, 151, 136, 1),
-              labelBehavior:
-                  NavigationDestinationLabelBehavior.onlyShowSelected,
-              animationDuration: const Duration(seconds: 1),
-              selectedIndex: index,
-              onDestinationSelected: (index) =>
-                  setState(() => this.index = index),
-              destinations: const [
-                NavigationDestination(
-                    icon: Icon(Icons.home_outlined),
-                    selectedIcon: Icon(Icons.home),
-                    label: 'Home'),
-                NavigationDestination(
-                    icon: Icon(Icons.attach_money_outlined),
-                    selectedIcon: Icon(Icons.attach_money),
-                    label: 'Fee'),
-                NavigationDestination(
-                    icon: Icon(Icons.bus_alert_outlined),
-                    selectedIcon: Icon(Icons.bus_alert),
-                    label: 'Bus'),
-                NavigationDestination(
-                    icon: Icon(Icons.person_outline_outlined),
-                    selectedIcon: Icon(Icons.person),
-                    label: 'Profile'),
-              ]),
-        ));
+      ),
+    );
   }
 }
 

@@ -5,9 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
-
 class TechNotice extends StatefulWidget {
-  const TechNotice({super.key});
+  final String email;
+  final String userId;
+
+  const TechNotice({super.key, required this.email, required this.userId});
 
   @override
   State<TechNotice> createState() => _TechNoticeState();
@@ -15,32 +17,28 @@ class TechNotice extends StatefulWidget {
 
 class _TechNoticeState extends State<TechNotice> {
   Future<void> _handleRefresh() async {
-    return await Future.delayed(const Duration(seconds: 0));
+    return await Future.delayed(const Duration(seconds: 2));
   }
 
   final user = FirebaseAuth.instance.currentUser;
 
   List<String> docIDs = [];
 
-  Future getDocId() async {
-    await FirebaseFirestore.instance
+  Future<String> getClass(String email) async {
+    DocumentSnapshot<Map<String, dynamic>> doc = await FirebaseFirestore
+        .instance
+        .collection('Students')
+        .doc(email)
+        .get();
+    return '';
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getDocId() async* {
+    yield* FirebaseFirestore.instance
         .collection('Notices')
-        .where('Class', whereIn: ['All', 'Teacher'])
+        .where('Class', whereIn: ['Teacher', 'All'])
         .orderBy('Timestamp', descending: true)
-        .get()
-        .then((snapshot) => snapshot.docs.forEach((document) {
-              print(document.reference);
-              docIDs.add(document.reference.id);
-            }));
-    //         await FirebaseFirestore.instance
-    // .collection('Notices')
-    // .where('Name', isEqualTo: 'TEACHER')
-    // .orderBy('Timestamp', descending: true)
-    // .get()
-    // .then((snapshot) => snapshot.docs.forEach((document) {
-    //       print(document.reference);
-    //       docIDs.add(document.reference.id);
-    //     }));
+        .snapshots();
   }
 
   @override
@@ -55,7 +53,7 @@ class _TechNoticeState extends State<TechNotice> {
         showChildOpacityTransition: false,
         child: Center(
           child: Column(
-            children: <Widget>[
+            children: [
               const Text('NOTICES',
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -63,11 +61,31 @@ class _TechNoticeState extends State<TechNotice> {
                       fontFamily: 'Arima',
                       fontSize: 45)),
               Expanded(
-                child: FutureBuilder(
-                    future: getDocId(),
+                child: StreamBuilder(
+                    stream: getDocId(),
                     builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+
+// if (!snapshot.hasData || snapshot.data!.isEmpty) {
+//           return const Text('User not found');
+//         }
+
+                      if (snapshot.data!.docs.isEmpty) {
+                        return const Center(
+                          child: Text(
+                            'No notices received',
+                            style: TextStyle(
+                              fontFamily: 'Arima',
+                              fontSize: 40,
+                              color: Color.fromRGBO(53, 79, 63, 100),
+                            ),
+                          ),
+                        );
+                      }
                       return ListView.builder(
-                          itemCount: docIDs.length,
+                          itemCount: snapshot.data!.docs.length,
                           itemBuilder: (context, index) {
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -78,7 +96,9 @@ class _TechNoticeState extends State<TechNotice> {
                                       const Color.fromRGBO(217, 217, 217, 100),
                                 ),
                                 child: ListTile(
-                                  title: GetNotice(documentId: docIDs[index]),
+                                  title: GetNotice(
+                                      documentId:
+                                          snapshot.data!.docs[index].id),
                                 ),
                               ),
                             );

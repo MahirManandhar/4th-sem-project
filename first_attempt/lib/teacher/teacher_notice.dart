@@ -35,7 +35,9 @@ class _TeacherNoticeState extends State<TeacherNotice> {
                 actions: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: const Color.fromRGBO(255, 255, 255, 0.612), backgroundColor: const Color.fromRGBO(94, 110, 100, 100),
+                      foregroundColor:
+                          const Color.fromRGBO(255, 255, 255, 0.612),
+                      backgroundColor: const Color.fromRGBO(94, 110, 100, 100),
                       elevation: 10,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
@@ -59,7 +61,6 @@ class _TeacherNoticeState extends State<TeacherNotice> {
     } else {
       addNotices(_noticeController.text.trim(), _classController.text.trim(),
           widget.email);
-
     }
 
     _noticeController.clear();
@@ -76,72 +77,102 @@ class _TeacherNoticeState extends State<TeacherNotice> {
 //   }
 
   Future<void> addNotices(String notice, String Class, String email) async {
-    try {
-      // Load the name before adding the notice
-      DocumentSnapshot<Map<String, dynamic>> doc = await FirebaseFirestore
-          .instance
-          .collection('Teachers')
-          .doc(email)
-          .get();
+    // Load the name before adding the notice
+    DocumentSnapshot<Map<String, dynamic>> doc = await FirebaseFirestore
+        .instance
+        .collection('Teachers')
+        .doc(email)
+        .get();
 
+    if (doc.exists) {
+      String firstName = doc.data()!['Name First']; //['First'];
+      String midName = doc.data()!['Name Middle'];
+      String lastName = doc.data()!['Name Last']; //['Last'];
 
-      if (doc.exists) {
+      // Assuming you have a 'Notices' collection to store notices
+      await FirebaseFirestore.instance.collection('Notices').add({
+        'Notice': notice,
+        'Name': '$firstName $midName $lastName',
+        'Date': DateFormat('yyyy-MM-dd').format(DateTime.now()),
+        'Class': Class,
+        'Timestamp': FieldValue.serverTimestamp(),
+      });
 
-        String firstName = doc.data()!['Name.First']; //['First'];
-        String lastName = doc.data()!['Name.Last']; //['Last'];
-        
-
-        // Assuming you have a 'Notices' collection to store notices
-        await FirebaseFirestore.instance.collection('Notices').add({
-          'Notice': notice,
-          'Name': '$firstName $lastName',
-          'Date': DateFormat('yyyy-MM-dd').format(DateTime.now()),
-          'Class': Class,
-          'Timestamp': FieldValue.serverTimestamp(),
-        });
-
-        print('Notice added successfully');
-
-        showDialog(
-          context: context,
-          builder: (context) {
-            return Container(
-              child: AlertDialog(
-                  title: const Text("Notice Sent!!!"),
-                  titleTextStyle: const TextStyle(
-                    fontFamily: 'FiraSans',
-                    color: Color.fromRGBO(53, 79, 63, 100),
-                    fontSize: 25,
-                  ),
-                  actions: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: const Color.fromRGBO(255, 255, 255, 0.612), backgroundColor: const Color.fromRGBO(94, 110, 100, 100),
-                        elevation: 10,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text(
-                        'Done',
-                        style: TextStyle(
-                          fontFamily: 'FiraSans',
-                          fontSize: 25,
-                        ),
+      showDialog(
+        context: context,
+        builder: (context) {
+          return Container(
+            child: AlertDialog(
+                title: const Text("Notice Sent!!!"),
+                titleTextStyle: const TextStyle(
+                  fontFamily: 'FiraSans',
+                  color: Color.fromRGBO(53, 79, 63, 100),
+                  fontSize: 25,
+                ),
+                actions: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor:
+                          const Color.fromRGBO(255, 255, 255, 0.612),
+                      backgroundColor: const Color.fromRGBO(94, 110, 100, 100),
+                      elevation: 10,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
                       ),
                     ),
-                  ]),
-            );
-          },
-        );
-      } else {
-        print('Document does not exist');
-      }
-    } catch (e) {
-      print('Error adding notice: $e');
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      'Done',
+                      style: TextStyle(
+                        fontFamily: 'FiraSans',
+                        fontSize: 25,
+                      ),
+                    ),
+                  ),
+                ]),
+          );
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return Container(
+            child: AlertDialog(
+                title: const Text("Error Notice Not Sent!!!"),
+                titleTextStyle: const TextStyle(
+                  fontFamily: 'FiraSans',
+                  color: Color.fromRGBO(53, 79, 63, 100),
+                  fontSize: 25,
+                ),
+                actions: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor:
+                          const Color.fromRGBO(255, 255, 255, 0.612),
+                      backgroundColor: const Color.fromRGBO(94, 110, 100, 100),
+                      elevation: 10,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      'Done',
+                      style: TextStyle(
+                        fontFamily: 'FiraSans',
+                        fontSize: 25,
+                      ),
+                    ),
+                  ),
+                ]),
+          );
+        },
+      );
     }
   }
 
@@ -264,7 +295,8 @@ class _TeacherNoticeState extends State<TeacherNotice> {
                     const BoxConstraints.tightFor(width: 160, height: 40),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    foregroundColor: const Color.fromRGBO(255, 255, 255, 0.612), backgroundColor: const Color.fromRGBO(94, 110, 100, 100),
+                    foregroundColor: const Color.fromRGBO(255, 255, 255, 0.612),
+                    backgroundColor: const Color.fromRGBO(94, 110, 100, 100),
                     elevation: 10,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
