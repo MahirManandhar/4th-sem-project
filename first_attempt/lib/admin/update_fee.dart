@@ -236,24 +236,58 @@ class UpdateFeeState extends State<UpdateFee> {
     }
   }
 
+  // void _loadEcaOptions() async {
+  //   if (selectedClass != null) {
+  //     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+  //         .collection('Fees')
+  //         .doc(selectedClass)
+  //         .collection('ECAs')
+  //         .get();
+
+  //     setState(() {
+  //       ecaOptions =
+  //           querySnapshot.docs.map((doc) => doc['name'] as String).toList();
+  //       ecaFees = Map.fromEntries(
+  //         querySnapshot.docs
+  //             .map((doc) => MapEntry(doc['name'] as String, doc['fee'] as int)),
+  //       );
+  //     });
+  //   }
+  // }
+
+
   void _loadEcaOptions() async {
-    if (selectedClass != null) {
+  if (selectedClass != null) {
+    try {
+      // Assuming your ECAs are stored in a subcollection 'ECAs' under the selectedClass
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('Fees')
           .doc(selectedClass)
           .collection('ECAs')
           .get();
 
+
+DocumentSnapshot<Map<String, dynamic>> doc = await FirebaseFirestore
+          .instance
+          .collection('Fees')
+          .doc(selectedClass)
+          .get();
+
+
       setState(() {
         ecaOptions =
-            querySnapshot.docs.map((doc) => doc['name'] as String).toList();
+            querySnapshot.docs.map((doc) => ['activities'] as String).toList();
         ecaFees = Map.fromEntries(
           querySnapshot.docs
-              .map((doc) => MapEntry(doc['name'] as String, doc['fee'] as int)),
+              .map((doc) => MapEntry(doc['activities'] as String, doc['fees'] as int)),
         );
       });
+    } catch (e) {
+      print('Error loading ECA options: $e');
     }
   }
+}
+
 
   void _loadExamAndTuitionFees() async {
     if (selectedClass != null) {
@@ -394,11 +428,6 @@ int tuitionFeesValue = tuitionFees ?? 0;
 
 num totalFees = examFeesValue + tuitionFeesValue + totalEcaFees;
 
-
-// int examFees = int.tryParse(examFeesController.text);
-// int tuitionFees =int.tryParse(tuitionFeesController.text);
-//             num totalFees = examFees + tuitionFees + totalEcaFees;
-    // totalFeesController.text = totalFees.toString();
 
 
 
