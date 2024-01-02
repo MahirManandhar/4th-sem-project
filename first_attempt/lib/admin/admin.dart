@@ -50,9 +50,19 @@ class _StudentState extends State<Admin> {
                         MaterialPageRoute(
                             builder: (context) => const Calendar()));
                   },
-                  icon: const Icon(Icons.calendar_month_outlined),
-                  selectedIcon: const Icon(Icons.calendar_month),
+                  icon: const Icon(Icons.calendar_month_outlined,color:Colors.white),
+                  selectedIcon: const Icon(Icons.calendar_month,color:Colors.white),
+                  
                 ),
+                actions: [
+            Builder(
+              builder: (context) => IconButton(
+                    icon: Icon(Icons.more_vert_outlined,color: Colors.white),
+                    onPressed: () => Scaffold.of(context).openEndDrawer(),
+                    tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+                  ),
+            ),
+          ],
                 title: Center(
                     child: ConstrainedBox(
                         constraints: const BoxConstraints.tightFor(
@@ -76,6 +86,7 @@ class _StudentState extends State<Admin> {
           ),
         ),
         endDrawer: Drawer(
+          backgroundColor: Colors.white,
           child: Column(children: [
             DrawerHeader(
                 child: ConstrainedBox(
