@@ -3,15 +3,34 @@ import 'package:first_attempt/admin/update_details/update_details.dart';
 import 'package:flutter/material.dart';
 
 final collRef = FirebaseFirestore.instance;
-Future updateTeacher(TeacherModel tch, email) async {
+Future updateTeacher(TeacherModel tch, email, BuildContext context) async {
   await collRef
       .collection('Teachers')
       .doc(email)
       .update(tch.toJson())
-      .whenComplete(() => const SnackBar(
-            content: Text("Updated successfully"),
-            duration: Duration(seconds: 3),
-          ));
+      .whenComplete(() {
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      backgroundColor: Colors.green,
+      content: Center(
+        child: Text("Updated successfully",
+            style: TextStyle(fontFamily: 'FiraSans')),
+      ),
+      duration: Duration(seconds: 3),
+    ));
+  });
+}
+
+Future deleteTeacher(email, BuildContext context) async {
+  await collRef.collection('Teachers').doc(email).delete().whenComplete(() {
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      backgroundColor: Colors.green,
+      content: Center(
+        child: Text("Deleted successfully",
+            style: TextStyle(fontFamily: 'FiraSans')),
+      ),
+      duration: Duration(seconds: 3),
+    ));
+  });
 }
 
 class UpdateTeacher extends StatefulWidget {
@@ -181,7 +200,7 @@ class _UpdateTeacherState extends State<UpdateTeacher> {
                           phoneno: pncontroller.text.trim(),
                           email: econtroller.text.trim(),
                         );
-                        updateTeacher(tch, tch.email);
+                        updateTeacher(tch, tch.email, context);
                       }
                     },
                     icon: const Icon(Icons.upgrade),
@@ -191,7 +210,31 @@ class _UpdateTeacherState extends State<UpdateTeacher> {
                         fontFamily: 'FiraSans',
                         fontSize: 25,
                       ),
-                    ))
+                    )),
+                const SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromRGBO(94, 110, 100, 100),
+                      foregroundColor:
+                          const Color.fromRGBO(255, 255, 255, 0.612),
+                      elevation: 10,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    onPressed: () {
+                      deleteTeacher(econtroller.text.trim(), context);
+                    },
+                    icon: const Icon(Icons.delete_forever),
+                    label: const Text(
+                      'Delete',
+                      style: TextStyle(
+                        fontFamily: 'FiraSans',
+                        fontSize: 25,
+                      ),
+                    )),
               ],
             ),
           ]),

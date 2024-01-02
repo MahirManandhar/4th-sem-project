@@ -12,12 +12,15 @@ Future createStudent(
         email: email, password: password);
 
     await collRef
-        .collection("Students")
+        .collection('Students')
         .doc(email)
         .set(std.toJson())
         .whenComplete(() {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Student added successfully"),
+        backgroundColor: Colors.green,
+        content: Center(
+            child: Text("Student added successfully",
+                style: TextStyle(fontFamily: 'FiraSans'))),
         duration: Duration(seconds: 3),
       ));
     });
@@ -85,7 +88,24 @@ class _AddStudentState extends State<AddStudent> {
                     backgroundColor: Colors.grey,
                     radius: 70,
                     child: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return const AlertDialog(
+                                  content: Padding(
+                                    padding: EdgeInsets.all(15),
+                                    child: Text(
+                                      "Sorry, this feauture is currently unavailable.",
+                                      style: TextStyle(
+                                        fontFamily: 'FiraSans',
+                                        fontSize: 25,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              });
+                        },
                         icon: const Icon(
                           Icons.add_a_photo,
                           color: Colors.white,

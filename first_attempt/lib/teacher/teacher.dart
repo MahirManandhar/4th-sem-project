@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:first_attempt/calendar/calendar.dart';
+import 'package:first_attempt/calendar.dart';
 import 'package:first_attempt/student/bus.dart';
 import 'package:first_attempt/teacher/teacher_view_notice.dart';
 import 'package:first_attempt/teacher/teacher_notice.dart';
@@ -41,54 +41,51 @@ class _StudentState extends State<Teacher> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(125.0),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 25),
-            child: AppBar(
-              backgroundColor: const Color.fromRGBO(131, 151, 136, 1),
-              leading: IconButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const Calendar()));
-                },
-                icon: const Icon(Icons.calendar_month_outlined,
-                    color: Colors.white),
-                selectedIcon:
-                    const Icon(Icons.calendar_month, color: Colors.white),
-              ),
-              actions: [
-                Builder(
-                  builder: (context) => IconButton(
-                    icon: const Icon(Icons.more_vert_outlined,
-                        color: Colors.white),
-                    onPressed: () => Scaffold.of(context).openEndDrawer(),
-                    tooltip:
-                        MaterialLocalizations.of(context).openAppDrawerTooltip,
-                  ),
-                ),
-              ],
-              title: Center(
-                  child: ConstrainedBox(
-                      constraints:
-                          const BoxConstraints.tightFor(width: 150, height: 70),
-                      child: const Image(
-                          image: AssetImage('assets/images/logoWhite.png')))),
-              // actions: [
-              //   IconButton(
-              //     onPressed: () {
-              //       Navigator.push(
-              //           context,
-              //           MaterialPageRoute(
-              //               builder: (context) => const LogOut()));
-              //     },
-              //     icon: const Icon(Icons.more_vert_outlined),
-              //     selectedIcon: const Icon(Icons.more_vert),
-              //   )
-              // ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 25),
+          child: AppBar(
+            backgroundColor: const Color.fromRGBO(131, 151, 136, 1),
+            leading: IconButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Calendar()));
+              },
+              icon: const Icon(Icons.calendar_month_outlined,
+                  color: Colors.white),
+              selectedIcon:
+                  const Icon(Icons.calendar_month, color: Colors.white),
             ),
+            actions: [
+              Builder(
+                builder: (context) => IconButton(
+                  icon:
+                      const Icon(Icons.more_vert_outlined, color: Colors.white),
+                  onPressed: () => Scaffold.of(context).openEndDrawer(),
+                  tooltip:
+                      MaterialLocalizations.of(context).openAppDrawerTooltip,
+                ),
+              ),
+            ],
+            title: Center(
+                child: ConstrainedBox(
+                    constraints:
+                        const BoxConstraints.tightFor(width: 150, height: 70),
+                    child: const Image(
+                        image: AssetImage('assets/images/logoWhite.png')))),
+            // actions: [
+            //   IconButton(
+            //     onPressed: () {
+            //       Navigator.push(
+            //           context,
+            //           MaterialPageRoute(
+            //               builder: (context) => const LogOut()));
+            //     },
+            //     icon: const Icon(Icons.more_vert_outlined),
+            //     selectedIcon: const Icon(Icons.more_vert),
+            //   )
+            // ],
           ),
-        
+        ),
       ),
       endDrawer: Drawer(
         backgroundColor: Colors.white,

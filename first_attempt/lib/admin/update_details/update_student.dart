@@ -3,15 +3,34 @@ import 'package:first_attempt/admin/update_details/update_details.dart';
 import 'package:flutter/material.dart';
 
 final collRef = FirebaseFirestore.instance;
-Future updateStudent(StudentModel std, email) async {
+Future updateStudent(StudentModel std, email, BuildContext context) async {
   await collRef
       .collection('Students')
       .doc(email)
       .update(std.toJson())
-      .whenComplete(() => const SnackBar(
-            content: Text("Updated successfully"),
-            duration: Duration(seconds: 3),
-          ));
+      .whenComplete(() {
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      backgroundColor: Colors.green,
+      content: Center(
+        child: Text("Updated successfully",
+            style: TextStyle(fontFamily: 'FiraSans')),
+      ),
+      duration: Duration(seconds: 3),
+    ));
+  });
+}
+
+Future deleteStudent(email, BuildContext context) async {
+      await collRef.collection('Students').doc(email).delete().whenComplete(() {
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      backgroundColor: Colors.green,
+      content: Center(
+        child: Text("Deleted successfully",
+            style: TextStyle(fontFamily: 'FiraSans')),
+      ),
+      duration: Duration(seconds: 3),
+    ));
+  });
 }
 
 class UpdateStudent extends StatefulWidget {
@@ -196,12 +215,37 @@ class _UpdateStudentState extends State<UpdateStudent> {
                             email: econtroller.text.trim(),
                           );
 
-                          updateStudent(std, std.email);
+                          updateStudent(std, std.email, context);
                         }
                       },
                       icon: const Icon(Icons.upgrade),
                       label: const Text(
                         'Update',
+                        style: TextStyle(
+                          fontFamily: 'FiraSans',
+                          fontSize: 25,
+                        ),
+                      )),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            const Color.fromRGBO(94, 110, 100, 100),
+                        foregroundColor:
+                            const Color.fromRGBO(255, 255, 255, 0.612),
+                        elevation: 10,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      onPressed: () {
+                        deleteStudent(econtroller.text.trim(), context);
+                      },
+                      icon: const Icon(Icons.delete_forever),
+                      label: const Text(
+                        'Delete',
                         style: TextStyle(
                           fontFamily: 'FiraSans',
                           fontSize: 25,

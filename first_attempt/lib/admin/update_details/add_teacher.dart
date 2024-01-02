@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 
 FirebaseAuth _auth = FirebaseAuth.instance;
 final collRef = FirebaseFirestore.instance;
-Future createTeacher(TeacherModel tch, email, password) async {
+Future createTeacher(
+    TeacherModel tch, email, password, BuildContext context) async {
   try {
     UserCredential credential = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
@@ -14,10 +15,15 @@ Future createTeacher(TeacherModel tch, email, password) async {
         .collection('Teachers')
         .doc(email)
         .set(tch.toJson())
-        .whenComplete(() => const SnackBar(
-              content: Text("Teacher added successfully"),
-              duration: Duration(seconds: 3),
-            ));
+        .whenComplete(() {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        backgroundColor: Colors.green,
+        content: Center(
+            child: Text("Teacher added successfully",
+                style: TextStyle(fontFamily: 'FiraSans'))),
+        duration: Duration(seconds: 3),
+      ));
+    });
 
     return credential.user;
   } catch (e) {
@@ -80,7 +86,24 @@ class _AddTeacherState extends State<AddTeacher> {
                     backgroundColor: Colors.grey,
                     radius: 70,
                     child: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return const AlertDialog(
+                                  content: Padding(
+                                    padding: EdgeInsets.all(15),
+                                    child: Text(
+                                      "Sorry, this feauture is currently unavailable.",
+                                      style: TextStyle(
+                                        fontFamily: 'FiraSans',
+                                        fontSize: 25,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              });
+                        },
                         icon: const Icon(
                           Icons.add_a_photo,
                           color: Colors.white,
@@ -128,7 +151,7 @@ class _AddTeacherState extends State<AddTeacher> {
                                 );
 
                                 createTeacher(
-                                    tch, tch.email, pwcontroller.toString());
+                                    tch, tch.email, pwcontroller.text, context);
                               }
                             },
                             icon: const Icon(
