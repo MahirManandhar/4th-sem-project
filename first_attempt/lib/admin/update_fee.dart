@@ -314,14 +314,16 @@ class UpdateFeeState extends State<UpdateFee> {
       if (selectedClass != null) {
         QuerySnapshot querySnapshot = await FirebaseFirestore.instance
             .collection('Students')
-            .doc(selectedClass)
-            .collection('students')
+            // .doc(selectedClass)
+            // .collection('students')
+            .where('Class', isEqualTo: selectedClass)
             .get();
 
         setState(() {
           studentList = querySnapshot.docs
               .map((doc) => {
-                    'name': '${doc['fn']} ${doc['mn']} ${doc['ln']}',
+                    'name':
+                        '${doc['Name First']} ${doc['Name Middle']} ${doc['Name Last']}',
                     'email': doc.id, //email ni store garne
                   })
               .toList();
@@ -423,11 +425,6 @@ class UpdateFeeState extends State<UpdateFee> {
 
         num totalFees = examFeesValue + tuitionFeesValue + totalEcaFees;
 
-// int examFees = int.tryParse(examFeesController.text);
-// int tuitionFees =int.tryParse(tuitionFeesController.text);
-//             num totalFees = examFees + tuitionFees + totalEcaFees;
-        // totalFeesController.text = totalFees.toString();
-
         print('byeeeeeeeeeee');
 
         // Update fees for each student
@@ -482,6 +479,3 @@ class UpdateFeeState extends State<UpdateFee> {
     );
   }
 }
-
-
-
