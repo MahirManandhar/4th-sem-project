@@ -231,20 +231,20 @@ class _FeeState extends State<Fee> {
 
         var studentData = snapshot.data!;
 
-        if (!studentData.containsKey('fn')) {
+        if (!studentData.containsKey('Name First')) {
           print('Name not found for the user: ${widget.email}');
           return const Text('Name not found for the user');
         }
 
-        String studentName = studentData['fn'];
+        String studentName = studentData['Name First'];
         print(studentName);
 
-        if (!studentData.containsKey('class')) {
+        if (!studentData.containsKey('Class')) {
           print('Class information not found for the user: ${widget.email}');
           return const Text('Class information not found for the user');
         }
 
-        String studentClass = studentData['class'];
+        String studentClass = studentData['Class'];
         print(studentClass);
 
         return FutureBuilder<DocumentSnapshot>(
@@ -293,6 +293,164 @@ class _FeeState extends State<Fee> {
                 ? 'Payment Confirmed'
                 : (isPaidStudent ? 'Requested' : 'Paid');
 
+            // return Scaffold(
+            //   appBar: AppBar(
+            //     title: Text('Fee Details for $studentName'),
+            //   ),
+            //   body: Padding(
+            //     padding: const EdgeInsets.all(16.0),
+            //     child: Column(
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         const Text(
+            //           'Your Bill:',
+            //           style: TextStyle(
+            //             fontWeight: FontWeight.bold,
+            //             fontSize: 20,
+            //           ),
+            //         ),
+            //         const SizedBox(height: 10),
+            //         Column(
+            //           children: [
+            //             Container(
+            //               decoration: BoxDecoration(
+            //                 color: Colors.grey[200],
+            //                 borderRadius: BorderRadius.circular(10.0),
+            //               ),
+            //               padding: const EdgeInsets.all(16.0),
+            //               child: Column(
+            //                 crossAxisAlignment: CrossAxisAlignment.start,
+            //                 children: [
+            //                   Row(
+            //                     mainAxisAlignment:
+            //                         MainAxisAlignment.spaceBetween,
+            //                     children: [
+            //                       const Text(
+            //                         'Exam Fee:',
+            //                         style: TextStyle(
+            //                           fontWeight: FontWeight.bold,
+            //                         ),
+            //                       ),
+            //                       Text(
+            //                         'Rs. $examFee',
+            //                       ),
+            //                     ],
+            //                   ),
+            //                   Row(
+            //                     mainAxisAlignment:
+            //                         MainAxisAlignment.spaceBetween,
+            //                     children: [
+            //                       const Text(
+            //                         'Tuition Fee:',
+            //                         style: TextStyle(
+            //                           fontWeight: FontWeight.bold,
+            //                         ),
+            //                       ),
+            //                       Text(
+            //                         'Rs. $tuitionFee',
+            //                       ),
+            //                     ],
+            //                   ),
+            //                   Row(
+            //                     mainAxisAlignment:
+            //                         MainAxisAlignment.spaceBetween,
+            //                     children: [
+            //                       const Text(
+            //                         'ECA Fee:',
+            //                         style: TextStyle(
+            //                           fontWeight: FontWeight.bold,
+            //                         ),
+            //                       ),
+            //                       Text(
+            //                         'Rs. $ecaFee',
+            //                       ),
+            //                     ],
+            //                   ),
+            //                   const SizedBox(height: 10),
+            //                   Row(
+            //                     mainAxisAlignment:
+            //                         MainAxisAlignment.spaceBetween,
+            //                     children: [
+            //                       const Text(
+            //                         'Total:',
+            //                         style: TextStyle(
+            //                           fontWeight: FontWeight.bold,
+            //                         ),
+            //                       ),
+            //                       Text(
+            //                         'Rs. $totalFee',
+            //                       ),
+            //                     ],
+            //                   ),
+            //                 ],
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //         const SizedBox(height: 10),
+            //         Text(
+            //           'Deadline: ${DateFormat('dd MMMM yyyy').format(deadline)}',
+            //           style: const TextStyle(
+            //             fontWeight: FontWeight.bold,
+            //           ),
+            //         ),
+            //         Text(
+            //           '${remainingDays > 0 ? remainingDays : 'Expired'} days remaining',
+            //           style: const TextStyle(
+            //             fontWeight: FontWeight.bold,
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            //   ElevatedButton(
+            //     onPressed: (isPaidStudent && isPaidAdmin)
+            //         ? null // Button disabled if both are true
+            //         : () {
+            //             showDialog(
+            //               context: context,
+            //               builder: (BuildContext context) {
+            //                 return AlertDialog(
+            //                   title: const Text('Request Admin Confirmation'),
+            //                   content: const Text(
+            //                     'Request the admin to confirm the payment?',
+            //                   ),
+            //                   actions: [
+            //                     TextButton(
+            //                       onPressed: () {
+            //                         Navigator.of(context).pop();
+            //                       },
+            //                       child: const Text('Cancel'),
+            //                     ),
+            //                     TextButton(
+            //                       onPressed: () {
+            //                         FirebaseFirestore.instance
+            //                             .collection('Fees')
+            //                             .doc(studentClass)
+            //                             .collection('Students')
+            //                             .doc(widget.email)
+            //                             .update({
+            //                           'paid_student': true,
+            //                         }).then((_) {
+            //                           Navigator.of(context).pop();
+            //                           setState(() {}); // UI update
+            //                         });
+            //                       },
+            //                       child: const Text('Request'),
+            //                     ),
+            //                   ],
+            //                 );
+            //               },
+            //             );
+            //           },
+            //     child: Text(
+            //       paymentStatus,
+            //       style: const TextStyle(
+            //         color: Color.fromARGB(255, 18, 18, 18),
+            //       ),
+            //     ),
+            //   ),
+            // );
             return Scaffold(
               appBar: AppBar(
                 title: Text('Fee Details for $studentName'),
@@ -302,14 +460,14 @@ class _FeeState extends State<Fee> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Your Bill:',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                        fontSize: 24,
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 16),
                     Container(
                       decoration: BoxDecoration(
                         color: Colors.grey[200],
@@ -379,7 +537,7 @@ class _FeeState extends State<Fee> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 20),
                     Text(
                       'Deadline: ${DateFormat('dd MMMM yyyy').format(deadline)}',
                       style: const TextStyle(
@@ -392,56 +550,55 @@ class _FeeState extends State<Fee> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ],
-                ),
-              ),
-              bottomNavigationBar: BottomAppBar(
-                child: ElevatedButton(
-                  onPressed: (isPaidStudent && isPaidAdmin)
-                      ? null // Button disabled if both are true
-                      : () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text('Request Admin Confirmation'),
-                                content: const Text(
-                                  'Request the admin to confirm the payment?',
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('Cancel'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      FirebaseFirestore.instance
-                                          .collection('Fees')
-                                          .doc(studentClass)
-                                          .collection('Students')
-                                          .doc(widget.email)
-                                          .update({
-                                        'paid_student': true,
-                                      }).then((_) {
-                                        Navigator.of(context).pop();
-                                        setState(() {}); //ui update
-                                      });
-                                    },
-                                    child: const Text('Request'),
-                                  ),
-                                ],
+                    ElevatedButton(
+                      onPressed: (isPaidStudent && isPaidAdmin)
+                          ? null // Button disabled if both are true
+                          : () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text(
+                                        'Request Admin Confirmation'),
+                                    content: const Text(
+                                      'Request the admin to confirm the payment?',
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text('Cancel'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          FirebaseFirestore.instance
+                                              .collection('Fees')
+                                              .doc(studentClass)
+                                              .collection('Students')
+                                              .doc(widget.email)
+                                              .update({
+                                            'paid_student': true,
+                                          }).then((_) {
+                                            Navigator.of(context).pop();
+                                            setState(() {}); // UI update
+                                          });
+                                        },
+                                        child: const Text('Request'),
+                                      ),
+                                    ],
+                                  );
+                                },
                               );
                             },
-                          );
-                        },
-                  child: Text(
-                    paymentStatus,
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 18, 18, 18),
+                      child: Text(
+                        paymentStatus,
+                        style: const TextStyle(
+                          color: Color.fromARGB(255, 18, 18, 18),
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
             );

@@ -217,6 +217,14 @@ class UpdateFeeState extends State<UpdateFee> {
     setState(() {
       ecaOptions.remove(eca);
       ecaFees.remove(eca);
+      // selectedEcasForStudents[student['name']]
+      //                                   ?.remove(eca);
+      //                               if (selectedEcasForStudents[student['name']]
+      //                                       ?.isEmpty ??
+      //                                   false) {
+      //                                 selectedEcasForStudents
+      //                                     .remove(student['name']);
+      //                               }
     });
   }
 
@@ -238,31 +246,49 @@ class UpdateFeeState extends State<UpdateFee> {
 
   void _loadEcaOptions() async {
     if (selectedClass != null) {
-      try {
-        // Assuming your ECAs are stored in a subcollection 'ECAs' under the selectedClass
-        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-            .collection('Fees')
-            .doc(selectedClass)
-            .collection('ECAs')
-            .get();
+      DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+          .collection('Fees')
+          .doc(selectedClass)
+          .collection('ECAs')
+          .doc('activities') // Assuming 'activities' is the document ID
+          .get();
 
-        DocumentSnapshot<Map<String, dynamic>> doc = await FirebaseFirestore
-            .instance
-            .collection('Fees')
-            .doc(selectedClass)
-            .get();
+      if (documentSnapshot.exists) {
+        Map<String, dynamic> ecaData =
+            documentSnapshot.data() as Map<String, dynamic>;
 
+        if (ecaData.containsKey('activities')) {
+          List<dynamic> ecaList = ecaData['activities'] ?? [];
+
+          setState(() {
+            ecaOptions = ecaList.map((eca) => eca as String).toList();
+
+            // Navigate to the nested 'fees' field
+            Map<String, dynamic>? nestedFees =
+                ecaData['fees'] as Map<String, dynamic>?;
+
+            // Check for nested 'fees' field existence
+            if (nestedFees != null) {
+              ecaFees = Map.fromEntries(
+                nestedFees.entries
+                    .map((entry) => MapEntry(entry.key, entry.value as int)),
+              );
+            } else {
+              // Handle the case where 'fees' is null or not available
+              ecaFees = {};
+            }
+          });
+        } else {
+          setState(() {
+            ecaOptions = [];
+            ecaFees = {};
+          });
+        }
+      } else {
         setState(() {
-          ecaOptions = querySnapshot.docs
-              .map((doc) => ['activities'] as String)
-              .toList();
-          ecaFees = Map.fromEntries(
-            querySnapshot.docs.map((doc) =>
-                MapEntry(doc['activities'] as String, doc['fees'] as int)),
-          );
+          ecaOptions = [];
+          ecaFees = {};
         });
-      } catch (e) {
-        print('Error loading ECA options: $e');
       }
     }
   }
@@ -304,15 +330,17 @@ class UpdateFeeState extends State<UpdateFee> {
               .map((doc) => {
                     'name':
                         '${doc['Name First']} ${doc['Name Middle']} ${doc['Name Last']}',
-                    'email': doc.id, //email ni store garne
+                    'email': doc['Email'], //email ni store garne
+                    'class': doc['Class']
                   })
               .toList();
         });
       }
     } catch (e) {
-      print('Error loading student list: $e');
+      debugPrint('Error loading student list: $e');
     }
   }
+
 
   void _showStudentEcaPopup(String eca) {
     showDialog(
@@ -326,34 +354,71 @@ class UpdateFeeState extends State<UpdateFee> {
                 children: studentList.map((student) {
                   return Row(
                     children: [
-                      Checkbox(
-                        value: selectedEcasForStudents[student['name']]
-                                ?.contains(eca) ??
-                            false,
-                        onChanged: (value) {
-                          setState(() {
-                            if (value!) {
-                              if (selectedEcasForStudents[student['name']] ==
-                                  null) {
-                                selectedEcasForStudents[student['name']] = [
-                                  eca
-                                ];
-                              } else {
-                                selectedEcasForStudents[student['name']]
-                                    ?.add(eca);
-                              }
+                      FutureBuilder<bool>(
+                          future: FirebaseFirestore.instance
+                              .collection('Fees')
+                              .doc(student['class'])
+                              .collection('Students')
+                              .doc(student['email'])
+                              .get()
+                              .then((value) {
+                            if (value.exists) {
+                              return value.data()!['activities'].contains(eca);
                             } else {
-                              selectedEcasForStudents[student['name']]
-                                  ?.remove(eca);
-                              if (selectedEcasForStudents[student['name']]
-                                      ?.isEmpty ??
-                                  false) {
-                                selectedEcasForStudents.remove(student['name']);
-                              }
+                              return false;
                             }
-                          });
-                        },
-                      ),
+                          }),
+
+                          builder: (context, snapshot) {
+                            if(!snapshot.hasData){
+                              return const CircularProgressIndicator();
+                            }
+
+                            //TODO
+
+                             if(snapshot.data!){
+                          if (selectedEcasForStudents[student['name']] ==
+                                      null) {
+                                    selectedEcasForStudents[student['name']] = [
+                                      eca
+                                    ];
+                                  } else {
+                                    // selectedEcasForStudents[student['name']]
+                                    //     ?.add(eca);
+                                    // return {};
+                                  }
+                          }
+
+                            return Checkbox(
+                              value: selectedEcasForStudents[student['name']]
+                                      ?.contains(eca) ??
+                                  false,
+                              onChanged: (value) {
+                                setState(() {
+                                  if (value!) {
+                                    if (selectedEcasForStudents[
+                                            student['name']] ==
+                                        null) {
+                                      selectedEcasForStudents[student['name']] =
+                                          [eca];
+                                    } else {
+                                      selectedEcasForStudents[student['name']]
+                                          ?.add(eca);
+                                    }
+                                  } else {
+                                    selectedEcasForStudents[student['name']]
+                                        ?.remove(eca);
+                                    if (selectedEcasForStudents[student['name']]
+                                            ?.isEmpty ??
+                                        false) {
+                                      selectedEcasForStudents
+                                          .remove(student['name']);
+                                    }
+                                  }
+                                });
+                              },
+                            );
+                          }),
                       Text(student['name']),
                     ],
                   );
@@ -387,7 +452,7 @@ class UpdateFeeState extends State<UpdateFee> {
         'deadline': deadlineController.text.trim()
       });
 
-      print('hiiiiiiiiiiiiiiiiiiiiiiiiiii');
+      // print('hiiiiiiiiiiiiiiiiiiiiiiiiiii');
 
       // Update ECA fees for each student
       for (Map<String, dynamic> student in studentList) {
@@ -405,13 +470,15 @@ class UpdateFeeState extends State<UpdateFee> {
 
         num totalFees = examFeesValue + tuitionFeesValue + totalEcaFees;
 
-        print('byeeeeeeeeeee');
+        // print('byeeeeeeeeeee');
 
         // Update fees for each student
         await FirebaseFirestore.instance
             .collection('Fees')
             .doc(selectedClass)
             .collection('Students')
+            // .add({
+
             .doc(email)
             .set({
           'exam fees': int.tryParse(examFeesController.text) ?? 0,
@@ -421,7 +488,11 @@ class UpdateFeeState extends State<UpdateFee> {
           'activities': selectedEcasForStudents[student['name']] ?? [],
           'fees': ecaFees,
           'total fees': totalFees,
-        });
+          'email': email,
+          'paid_admin':false,
+          'paid_student':false,
+        // });
+            });
       }
 
       // eca and fee at class level
