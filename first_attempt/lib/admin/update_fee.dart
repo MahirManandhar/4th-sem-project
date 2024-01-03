@@ -124,7 +124,8 @@ class UpdateFeeState extends State<UpdateFee> {
         onPressed: () {
           _updateFeesInDatabase();
         },
-        child: const Text('Update'),
+        backgroundColor: const Color.fromRGBO(131, 151, 136, 1),
+        child: const Icon(Icons.update),
       ),
     );
   }
@@ -209,6 +210,8 @@ class UpdateFeeState extends State<UpdateFee> {
               const SizedBox(width: 10),
               ElevatedButton(
                 onPressed: _addNewEca,
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromRGBO(131, 151, 136, 1)),
                 child: const Text('Add ECA'),
               ),
             ],
@@ -346,7 +349,6 @@ class UpdateFeeState extends State<UpdateFee> {
     }
   }
 
-
   void _showStudentEcaPopup(String eca) {
     showDialog(
       context: context,
@@ -373,26 +375,25 @@ class UpdateFeeState extends State<UpdateFee> {
                               return false;
                             }
                           }),
-
                           builder: (context, snapshot) {
-                            if(!snapshot.hasData){
+                            if (!snapshot.hasData) {
                               return const CircularProgressIndicator();
                             }
 
                             //TODO
 
-                             if(snapshot.data!){
-                          if (selectedEcasForStudents[student['name']] ==
-                                      null) {
-                                    selectedEcasForStudents[student['name']] = [
-                                      eca
-                                    ];
-                                  } else {
-                                    // selectedEcasForStudents[student['name']]
-                                    //     ?.add(eca);
-                                    // return {};
-                                  }
-                          }
+                            if (snapshot.data!) {
+                              if (selectedEcasForStudents[student['name']] ==
+                                  null) {
+                                selectedEcasForStudents[student['name']] = [
+                                  eca
+                                ];
+                              } else {
+                                // selectedEcasForStudents[student['name']]
+                                //     ?.add(eca);
+                                // return {};
+                              }
+                            }
 
                             return Checkbox(
                               value: selectedEcasForStudents[student['name']]
@@ -494,10 +495,10 @@ class UpdateFeeState extends State<UpdateFee> {
           'fees': ecaFees,
           'total fees': totalFees,
           'email': email,
-          'paid_admin':false,
-          'paid_student':false,
-        // });
-            });
+          'paid_admin': false,
+          'paid_student': false,
+          // });
+        });
       }
 
       // eca and fee at class level
