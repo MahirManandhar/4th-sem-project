@@ -1,12 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:first_attempt/calendar/calendar.dart';
+import 'package:first_attempt/calendar.dart';
 import 'package:first_attempt/student/bus.dart';
 import 'package:first_attempt/teacher/teacher_view_notice.dart';
 import 'package:first_attempt/teacher/teacher_notice.dart';
 import 'package:first_attempt/teacher/teacher_profile.dart';
 import 'package:first_attempt/teacher/send_notice.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class Teacher extends StatefulWidget {
@@ -41,54 +40,51 @@ class _StudentState extends State<Teacher> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(125.0),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 25),
-            child: AppBar(
-              backgroundColor: const Color.fromRGBO(131, 151, 136, 1),
-              leading: IconButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const Calendar()));
-                },
-                icon: const Icon(Icons.calendar_month_outlined,
-                    color: Colors.white),
-                selectedIcon:
-                    const Icon(Icons.calendar_month, color: Colors.white),
-              ),
-              actions: [
-                Builder(
-                  builder: (context) => IconButton(
-                    icon: const Icon(Icons.more_vert_outlined,
-                        color: Colors.white),
-                    onPressed: () => Scaffold.of(context).openEndDrawer(),
-                    tooltip:
-                        MaterialLocalizations.of(context).openAppDrawerTooltip,
-                  ),
-                ),
-              ],
-              title: Center(
-                  child: ConstrainedBox(
-                      constraints:
-                          const BoxConstraints.tightFor(width: 150, height: 70),
-                      child: const Image(
-                          image: AssetImage('assets/images/logoWhite.png')))),
-              // actions: [
-              //   IconButton(
-              //     onPressed: () {
-              //       Navigator.push(
-              //           context,
-              //           MaterialPageRoute(
-              //               builder: (context) => const LogOut()));
-              //     },
-              //     icon: const Icon(Icons.more_vert_outlined),
-              //     selectedIcon: const Icon(Icons.more_vert),
-              //   )
-              // ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 25),
+          child: AppBar(
+            backgroundColor: const Color.fromRGBO(131, 151, 136, 1),
+            leading: IconButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Calendar()));
+              },
+              icon: const Icon(Icons.calendar_month_outlined,
+                  color: Colors.white),
+              selectedIcon:
+                  const Icon(Icons.calendar_month, color: Colors.white),
             ),
+            actions: [
+              Builder(
+                builder: (context) => IconButton(
+                  icon:
+                      const Icon(Icons.more_vert_outlined, color: Colors.white),
+                  onPressed: () => Scaffold.of(context).openEndDrawer(),
+                  tooltip:
+                      MaterialLocalizations.of(context).openAppDrawerTooltip,
+                ),
+              ),
+            ],
+            title: Center(
+                child: ConstrainedBox(
+                    constraints:
+                        const BoxConstraints.tightFor(width: 150, height: 70),
+                    child: const Image(
+                        image: AssetImage('assets/images/logoWhite.png')))),
+            // actions: [
+            //   IconButton(
+            //     onPressed: () {
+            //       Navigator.push(
+            //           context,
+            //           MaterialPageRoute(
+            //               builder: (context) => const LogOut()));
+            //     },
+            //     icon: const Icon(Icons.more_vert_outlined),
+            //     selectedIcon: const Icon(Icons.more_vert),
+            //   )
+            // ],
           ),
-        
+        ),
       ),
       endDrawer: Drawer(
         backgroundColor: Colors.white,
@@ -105,8 +101,31 @@ class _StudentState extends State<Teacher> {
             ),
             title: const Text("ABOUT US"),
             onTap: () => {
-              Navigator.pop(context),
-              Navigator.pushNamed(context, '/aboutus'),
+              showDialog(
+                  context: context,
+                  builder: ((context) => const AlertDialog(
+                        backgroundColor: Color.fromRGBO(131, 151, 136, 1),
+                        title: Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Center(
+                                    child: Text('About Pathshala',
+                                        style: TextStyle(
+                                            fontFamily: 'FiraSans',
+                                            color: Colors.white))),
+                                SizedBox(height: 20),
+                                Text(
+                                  'Developed strategically with Flutter for cross-platform compatibility and Firebase for a robust backend, the app ensures a seamless user experience on both iOS and Android devices. Key features encompass quick notifications, class updates, teacher contacts, an academic calendar, and fee updates, constituting a streamlined system for efficient communication.',
+                                  style: TextStyle(
+                                      fontFamily: 'FiraSans',
+                                      color: Colors.white),
+                                  textAlign: TextAlign.justify,
+                                )
+                              ],
+                            )),
+                      )))
             },
           ),
           ListTile(
@@ -127,11 +146,7 @@ class _StudentState extends State<Teacher> {
           ListTile(
             leading: const Icon(Icons.logout),
             title: const Text("LOGOUT"),
-            onTap: () async {
-              await FirebaseAuth.instance.signOut();
-              Navigator.pop(context);
-              Navigator.pushNamed(context, '/login');
-            },
+            onTap: () => _showLogoutConfirmationDialog(context),
           ),
         ]),
       ),
@@ -202,5 +217,44 @@ class _StudentState extends State<Teacher> {
         ),
       ),
     );
+  }
+}
+
+void _showLogoutConfirmationDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text("Are you sure you want to logout?"),
+        // title: const Text("Are you sure you want to logout?"),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context); // Close the dialog
+            },
+            child: const Text("No"),
+          ),
+          TextButton(
+            onPressed: () {
+              _logoutAndNavigateToLogin(context);
+            },
+            child: const Text("Yes"),
+            // child: const Text("Yes"),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void _logoutAndNavigateToLogin(BuildContext context) async {
+  try {
+    // Navigate to the login screen
+    await FirebaseAuth.instance.signOut();
+    Navigator.pop(context); // Close the confirmation dialog
+    Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+  } catch (e) {
+    // Handle any errors that may occur during logout
+    print("Error during logout: $e");
   }
 }

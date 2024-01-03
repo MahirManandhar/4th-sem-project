@@ -143,6 +143,7 @@ class _LoginState extends State<Login> {
                 children: [
                   TextField(
                     controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
                     style: const TextStyle(
                       fontFamily: 'FiraSans',
                       color: Color.fromRGBO(6, 10, 8, 0.612),
