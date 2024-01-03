@@ -24,10 +24,15 @@ class UpdateFeeState extends State<UpdateFee> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(
+        backgroundColor: const Color.fromRGBO(131, 151, 136, 1),
+        title: const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 50),
           child: Text(
             'Update Fees',
-            style: TextStyle(color: Colors.black54, fontSize: 30),
+            style: TextStyle(
+              fontFamily: 'FiraSans',
+              fontSize: 25,
+            ),
           ),
         ),
       ),
