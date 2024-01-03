@@ -124,11 +124,7 @@ class _StudentState extends State<Teacher> {
           ListTile(
             leading: const Icon(Icons.logout),
             title: const Text("LOGOUT"),
-            onTap: () async {
-              await FirebaseAuth.instance.signOut();
-              Navigator.pop(context);
-              Navigator.pushNamed(context, '/login');
-            },
+            onTap: () => _showLogoutConfirmationDialog(context),
           ),
         ]),
       ),
@@ -199,5 +195,44 @@ class _StudentState extends State<Teacher> {
         ),
       ),
     );
+  }
+}
+
+void _showLogoutConfirmationDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text("Are you sure you want to logout?"),
+        // title: const Text("Are you sure you want to logout?"),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context); // Close the dialog
+            },
+            child: const Text("No"),
+          ),
+          TextButton(
+            onPressed: () {
+              _logoutAndNavigateToLogin(context);
+            },
+            child: const Text("Yes"),
+            // child: const Text("Yes"),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void _logoutAndNavigateToLogin(BuildContext context) async {
+  try {
+    // Navigate to the login screen
+    await FirebaseAuth.instance.signOut();
+    Navigator.pop(context); // Close the confirmation dialog
+    Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+  } catch (e) {
+    // Handle any errors that may occur during logout
+    print("Error during logout: $e");
   }
 }

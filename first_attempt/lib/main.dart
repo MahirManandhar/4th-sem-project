@@ -13,7 +13,7 @@ Future main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
+print('hhhhhhhhhhhh');
   runApp(
     ChangeNotifierProvider(
       create: (context) => ThemeNotifier(ThemeData.light()), // Initial theme
