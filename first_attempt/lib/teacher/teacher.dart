@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_attempt/calendar.dart';
 import 'package:first_attempt/student/bus.dart';
 import 'package:first_attempt/teacher/teacher_view_notice.dart';

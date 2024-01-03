@@ -10,7 +10,7 @@ class TeacherProfile extends StatefulWidget {
 }
 
 class _TeacherProfileState extends State<TeacherProfile> {
-  final collRef = FirebaseFirestore.instance.collection("Teachers");
+  final collRef = FirebaseFirestore.instance.collection('Teachers');
   final _auth = FirebaseAuth.instance;
 
   @override
@@ -36,8 +36,11 @@ class _TeacherProfileState extends State<TeacherProfile> {
                           child: CircleAvatar(
                             radius: 75,
                             backgroundColor: Colors.black38,
-                            backgroundImage:
-                                AssetImage('assets/images/logo.png'),
+                            child: Icon(
+                              Icons.person,
+                              color: Colors.white,
+                              size: 75,
+                            ),
                           ),
                         ),
                         const SizedBox(

@@ -5,22 +5,29 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 FirebaseAuth _auth = FirebaseAuth.instance;
 final collRef = FirebaseFirestore.instance;
-Future createStudent(StudentModel std, cls, email, password) async {
+Future createStudent(
+    StudentModel std, email, password, BuildContext context) async {
   try {
     UserCredential credential = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
 
     await collRef
-        // .collection("Class")
-        // .doc(cls)
-        .collection("Students")
+        .collection('Students')
         .doc(email)
         .set(std.toJson())
-        .whenComplete(() => const Text('Added successfully'));
+        .whenComplete(() {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        backgroundColor: Colors.green,
+        content: Center(
+            child: Text("Student added successfully",
+                style: TextStyle(fontFamily: 'FiraSans'))),
+        duration: Duration(seconds: 3),
+      ));
+    });
 
     return credential.user;
   } catch (e) {
-    print("Some error occured");
+    debugPrint("Some error occured");
   }
 }
 
@@ -81,7 +88,24 @@ class _AddStudentState extends State<AddStudent> {
                     backgroundColor: Colors.grey,
                     radius: 70,
                     child: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return const AlertDialog(
+                                  content: Padding(
+                                    padding: EdgeInsets.all(15),
+                                    child: Text(
+                                      "Sorry, this feauture is currently unavailable.",
+                                      style: TextStyle(
+                                        fontFamily: 'FiraSans',
+                                        fontSize: 25,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              });
+                        },
                         icon: const Icon(
                           Icons.add_a_photo,
                           color: Colors.white,
@@ -97,7 +121,7 @@ class _AddStudentState extends State<AddStudent> {
                       children: [
                         numField('Class', clscontroller),
                         nameField('First name', fncontroller),
-                        nameField('Middle name', mncontroller),
+                        mnameField('Middle name', mncontroller),
                         nameField('Last name', lncontroller),
                         numField('Roll no', rncontroller),
                         nameField('Guardian', gcontroller),
@@ -121,19 +145,18 @@ class _AddStudentState extends State<AddStudent> {
                             onPressed: () {
                               if (formkey.currentState!.validate()) {
                                 final std = StudentModel(
-                                    cls: clscontroller.text.trim(),
-                                    fn: fncontroller.text.trim(),
-                                    mn: mncontroller.text.trim(),
-                                    ln: lncontroller.text.trim(),
-                                    rollno: rncontroller.text.trim(),
-                                    address: acontroller.text.trim(),
-                                    guardian: gcontroller.text.trim(),
-                                    phoneno: pncontroller.text.trim(),
-                                    email: econtroller.text.trim(),
-                                    password: pwcontroller.text.trim());
-
+                                  cls: clscontroller.text.trim(),
+                                  fn: fncontroller.text.trim(),
+                                  mn: mncontroller.text.trim(),
+                                  ln: lncontroller.text.trim(),
+                                  rollno: rncontroller.text.trim(),
+                                  address: acontroller.text.trim(),
+                                  guardian: gcontroller.text.trim(),
+                                  phoneno: pncontroller.text.trim(),
+                                  email: econtroller.text.trim(),
+                                );
                                 createStudent(
-                                    std, std.cls, std.email, std.password);
+                                    std, std.email, pwcontroller.text, context);
                               }
                             },
                             icon: const Icon(
@@ -186,12 +209,34 @@ Widget nameField(String attribute, final ctlr) {
   ]);
 }
 
+Widget mnameField(String attribute, final ctlr) {
+  return Column(children: [
+    TextFormField(
+      controller: ctlr,
+      keyboardType: TextInputType.name,
+      style: const TextStyle(
+        fontFamily: 'FiraSans',
+        fontSize: 25,
+      ),
+      decoration: InputDecoration(
+          labelText: attribute,
+          hintText: 'Enter your $attribute',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+          )),
+    ),
+    const SizedBox(
+      height: 15,
+    )
+  ]);
+}
+
 Widget numField(String attribute, final ctlr) {
   return Column(children: [
     TextFormField(
       controller: ctlr,
       validator: (value) {
-        if (value!.isEmpty || !RegExp(r'^[A-Z]+[0-9]{1,2}').hasMatch(value)) {
+        if (value!.isEmpty) {
           return "Please enter correct number";
         } else {
           return null;
@@ -309,7 +354,7 @@ Widget cpwField(String attribute, final ctlr, final pw) {
     TextFormField(
       controller: ctlr,
       validator: (value) {
-        if (ctlr.toString() != pw.toString()) {
+        if (ctlr.text != pw.text) {
           return "Password do not match";
         } else {
           return null;

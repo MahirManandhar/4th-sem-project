@@ -49,7 +49,7 @@ class _LoginState extends State<Login> {
       user = userCredential.user;
     } on FirebaseAuthException catch (e) {
       if (e.code == "user-not-found" || e.code == "wrong-password") {
-        print("Wrong credentials");
+        debugPrint("Wrong credentials");
       }
     }
 

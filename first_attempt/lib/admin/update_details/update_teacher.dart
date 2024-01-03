@@ -3,12 +3,34 @@ import 'package:first_attempt/admin/update_details/update_details.dart';
 import 'package:flutter/material.dart';
 
 final collRef = FirebaseFirestore.instance;
-Future updateTeacher(TeacherModel tch, email) async {
+Future updateTeacher(TeacherModel tch, email, BuildContext context) async {
   await collRef
       .collection('Teachers')
       .doc(email)
       .update(tch.toJson())
-      .whenComplete(() => const Text('Updated Successfully'));
+      .whenComplete(() {
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      backgroundColor: Colors.green,
+      content: Center(
+        child: Text("Updated successfully",
+            style: TextStyle(fontFamily: 'FiraSans')),
+      ),
+      duration: Duration(seconds: 3),
+    ));
+  });
+}
+
+Future deleteTeacher(email, BuildContext context) async {
+  await collRef.collection('Teachers').doc(email).delete().whenComplete(() {
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      backgroundColor: Colors.green,
+      content: Center(
+        child: Text("Deleted successfully",
+            style: TextStyle(fontFamily: 'FiraSans')),
+      ),
+      duration: Duration(seconds: 3),
+    ));
+  });
 }
 
 class UpdateTeacher extends StatefulWidget {
@@ -36,15 +58,14 @@ class _UpdateTeacherState extends State<UpdateTeacher> {
   void _loadTeacherData() async {
     if (email != null) {
       DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
-          .collection("Teachers")
+          .collection('Teachers')
           .doc(email)
           .get();
-
       if (documentSnapshot.exists) {
         setState(() {
-          fncontroller.text = documentSnapshot['Name.First'].toString();
-          mncontroller.text = documentSnapshot['Name.Middle'].toString();
-          lncontroller.text = documentSnapshot['Name.Last'].toString();
+          fncontroller.text = documentSnapshot['Name First'].toString();
+          mncontroller.text = documentSnapshot['Name Middle'].toString();
+          lncontroller.text = documentSnapshot['Name Last'].toString();
           sbjtcontroller.text = documentSnapshot['Subject'].toString();
           acontroller.text = documentSnapshot['Address'].toString();
           pncontroller.text = documentSnapshot['Phone no'].toString();
@@ -64,9 +85,11 @@ class _UpdateTeacherState extends State<UpdateTeacher> {
         });
       }
     } else {
-      print(const Text('Error'));
+      debugPrint('Error');
     }
   }
+
+  final GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -92,6 +115,7 @@ class _UpdateTeacherState extends State<UpdateTeacher> {
               children: [
                 TextFormField(
                   controller: esearch,
+                  keyboardType: TextInputType.emailAddress,
                   style: const TextStyle(
                     fontFamily: 'FiraSans',
                     fontSize: 25,
@@ -119,7 +143,7 @@ class _UpdateTeacherState extends State<UpdateTeacher> {
                     ),
                     onPressed: () async {
                       setState(() {
-                        email = esearch.toString();
+                        email = esearch.text.trim();
                         _loadTeacherData();
                       });
                     },
@@ -139,15 +163,19 @@ class _UpdateTeacherState extends State<UpdateTeacher> {
                 const SizedBox(
                   height: 15,
                 ),
-                nameField("First name", fncontroller),
-                nameField("Middle name", mncontroller),
-                nameField("Last name", lncontroller),
-                nameField("Subject", sbjtcontroller),
-                nameField("Address", acontroller),
-                phoneField("Phone no", pncontroller),
-                emailField("Email", econtroller),
-                pwField("Password", pwcontroller),
-                cpwField("Confirm password", cpwcontroller, pwcontroller),
+                Form(
+                    key: formkey,
+                    child: Column(
+                      children: [
+                        nameField("First name", fncontroller),
+                        mnameField("Middle name", mncontroller),
+                        nameField("Last name", lncontroller),
+                        nameField("Subject", sbjtcontroller),
+                        nameField("Address", acontroller),
+                        phoneField("Phone no", pncontroller),
+                        emailField("Email", econtroller),
+                      ],
+                    )),
                 const SizedBox(
                   height: 10,
                 ),
@@ -161,7 +189,20 @@ class _UpdateTeacherState extends State<UpdateTeacher> {
                         borderRadius: BorderRadius.circular(5),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      if (formkey.currentState!.validate()) {
+                        final tch = TeacherModel(
+                          fn: fncontroller.text.trim(),
+                          mn: mncontroller.text.trim(),
+                          ln: lncontroller.text.trim(),
+                          subject: sbjtcontroller.text.trim(),
+                          address: acontroller.text.trim(),
+                          phoneno: pncontroller.text.trim(),
+                          email: econtroller.text.trim(),
+                        );
+                        updateTeacher(tch, tch.email, context);
+                      }
+                    },
                     icon: const Icon(Icons.upgrade),
                     label: const Text(
                       'Update',
@@ -169,7 +210,31 @@ class _UpdateTeacherState extends State<UpdateTeacher> {
                         fontFamily: 'FiraSans',
                         fontSize: 25,
                       ),
-                    ))
+                    )),
+                const SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromRGBO(94, 110, 100, 100),
+                      foregroundColor:
+                          const Color.fromRGBO(255, 255, 255, 0.612),
+                      elevation: 10,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    onPressed: () {
+                      deleteTeacher(econtroller.text.trim(), context);
+                    },
+                    icon: const Icon(Icons.delete_forever),
+                    label: const Text(
+                      'Delete',
+                      style: TextStyle(
+                        fontFamily: 'FiraSans',
+                        fontSize: 25,
+                      ),
+                    )),
               ],
             ),
           ]),
@@ -206,13 +271,35 @@ Widget nameField(String attribute, final ctlr) {
   ]);
 }
 
+Widget mnameField(String attribute, final ctlr) {
+  return Column(children: [
+    TextFormField(
+      controller: ctlr,
+      keyboardType: TextInputType.name,
+      style: const TextStyle(
+        fontFamily: 'FiraSans',
+        fontSize: 25,
+      ),
+      decoration: InputDecoration(
+          labelText: attribute,
+          hintText: 'Enter your $attribute',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+          )),
+    ),
+    const SizedBox(
+      height: 15,
+    )
+  ]);
+}
+
 Widget emailField(String attribute, final ctlr) {
   return Column(children: [
     TextFormField(
       controller: ctlr,
       validator: (value) {
         if (value!.isEmpty ||
-            !RegExp(r'^[\w-\.]+@student.ps.edu.np').hasMatch(value)) {
+            !RegExp(r'^[\w-\.]+@teacher.ps.edu.np').hasMatch(value)) {
           return "Please enter correct email";
         } else {
           return null;
@@ -252,66 +339,6 @@ Widget phoneField(String attribute, final ctlr) {
         fontSize: 25,
       ),
       keyboardType: TextInputType.number,
-      decoration: InputDecoration(
-          labelText: attribute,
-          hintText: 'Enter your $attribute',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
-          )),
-    ),
-    const SizedBox(
-      height: 15,
-    )
-  ]);
-}
-
-Widget pwField(String attribute, final ctlr) {
-  return Column(children: [
-    TextFormField(
-      controller: ctlr,
-      validator: (value) {
-        if (value!.isEmpty || !RegExp(r'^[a-z A-Z]+[0-9]+$').hasMatch(value)) {
-          return "Please enter password";
-        } else {
-          return null;
-        }
-      },
-      obscureText: true,
-      keyboardType: TextInputType.name,
-      style: const TextStyle(
-        fontFamily: 'FiraSans',
-        fontSize: 25,
-      ),
-      decoration: InputDecoration(
-          labelText: attribute,
-          hintText: 'Enter your $attribute',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
-          )),
-    ),
-    const SizedBox(
-      height: 15,
-    )
-  ]);
-}
-
-Widget cpwField(String attribute, final ctlr, final pw) {
-  return Column(children: [
-    TextFormField(
-      controller: ctlr,
-      validator: (value) {
-        if (ctlr != pw) {
-          return "Password do not match";
-        } else {
-          return null;
-        }
-      },
-      obscureText: true,
-      keyboardType: TextInputType.name,
-      style: const TextStyle(
-        fontFamily: 'FiraSans',
-        fontSize: 25,
-      ),
       decoration: InputDecoration(
           labelText: attribute,
           hintText: 'Enter your $attribute',
