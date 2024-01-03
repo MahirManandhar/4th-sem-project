@@ -3,9 +3,9 @@ import 'package:table_calendar/table_calendar.dart';
 
 class Event {
   final String title;
-  Event(
-    this.title,
-  );
+  Event({
+    required this.title,
+  });
 }
 
 class Calendar extends StatefulWidget {
@@ -124,7 +124,7 @@ class _CalendarState extends State<Calendar> {
                               borderRadius: BorderRadius.circular(10)),
                           child: ListTile(
                             onTap: () => debugPrint(""),
-                            title: Text('${value[index]}'),
+                            title: Text(value[index].title),
                           ),
                         );
                       });
@@ -193,7 +193,7 @@ class _CalendarState extends State<Calendar> {
                     backgroundColor: Colors.red,
                     content: Center(
                         child: Text(
-                      'Required title and description',
+                      'Required title',
                       style: TextStyle(fontFamily: 'FiraSans'),
                     )),
                     duration: Duration(seconds: 2),
@@ -203,7 +203,7 @@ class _CalendarState extends State<Calendar> {
                 mySelectedEvents.addAll({
                   _selectedDate!: [
                     Event(
-                      titleController.text,
+                      title: titleController.text,
                     )
                   ]
                 });
