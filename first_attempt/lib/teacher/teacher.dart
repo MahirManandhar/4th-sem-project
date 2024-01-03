@@ -40,54 +40,51 @@ class _StudentState extends State<Teacher> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(125.0),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 25),
-            child: AppBar(
-              backgroundColor: const Color.fromRGBO(131, 151, 136, 1),
-              leading: IconButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const Calendar()));
-                },
-                icon: const Icon(Icons.calendar_month_outlined,
-                    color: Colors.white),
-                selectedIcon:
-                    const Icon(Icons.calendar_month, color: Colors.white),
-              ),
-              actions: [
-                Builder(
-                  builder: (context) => IconButton(
-                    icon: const Icon(Icons.more_vert_outlined,
-                        color: Colors.white),
-                    onPressed: () => Scaffold.of(context).openEndDrawer(),
-                    tooltip:
-                        MaterialLocalizations.of(context).openAppDrawerTooltip,
-                  ),
-                ),
-              ],
-              title: Center(
-                  child: ConstrainedBox(
-                      constraints:
-                          const BoxConstraints.tightFor(width: 150, height: 70),
-                      child: const Image(
-                          image: AssetImage('assets/images/logoWhite.png')))),
-              // actions: [
-              //   IconButton(
-              //     onPressed: () {
-              //       Navigator.push(
-              //           context,
-              //           MaterialPageRoute(
-              //               builder: (context) => const LogOut()));
-              //     },
-              //     icon: const Icon(Icons.more_vert_outlined),
-              //     selectedIcon: const Icon(Icons.more_vert),
-              //   )
-              // ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 25),
+          child: AppBar(
+            backgroundColor: const Color.fromRGBO(131, 151, 136, 1),
+            leading: IconButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Calendar()));
+              },
+              icon: const Icon(Icons.calendar_month_outlined,
+                  color: Colors.white),
+              selectedIcon:
+                  const Icon(Icons.calendar_month, color: Colors.white),
             ),
+            actions: [
+              Builder(
+                builder: (context) => IconButton(
+                  icon:
+                      const Icon(Icons.more_vert_outlined, color: Colors.white),
+                  onPressed: () => Scaffold.of(context).openEndDrawer(),
+                  tooltip:
+                      MaterialLocalizations.of(context).openAppDrawerTooltip,
+                ),
+              ),
+            ],
+            title: Center(
+                child: ConstrainedBox(
+                    constraints:
+                        const BoxConstraints.tightFor(width: 150, height: 70),
+                    child: const Image(
+                        image: AssetImage('assets/images/logoWhite.png')))),
+            // actions: [
+            //   IconButton(
+            //     onPressed: () {
+            //       Navigator.push(
+            //           context,
+            //           MaterialPageRoute(
+            //               builder: (context) => const LogOut()));
+            //     },
+            //     icon: const Icon(Icons.more_vert_outlined),
+            //     selectedIcon: const Icon(Icons.more_vert),
+            //   )
+            // ],
           ),
-        
+        ),
       ),
       endDrawer: Drawer(
         backgroundColor: Colors.white,
@@ -126,11 +123,7 @@ class _StudentState extends State<Teacher> {
           ListTile(
             leading: const Icon(Icons.logout),
             title: const Text("LOGOUT"),
-            onTap: () async {
-              await FirebaseAuth.instance.signOut();
-              Navigator.pop(context);
-              Navigator.pushNamed(context, '/login');
-            },
+            onTap: () => _showLogoutConfirmationDialog(context),
           ),
         ]),
       ),
@@ -201,5 +194,44 @@ class _StudentState extends State<Teacher> {
         ),
       ),
     );
+  }
+}
+
+void _showLogoutConfirmationDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text("Are you sure you want to logout?"),
+        // title: const Text("Are you sure you want to logout?"),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context); // Close the dialog
+            },
+            child: const Text("No"),
+          ),
+          TextButton(
+            onPressed: () {
+              _logoutAndNavigateToLogin(context);
+            },
+            child: const Text("Yes"),
+            // child: const Text("Yes"),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void _logoutAndNavigateToLogin(BuildContext context) async {
+  try {
+    // Navigate to the login screen
+    await FirebaseAuth.instance.signOut();
+    Navigator.pop(context); // Close the confirmation dialog
+    Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+  } catch (e) {
+    // Handle any errors that may occur during logout
+    print("Error during logout: $e");
   }
 }
