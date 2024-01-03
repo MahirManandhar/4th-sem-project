@@ -21,7 +21,7 @@ Future updateStudent(StudentModel std, email, BuildContext context) async {
 }
 
 Future deleteStudent(email, BuildContext context) async {
-      await collRef.collection('Students').doc(email).delete().whenComplete(() {
+  await collRef.collection('Students').doc(email).delete().whenComplete(() {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       backgroundColor: Colors.green,
       content: Center(
@@ -374,8 +374,8 @@ Widget phoneField(String attribute, final ctlr) {
     TextFormField(
       controller: ctlr,
       validator: (value) {
-        if (value!.isEmpty || !RegExp(r'^[-\s\./0-9]+$').hasMatch(value)) {
-          return "Please enter correct phone no";
+        if (value!.isEmpty || !RegExp(r'^[0-9]{10}$').hasMatch(value)) {
+          return "Please enter correct phone number";
         } else {
           return null;
         }
