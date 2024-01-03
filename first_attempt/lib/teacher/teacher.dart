@@ -6,7 +6,6 @@ import 'package:first_attempt/teacher/teacher_notice.dart';
 import 'package:first_attempt/teacher/teacher_profile.dart';
 import 'package:first_attempt/teacher/send_notice.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class Teacher extends StatefulWidget {
@@ -102,8 +101,31 @@ class _StudentState extends State<Teacher> {
             ),
             title: const Text("ABOUT US"),
             onTap: () => {
-              Navigator.pop(context),
-              Navigator.pushNamed(context, '/aboutus'),
+              showDialog(
+                  context: context,
+                  builder: ((context) => const AlertDialog(
+                        backgroundColor: Color.fromRGBO(131, 151, 136, 1),
+                        title: Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Center(
+                                    child: Text('About Pathshala',
+                                        style: TextStyle(
+                                            fontFamily: 'FiraSans',
+                                            color: Colors.white))),
+                                SizedBox(height: 20),
+                                Text(
+                                  'Developed strategically with Flutter for cross-platform compatibility and Firebase for a robust backend, the app ensures a seamless user experience on both iOS and Android devices. Key features encompass quick notifications, class updates, teacher contacts, an academic calendar, and fee updates, constituting a streamlined system for efficient communication.',
+                                  style: TextStyle(
+                                      fontFamily: 'FiraSans',
+                                      color: Colors.white),
+                                  textAlign: TextAlign.justify,
+                                )
+                              ],
+                            )),
+                      )))
             },
           ),
           ListTile(

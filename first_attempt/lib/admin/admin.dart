@@ -104,9 +104,37 @@ class _StudentState extends State<Admin> {
                       const BoxConstraints.tightFor(width: 150, height: 70),
                   child: const Image(
                       image: AssetImage('assets/images/logo.png')))),
-          const ListTile(
-            leading: Icon(Icons.info),
-            title: Text("ABOUT US"),
+          ListTile(
+            leading: const Icon(Icons.info),
+            title: const Text("ABOUT US"),
+            onTap: () => {
+              showDialog(
+                  context: context,
+                  builder: ((context) => const AlertDialog(
+                        backgroundColor: Color.fromRGBO(131, 151, 136, 1),
+                        title: Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Center(
+                                    child: Text('About Pathshala',
+                                        style: TextStyle(
+                                            fontFamily: 'FiraSans',
+                                            color: Colors.white))),
+                                SizedBox(height: 20),
+                                Text(
+                                  'Developed strategically with Flutter for cross-platform compatibility and Firebase for a robust backend, the app ensures a seamless user experience on both iOS and Android devices. Key features encompass quick notifications, class updates, teacher contacts, an academic calendar, and fee updates, constituting a streamlined system for efficient communication.',
+                                  style: TextStyle(
+                                      fontFamily: 'FiraSans',
+                                      color: Colors.white),
+                                  textAlign: TextAlign.justify,
+                                )
+                              ],
+                            )),
+                      ))
+                  )
+            },
           ),
           ListTile(
             leading: const Icon(Icons.settings),
